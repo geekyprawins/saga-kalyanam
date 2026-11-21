@@ -86,11 +86,19 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 - `.invite__face` needs `isolation: isolate` and the art at `z-index: -1`. Without it the
   face's type escapes the preserve-3d sort and floats above the closed cover.
 
-## Ambience
+## Sound
 
-`src/js/audio.js` synthesises everything. The ambience is a sannai melam — nadaswaram (detuned saws, nasal peak, jaru slide and
-vibrato) over a tavil in adi talam and a Sa/Pa drone, in Mohanam. It is a 32-step loop that
-alternates two phrases. Headless Chromium has no audio device, so `ctx.currentTime` never
-advances there: verify changes by rendering the module through `OfflineAudioContext`
-(strip `export`, inject `ctx`/`ambience`/`wet`) and reading the WAV back, not by watching
-the live page.
+`src/js/audio.js` plays `public/assets/audio/bgm.mp3` through the Web Audio graph, so
+the master fade, the visibility suspend and the card noises all share one context, and
+synthesises the two card noises (`swish`, `crack`).
+
+The master is a 29 s stereo WAV in `/originals` (git-ignored, like the photos). The
+shipped MP3 is a 1.5 s equal-power crossfade loop built from it — the source fades out
+over its last four seconds, so a plain `loop` would jump. MP3 encoders also pad both
+ends with silence, which `trimEncoderPad()` strips after `decodeAudioData`, otherwise
+the loop plays ~20 ms of nothing every lap.
+
+Audio cannot start before a gesture. The first `pointerdown` on the gate calls
+`setSound(true)` and repaints the toggle; `prefetchBgm()` pulls the bytes on idle without
+touching the AudioContext, so no autoplay warning is logged. The track is decoded once
+and cached, so toggling off and on restarts it without another fetch.

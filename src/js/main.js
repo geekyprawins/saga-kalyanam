@@ -6,8 +6,8 @@ import { initSaveCard } from './savecard.js';
 import { initActions } from './actions.js';
 import { loadPhotos } from './photos.js';
 import { initTilt } from './tilt.js';
-import { isSoundOn, setSound } from './audio.js';
-import { getLang, greetingFor, guestName, setLang, t } from './content.js';
+import { isSoundOn, prefetchBgm, setSound } from './audio.js';
+import { getLang, greetingFor, guestName, setLang } from './content.js';
 
 const root = document.documentElement;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -67,10 +67,6 @@ langBtn?.addEventListener('click', () => {
   setLang(next);
   paintLangButton(next);
   paintGreeting();
-  const cueLabel = document.querySelector('#cue span');
-  if (cueLabel && document.getElementById('gate')?.classList.contains('is-open')) {
-    cueLabel.textContent = t('enter');
-  }
 });
 
 /* ── sound ────────────────────────────────────────────── */
@@ -86,6 +82,19 @@ soundBtn?.addEventListener('click', () => {
   setSound(next);
   paintSound(next);
 });
+
+/* the gate is the one tap every guest makes, so it starts the track; the icon
+   flips to "on" so the button keeps telling the truth */
+const gate = document.getElementById('gate');
+gate?.addEventListener(
+  'pointerdown',
+  () => {
+    if (isSoundOn()) return;
+    setSound(true);
+    paintSound(true);
+  },
+  { once: true },
+);
 
 /* ── scenes ───────────────────────────────────────────── */
 loadPhotos();
@@ -201,6 +210,11 @@ async function initScrollMotion() {
 
 if ('requestIdleCallback' in window) requestIdleCallback(initScrollMotion, { timeout: 1200 });
 else window.setTimeout(initScrollMotion, 400);
+
+if (!navigator.connection?.saveData) {
+  if ('requestIdleCallback' in window) requestIdleCallback(prefetchBgm, { timeout: 3000 });
+  else window.setTimeout(prefetchBgm, 2000);
+}
 
 /* ── curtain ──────────────────────────────────────────── */
 const veil = document.getElementById('veil');
