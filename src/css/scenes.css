@@ -584,6 +584,9 @@
   font-size: 0.86rem;
   line-height: 1.45;
   color: #4a2a22;
+  /* the temple etching is printed across this line, so the ink needs to sit on
+     a light halo to stay readable */
+  text-shadow: 0 0 6px rgba(252, 244, 228, 0.95), 0 0 2px rgba(252, 244, 228, 0.9);
 }
 
 .invite__venue span {
