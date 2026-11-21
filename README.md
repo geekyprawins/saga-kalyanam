@@ -67,7 +67,7 @@ The camera originals are kept in `/originals`, which is git-ignored and never se
 python3 - <<'PY'
 from PIL import Image, ImageOps
 im = ImageOps.exif_transpose(Image.open('originals/bride-1.jpg')).convert('RGB')
-im.save('public/assets/photos/bride.webp', 'WEBP', quality=82, method=6)
+im.save('public/assets/photos/bride-2.webp', 'WEBP', quality=82, method=6)
 PY
 ```
 
