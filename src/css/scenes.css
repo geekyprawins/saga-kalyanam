@@ -3,100 +3,52 @@
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
+  display: grid;
+  align-content: end;
   overflow: hidden;
-  background: radial-gradient(110% 70% at 50% 30%, #3d0d14 0%, #25080d 55%, #1a0508 100%);
+  background: #1a0508;
   color: var(--ivory);
 }
 
-.jasmine {
+.bless__bg {
   position: absolute;
-  inset: -6%;
-  opacity: 0.9;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 64% 50%;
   will-change: transform;
 }
 
-.jasmine .strand {
+/* The mandapam is bright, so the type needs its own darkness at the foot. */
+.bless__shade {
   position: absolute;
-  top: var(--top, -4%);
-  height: var(--len, 100%);
-  left: var(--x);
-  width: var(--w);
-  opacity: var(--o, 1);
-  background-image: radial-gradient(circle at 50% 45%, #ffffff 0 46%, #fffaf0 62%, #f6ead2 76%, rgba(246, 234, 210, 0) 84%);
-  background-size: 100% 15px;
-  background-repeat: repeat-y;
-  filter: blur(var(--b, 0px));
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.08) 100%);
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.08) 100%);
-  animation: strandSway 9s ease-in-out infinite;
-  animation-delay: var(--d, 0s);
-}
-
-.jasmine .strand::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: calc(var(--w) * 0.8);
-  height: calc(var(--w) * 0.8);
-  margin-left: calc(var(--w) * -0.4);
-  border-radius: 50%;
-  background: #fffdf6;
-  box-shadow: 0 0 6px rgba(255, 250, 235, 0.5);
-}
-
-@keyframes strandSway {
-  0%,
-  100% {
-    transform: translateX(-3px) skewX(0.8deg);
-  }
-  50% {
-    transform: translateX(3px) skewX(-0.8deg);
-  }
-}
-
-.scene--blessings::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -12%;
-  width: 120%;
-  height: 62%;
-  transform: translateX(-50%);
+  inset: 0;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(224, 160, 84, 0.28) 0%, rgba(140, 60, 40, 0.12) 48%, rgba(30, 6, 10, 0) 78%);
-}
-
-.mandapam {
-  position: absolute;
-  left: 50%;
-  bottom: -4%;
-  width: min(128%, 34rem);
-  height: auto;
-  transform: translateX(-50%);
-  opacity: 0.85;
-  -webkit-mask-image: linear-gradient(180deg, #000 62%, rgba(0, 0, 0, 0.35) 100%);
-  mask-image: linear-gradient(180deg, #000 62%, rgba(0, 0, 0, 0.35) 100%);
-  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(20, 4, 7, 0.5) 0%, rgba(20, 4, 7, 0) 24%),
+    linear-gradient(0deg, rgba(18, 4, 6, 0.94) 0%, rgba(18, 4, 6, 0.62) 24%, rgba(18, 4, 6, 0.08) 54%, rgba(18, 4, 6, 0) 70%);
 }
 
 .blessings__copy {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 29%;
+  position: relative;
   z-index: 2;
-  padding: 0 var(--pad);
-  text-align: center;
+  padding: 0 var(--pad) clamp(4.5rem, 15vh, 7rem);
 }
 
-.blessings__copy::before {
-  content: '';
-  position: absolute;
-  inset: -80% -20%;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(closest-side, rgba(201, 130, 60, 0.22) 0%, rgba(140, 60, 40, 0.1) 45%, rgba(30, 6, 10, 0) 75%);
+@media (min-aspect-ratio: 3/4) {
+  .scene--blessings {
+    align-content: center;
+  }
+
+  .bless__bg {
+    object-position: 50% 50%;
+  }
+
+  .blessings__copy {
+    padding: 0 var(--pad) 0 clamp(2rem, 7vw, 6rem);
+    max-width: 34rem;
+  }
 }
 
 .line {
@@ -120,10 +72,10 @@
 .line--three {
   margin-top: 1.5rem;
   font-family: var(--font-display);
-  font-size: 0.56rem;
+  font-size: 0.62rem;
   letter-spacing: 0.36em;
   text-transform: uppercase;
-  color: rgba(251, 245, 233, 0.55);
+  color: rgba(251, 245, 233, 0.78);
 }
 
 /* ── 3 · the couple ────────────────────────────────────── */
@@ -479,6 +431,38 @@
   text-align: center;
   background: radial-gradient(110% 60% at 50% 20%, #3d0d14 0%, #24080d 60%, #180407 100%);
   color: var(--gold-100);
+  overflow: hidden;
+}
+
+/* the brass lamps sit behind the card, burnt down so the type keeps its contrast */
+.invite__lamps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.invite__lamps img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  opacity: 0.7;
+  filter: saturate(0.9) brightness(0.5);
+}
+
+.scene--invite::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 42% at 50% 46%, rgba(18, 3, 6, 0.35) 0%, rgba(18, 3, 6, 0.72) 70%, rgba(18, 3, 6, 0.92) 100%),
+    linear-gradient(180deg, rgba(20, 4, 7, 0.9) 0%, rgba(20, 4, 7, 0.25) 22%, rgba(20, 4, 7, 0.25) 78%, rgba(20, 4, 7, 0.92) 100%);
+}
+
+.scene--invite > *:not(.invite__lamps) {
+  position: relative;
+  z-index: 1;
 }
 
 .scene--invite .eyebrow {
@@ -488,8 +472,8 @@
 .invite {
   position: relative;
   z-index: 82;
-  width: min(100%, 20.5rem);
-  aspect-ratio: 0.66;
+  width: min(100%, 21.5rem);
+  aspect-ratio: 0.8;
   margin: 1.6rem auto 0;
   perspective: 1400px;
   cursor: pointer;
@@ -508,33 +492,51 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1.1rem;
+  /* the arch, garlands and temple etching are already in the artwork, so the
+     type only has to stay inside the cream panel */
+  padding: 17% 16% 21%;
   color: var(--ink);
-  background:
-    radial-gradient(120% 60% at 50% 0%, rgba(201, 162, 74, 0.18) 0%, transparent 60%),
-    linear-gradient(160deg, #fdf8ee 0%, #f4e7cd 100%);
-  border: 1px solid var(--gold-400);
-  box-shadow: inset 0 0 0 5px rgba(251, 245, 233, 0.9), inset 0 0 0 6px rgba(201, 162, 74, 0.5);
+  background: #f7ecd6;
+  overflow: hidden;
+  /* the leaves are siblings in a preserve-3d box, so the face has to be its own
+     stacking context or its type floats above the closed cover */
+  isolation: isolate;
+}
+
+.invite__art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .invite__top {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 0.5rem;
-  letter-spacing: 0.24em;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-700);
+  color: #8a5c1d;
+  text-shadow: 0 1px 0 rgba(255, 252, 244, 0.6);
   max-width: 15rem;
-  line-height: 1.7;
+  line-height: 1.6;
+}
+
+.invite__face .invite__rule {
+  margin: 0.7rem auto;
+  width: min(12rem, 66%);
 }
 
 .invite__names {
-  margin: 0.9rem 0 0;
+  margin: 0.4rem 0 0;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 7vw, 1.85rem);
+  font-size: clamp(1.22rem, 5.6vw, 1.5rem);
   font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: 0.14em;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
   color: var(--maroon-700);
 }
 
@@ -549,7 +551,7 @@
 .invite__date {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--maroon-600);
@@ -557,8 +559,8 @@
 
 .invite__muhurtham {
   display: grid;
-  gap: 0.1rem;
-  margin: 0.85rem 0;
+  gap: 0.05rem;
+  margin: 0.45rem 0;
 }
 
 .invite__muhurtham span {
@@ -572,32 +574,41 @@
 .invite__muhurtham strong {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.32rem;
   letter-spacing: 0.08em;
   color: var(--maroon-700);
 }
 
 .invite__venue {
   margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.5;
+  font-size: 0.86rem;
+  line-height: 1.45;
   color: #4a2a22;
+  /* the temple etching is printed across this line, so the ink needs to sit on
+     a light halo to stay readable */
+  text-shadow: 0 0 6px rgba(252, 244, 228, 0.95), 0 0 2px rgba(252, 244, 228, 0.9);
 }
 
 .invite__venue span {
-  font-size: 0.84rem;
-  opacity: 0.8;
+  font-size: 0.66rem;
+  letter-spacing: 0.01em;
+  opacity: 0.82;
 }
 
 .invite__tap {
   position: absolute;
-  bottom: 0.85rem;
+  bottom: 0.7rem;
   margin: 0;
+  padding: 0.28rem 0.7rem;
   font-family: var(--font-display);
-  font-size: 0.46rem;
-  letter-spacing: 0.26em;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold-700);
+  color: #6b1a1f;
+  background: rgba(255, 250, 238, 0.72);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(201, 162, 74, 0.5);
   animation: tapPulse 2.8s ease-in-out infinite;
 }
 
@@ -619,17 +630,23 @@
 .invite__leaf {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(224, 192, 132, 0.5);
-  box-shadow: inset 0 0 0 4px rgba(29, 6, 9, 0.35), inset 0 0 0 5px rgba(224, 192, 132, 0.35);
   background-image:
-    url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%20200%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23e0c084%27%20stroke-width%3D%271.2%27%20stroke-opacity%3D%27.55%27%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2786%27%2F%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2752%27%20stroke-opacity%3D%27.4%27%2F%3E%3Cg%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28180%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28225%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28270%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28315%20100%20100%29%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2718%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),
-    radial-gradient(90% 55% at 50% 40%, rgba(201, 162, 74, 0.22) 0%, transparent 65%),
+    radial-gradient(90% 55% at 50% 40%, rgba(201, 162, 74, 0.18) 0%, transparent 65%),
     linear-gradient(135deg, #6d1219 0%, #3a0b11 55%, #4a0d12 100%);
   background-size: 58% auto, cover, cover;
   background-position: center 42%, center, center;
   background-repeat: no-repeat, no-repeat, no-repeat;
   backface-visibility: hidden;
   transition: transform 1.5s cubic-bezier(0.4, 0.05, 0.2, 1);
+}
+
+.invite__cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .invite__leaf--l {
@@ -667,23 +684,37 @@
   transform: rotateY(112deg);
 }
 
+/* The card's printed frame, paper and wax: shared by the leaves, the face and
+   the saved image so all three carry the same stationery. */
+.scene--invite {
+  --frame: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23c9a24a%22%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%22110%22%20height%3D%22110%22%20stroke-width%3D%222%22%2F%3E%3Crect%20x%3D%2211.5%22%20y%3D%2211.5%22%20width%3D%2297%22%20height%3D%2297%22%20stroke-width%3D%220.55%22%20stroke-opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23c9a24a%22%3E%3Cpath%20d%3D%22M11.5%206.2%20L16.8%2011.5%20L11.5%2016.8%20L6.2%2011.5%20Z%22%2F%3E%3Cpath%20d%3D%22M108.5%206.2%20L113.8%2011.5%20L108.5%2016.8%20L103.2%2011.5%20Z%22%2F%3E%3Cpath%20d%3D%22M11.5%20103.2%20L16.8%20108.5%20L11.5%20113.8%20L6.2%20108.5%20Z%22%2F%3E%3Cpath%20d%3D%22M108.5%20103.2%20L113.8%20108.5%20L108.5%20113.8%20L103.2%20108.5%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  --damask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239a7433%22%20stroke-width%3D%22.5%22%20stroke-opacity%3D%22.09%22%3E%3Cpath%20d%3D%22M22%207%20q6.5%208.5%200%2015%20q-6.5%20-6.5%200%20-15%20Z%22%2F%3E%3Cpath%20d%3D%22M22%2037%20q6.5%20-8.5%200%20-15%20q-6.5%206.5%200%2015%20Z%22%2F%3E%3Cpath%20d%3D%22M7%2022%20q8.5%206.5%2015%200%20q-6.5%20-6.5%20-15%200%20Z%22%2F%3E%3Cpath%20d%3D%22M37%2022%20q-8.5%206.5%20-15%200%20q6.5%20-6.5%2015%200%20Z%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2222%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%220%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%220%22%20cy%3D%2244%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%2244%22%20r%3D%221%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  --wax: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22w%22%20cx%3D%22.36%22%20cy%3D%22.28%22%20r%3D%22.85%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23cf5a54%22%2F%3E%3Cstop%20offset%3D%22.3%22%20stop-color%3D%22%23b0303a%22%2F%3E%3Cstop%20offset%3D%22.6%22%20stop-color%3D%22%238e1f2a%22%2F%3E%3Cstop%20offset%3D%22.84%22%20stop-color%3D%22%236d1420%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23520d18%22%2F%3E%3C%2FradialGradient%3E%3ClinearGradient%20id%3D%22r%22%20x1%3D%22.25%22%20y1%3D%220%22%20x2%3D%22.75%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffc9b6%22%20stop-opacity%3D%22.5%22%2F%3E%3Cstop%20offset%3D%22.4%22%20stop-color%3D%22%23ffc9b6%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23240208%22%20stop-opacity%3D%22.45%22%2F%3E%3C%2FlinearGradient%3E%3Cfilter%20id%3D%22wax%22%20x%3D%22-6%25%22%20y%3D%22-6%25%22%20width%3D%22112%25%22%20height%3D%22112%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.055%22%20numOctaves%3D%223%22%20seed%3D%229%22%20result%3D%22n%22%2F%3E%3CfeDiffuseLighting%20in%3D%22n%22%20lighting-color%3D%22%23ffffff%22%20surfaceScale%3D%221%22%20result%3D%22l%22%3E%3CfeDistantLight%20azimuth%3D%22230%22%20elevation%3D%2262%22%2F%3E%3C%2FfeDiffuseLighting%3E%3CfeComponentTransfer%20in%3D%22l%22%20result%3D%22lc%22%3E%3CfeFuncR%20type%3D%22linear%22%20slope%3D%22.26%22%20intercept%3D%22.87%22%2F%3E%3CfeFuncG%20type%3D%22linear%22%20slope%3D%22.26%22%20intercept%3D%22.87%22%2F%3E%3CfeFuncB%20type%3D%22linear%22%20slope%3D%22.26%22%20intercept%3D%22.87%22%2F%3E%3C%2FfeComponentTransfer%3E%3CfeComposite%20in%3D%22lc%22%20in2%3D%22SourceAlpha%22%20operator%3D%22in%22%20result%3D%22lit%22%2F%3E%3CfeBlend%20in%3D%22SourceGraphic%22%20in2%3D%22lit%22%20mode%3D%22multiply%22%20result%3D%22b%22%2F%3E%3CfeComposite%20in%3D%22b%22%20in2%3D%22SourceAlpha%22%20operator%3D%22in%22%2F%3E%3C%2Ffilter%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-40%25%22%20y%3D%22-40%25%22%20width%3D%22180%25%22%20height%3D%22180%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%222.4%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M96.7%2050.4C96.9%2055.2%2095.3%2059.8%2093.9%2064.3C92.5%2068.8%2091.1%2073.9%2088.3%2077.5C85.5%2081.2%2081.0%2083.8%2077.0%2086.4C73.1%2089.0%2069.0%2091.6%2064.6%2093.2C60.2%2094.7%2055.0%2095.5%2050.4%2095.6C45.7%2095.7%2041.3%2095.1%2036.7%2093.7C32.2%2092.4%2027.0%2090.5%2023.2%2087.7C19.4%2084.9%2016.7%2080.9%2013.9%2077.1C11.1%2073.3%208.0%2069.4%206.3%2064.9C4.5%2060.5%203.3%2055.2%203.4%2050.3C3.4%2045.3%205.2%2039.6%206.6%2035.2C8.0%2030.7%208.9%2027.1%2011.8%2023.4C14.6%2019.6%2019.4%2015.4%2023.5%2012.5C27.6%209.7%2031.7%208.0%2036.2%206.5C40.8%204.9%2046.1%203.3%2051.0%203.2C55.8%203.0%2060.9%203.9%2065.2%205.4C69.5%206.9%2072.8%209.3%2076.7%2012.3C80.5%2015.2%2085.4%2019.0%2088.1%2023.0C90.9%2026.9%2091.6%2031.2%2093.0%2035.8C94.4%2040.3%2096.6%2045.7%2096.7%2050.4Z%22%20fill%3D%22url%28%23w%29%22%20filter%3D%22url%28%23wax%29%22%2F%3E%3Cpath%20d%3D%22M96.7%2050.4C96.9%2055.2%2095.3%2059.8%2093.9%2064.3C92.5%2068.8%2091.1%2073.9%2088.3%2077.5C85.5%2081.2%2081.0%2083.8%2077.0%2086.4C73.1%2089.0%2069.0%2091.6%2064.6%2093.2C60.2%2094.7%2055.0%2095.5%2050.4%2095.6C45.7%2095.7%2041.3%2095.1%2036.7%2093.7C32.2%2092.4%2027.0%2090.5%2023.2%2087.7C19.4%2084.9%2016.7%2080.9%2013.9%2077.1C11.1%2073.3%208.0%2069.4%206.3%2064.9C4.5%2060.5%203.3%2055.2%203.4%2050.3C3.4%2045.3%205.2%2039.6%206.6%2035.2C8.0%2030.7%208.9%2027.1%2011.8%2023.4C14.6%2019.6%2019.4%2015.4%2023.5%2012.5C27.6%209.7%2031.7%208.0%2036.2%206.5C40.8%204.9%2046.1%203.3%2051.0%203.2C55.8%203.0%2060.9%203.9%2065.2%205.4C69.5%206.9%2072.8%209.3%2076.7%2012.3C80.5%2015.2%2085.4%2019.0%2088.1%2023.0C90.9%2026.9%2091.6%2031.2%2093.0%2035.8C94.4%2040.3%2096.6%2045.7%2096.7%2050.4Z%22%20fill%3D%22none%22%20stroke%3D%22url%28%23r%29%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2231.5%22%20fill%3D%22none%22%20stroke%3D%22%2333040c%22%20stroke-opacity%3D%22.22%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2249.4%22%20r%3D%2231.5%22%20fill%3D%22none%22%20stroke%3D%22%23ffd8c6%22%20stroke-opacity%3D%22.2%22%20stroke-width%3D%221%22%2F%3E%3Cellipse%20cx%3D%2237%22%20cy%3D%2228%22%20rx%3D%2214%22%20ry%3D%227.5%22%20fill%3D%22%23ffe2d4%22%20opacity%3D%22.17%22%20filter%3D%22url%28%23b%29%22%2F%3E%3C%2Fsvg%3E");
+}
+
 .invite__seal {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 4.4rem;
-  height: 4.4rem;
-  margin: -2.2rem 0 0 -2.2rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   font-family: var(--font-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  color: #f7e2b4;
-  background: radial-gradient(circle at 35% 30%, #b3272f 0%, #7d1520 55%, #4a0d12 100%);
-  box-shadow: 0 10px 22px -8px rgba(10, 2, 3, 0.8), inset 0 0 0 2px rgba(247, 226, 180, 0.35);
+  font-size: 0.84rem;
+  letter-spacing: 0.1em;
+  color: #f0cfa4;
+  background: var(--wax) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 5px 6px rgba(8, 1, 2, 0.55));
   transition: transform 0.8s var(--ease-out), opacity 0.6s;
+}
+
+.seel__label,
+.seel__shard {
+  text-shadow:
+    0 1px 0 rgba(255, 198, 180, 0.28),
+    0 -1px 1px rgba(38, 0, 5, 0.85);
 }
 
 .invite.is-open .invite__seal {
@@ -937,10 +968,11 @@
   margin: 1.15rem 0 0;
   text-align: center;
   font-family: var(--font-display);
-  font-size: var(--label);
-  letter-spacing: 0.26em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(224, 192, 132, 0.72);
+  color: var(--gold-200);
   animation: tapPulse 2.8s ease-in-out infinite;
 }
 
@@ -1005,6 +1037,34 @@ html[lang='te'] .close__family {
   margin: 0;
 }
 
+.foot .foot__made {
+  max-width: 26rem;
+  margin: 1.35rem auto 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.96rem, 4.1vw, 1.12rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.55;
+  text-wrap: balance;
+  text-transform: none;
+  background: linear-gradient(100deg, #d9b673 0%, #fdf3d8 38%, #ecd39b 62%, #c9a24a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.45));
+}
+
+.foot__made::before {
+  content: '';
+  display: block;
+  width: 3.6rem;
+  height: 1px;
+  margin: 0 auto 1.05rem;
+  background: linear-gradient(90deg, transparent, rgba(224, 192, 132, 0.7), transparent);
+}
+
 /* ── wide screens: the gate becomes a framed poster ────── */
 @media (min-aspect-ratio: 3/4) {
   .scene--gate {
@@ -1024,6 +1084,10 @@ html[lang='te'] .close__family {
 
 /* ── tablet / desktop layout ───────────────────────────── */
 @media (min-width: 46rem) {
+  .invite {
+    width: min(100%, 25rem);
+  }
+
   .portraits {
     grid-template-columns: 1fr 1fr;
     gap: 2.2rem;
@@ -1122,7 +1186,6 @@ html[lang='te'] .close__family {
 }
 
 .invite__seal::after {
-  border-radius: 50%;
   mix-blend-mode: screen;
   background: radial-gradient(
     ellipse 30% 26% at calc(36% + var(--px, 0) * 20%) calc(30% + var(--py, 0) * 18%),
@@ -1137,7 +1200,7 @@ html[lang='te'] .close__family {
   transform: none !important;
   opacity: 1 !important;
   background: none;
-  box-shadow: none;
+  filter: none;
   pointer-events: none;
 }
 
@@ -1154,14 +1217,12 @@ html[lang='te'] .close__family {
   inset: 0;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   clip-path: var(--clip);
   font-family: var(--font-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  color: #f7e2b4;
-  background: radial-gradient(circle at 35% 30%, #b3272f 0%, #7d1520 55%, #4a0d12 100%);
-  box-shadow: inset 0 0 0 2px rgba(247, 226, 180, 0.35);
+  font-size: 0.84rem;
+  letter-spacing: 0.1em;
+  color: #f0cfa4;
+  background: var(--wax) center / 100% 100% no-repeat;
   filter: drop-shadow(0 1px 1px rgba(10, 2, 3, 0.35));
   will-change: transform, opacity;
   animation: seelShard 900ms cubic-bezier(0.32, 0.55, 0.3, 1) both;

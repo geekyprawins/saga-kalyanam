@@ -1,9 +1,12 @@
 Drop replacement photos here, named after the slot they fill:
 
-  bride.webp            groom.webp          couple portraits (4:5)
-  ring.webp             moment.webp         carousel cards (3:4)
-  rings.webp                                carousel card (3:4)
-  details-bride.webp    details-groom.webp  wipe reveal (3:4)
+  bride-2.webp   groom-2.webp    couple portraits (4:5)
+  bride-3.webp   bride-4.webp    carousel cards (3:4)
+  groom-3.webp                   carousel card (3:4)
+  ring.webp      moment.webp     carousel cards (3:4)
+  rings.webp                     carousel card (3:4)
+  details-bride.webp             wipe reveal (3:4)
+  details-groom.webp             wipe reveal (3:4)
 
 webp is tried first, then avif, jpg, png. Any slot left empty keeps its
 drawn ornament. Portrait crops read best at 4:5, carousel cards at 3:4.

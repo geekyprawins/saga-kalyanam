@@ -49,9 +49,18 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 ## Conventions
 
 - Every user-visible string lives in `src/js/content.js` under both `en` and `te`. Never
-  hardcode copy in `index.html`; add `data-i18n` and a key in both trees.
-- Artwork is hand-written SVG in `public/assets/art/`, layered by `data-depth` for
-  parallax. Replace it with real imagery rather than adding new decoration.
+  hardcode copy in `index.html`; add `data-i18n` and a key in both trees. The text inside
+  a `data-i18n` element is the no-JS fallback, so it has to be rewritten whenever the `en`
+  value changes — a stale one survives in view-source and to crawlers while the page looks
+  right in a browser.
+- Scene artwork is raster in `public/assets/art/`, already decorated (garlands, lamps,
+  kolam), so CSS must not draw a second arch, frame or seal on top of it. The one-time
+  originals arrive as multi-megabyte PNGs; convert them to WebP (Pillow, `method=6`) and
+  commit only the WebP. `hero-temple`, `mandapam`, `invite-frame`, `lamps` and
+  `kolam-velvet` are the current set.
+- Anything referenced from CSS or HTML uses `./assets/art/...`: `public/` is the only
+  folder whose paths survive `base: './'`. Prefer an `<img>` over a CSS `url()` anyway —
+  it carries `width`/`height` and can be gated per breakpoint with `<picture>`.
 - Deferred work (Three.js, GSAP, Lenis) is dynamically imported so it never blocks first
   paint. Keep the first view at HTML + CSS + `src/js` only.
 - Small-caps labels take their size from `--label` (0.62rem, 0.74rem in Telugu). Adding a
@@ -70,3 +79,29 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 - `src/js/savecard.js` paints the 1080×1350 share card on a canvas. Its `tracked()` helper
   spaces per glyph, so it skips any non-Latin line — spacing Telugu by code point tears
   the conjuncts apart.
+- The face is `invite-frame.webp`, printed at 4:5, so the card's `aspect-ratio` must stay
+  `0.8` or the arch and lamps crop. The type lives in the cream panel: `padding: 17% 16%
+  21%` is the measured safe area, and the venue is the line that overflows it first.
+- `--wax` (the seal) is the only stationery still drawn in CSS.
+- Each `.invite__leaf` holds an `<img class="invite__cover">` of `kolam-velvet.webp`. Both
+  leaves show the same square, so the closed card reads as one continuous panel until the
+  leaves turn.
+- `.invite__face` needs `isolation: isolate` and the art at `z-index: -1`. Without it the
+  face's type escapes the preserve-3d sort and floats above the closed cover.
+
+## Sound
+
+`src/js/audio.js` plays `public/assets/audio/bgm.mp3` through the Web Audio graph, so
+the master fade, the visibility suspend and the card noises all share one context, and
+synthesises the two card noises (`swish`, `crack`).
+
+The master is a 29 s stereo WAV in `/originals` (git-ignored, like the photos). The
+shipped MP3 is a 1.5 s equal-power crossfade loop built from it — the source fades out
+over its last four seconds, so a plain `loop` would jump. MP3 encoders also pad both
+ends with silence, which `trimEncoderPad()` strips after `decodeAudioData`, otherwise
+the loop plays ~20 ms of nothing every lap.
+
+Audio cannot start before a gesture. The first `pointerdown` on the gate calls
+`setSound(true)` and repaints the toggle; `prefetchBgm()` pulls the bytes on idle without
+touching the AudioContext, so no autoplay warning is logged. The track is decoded once
+and cached, so toggling off and on restarts it without another fetch.

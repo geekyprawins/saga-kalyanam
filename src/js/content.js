@@ -15,10 +15,9 @@ export const wedding = {
 
 export const i18n = {
   en: {
-    hosted: 'The Swamiraju Family invites you',
     kalyanam: 'Kalyanam',
-    ringBell: 'Ring the bell',
-    dragHint: 'Drag to look around',
+    weddingDate: '10.12.2026',
+    scrollHint: 'Scroll to enter',
     twoHearts: 'Two hearts.',
     twoFamilies: 'Two families.',
     oneCelebration: 'One celebration.',
@@ -71,6 +70,7 @@ export const i18n = {
     savedImage: 'Saved to your photos',
     saveFailed: 'Could not save the image',
     signOff: 'With love, The Swamiraju Family',
+    madeBy: "Lovingly created by Praveen, for Sanjana & Gagan's forever.",
     guest1: '1 guest',
     guest2: '2 guests',
     guest3: '3 guests',
@@ -78,13 +78,11 @@ export const i18n = {
     guest5: '5 or more',
     rsvpThanks: 'Opening WhatsApp with your reply.',
     calendarReady: 'Calendar file ready',
-    enter: 'Scroll to enter',
   },
   te: {
-    hosted: 'స్వామిరాజు కుటుంబం ఆహ్వానం',
     kalyanam: 'కళ్యాణం',
-    ringBell: 'గంటను తట్టండి',
-    dragHint: 'తిప్పి చూడండి',
+    weddingDate: '10.12.2026',
+    scrollHint: 'లోపలికి స్క్రోల్ చేయండి',
     twoHearts: 'రెండు హృదయాలు.',
     twoFamilies: 'రెండు కుటుంబాలు.',
     oneCelebration: 'ఒకే వేడుక.',
@@ -137,6 +135,7 @@ export const i18n = {
     savedImage: 'మీ ఫోటోల్లో సేవ్ అయింది',
     saveFailed: 'చిత్రాన్ని సేవ్ చేయలేకపోయాం',
     signOff: 'ప్రేమతో, స్వామిరాజు కుటుంబం',
+    madeBy: 'ప్రేమతో ప్రవీణ్, సంజన & గగన్ శాశ్వతం కోసం.',
     guest1: '1 మంది',
     guest2: '2 మంది',
     guest3: '3 మంది',
@@ -144,7 +143,6 @@ export const i18n = {
     guest5: '5 లేదా ఎక్కువ',
     rsvpThanks: 'మీ జవాబుతో వాట్సప్ తెరుస్తున్నాము.',
     calendarReady: 'క్యాలెండర్ ఫైల్ సిద్ధం',
-    enter: 'లోపలికి వెళ్లండి',
   },
 };
 

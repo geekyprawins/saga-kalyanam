@@ -1,6 +1,6 @@
 # SaGa Kalyanam — Sanjana & Gagan
 
-A mobile-first wedding invitation that plays as a short walk into the wedding: you ring a brass bell at a temple gate, the doors open onto a sunset courtyard, and the invitation card opens like the gate did.
+A mobile-first wedding invitation that plays as a short walk into the wedding: you land on the temple entrance, the aisle carries you down to the mandapam, and the invitation card opens under your thumb.
 
 **Thursday, 10 December 2026 · Sumuhurtham 8:34 PM**
 K Convention Function Hall, Jangareddygudem, Eluru District, Andhra Pradesh
@@ -37,7 +37,7 @@ npm run build && npx vercel deploy dist --prod   # or drag dist/ into Netlify
 | Every English and Telugu string | `src/js/content.js` → `i18n.en` / `i18n.te` |
 | Scene order and markup | `index.html` |
 | Colours, type scale | `src/css/base.css` (tokens at the top) |
-| Gate artwork | `public/assets/art/*.svg` |
+| Scene artwork | `public/assets/art/*.webp` |
 
 ### RSVP
 
@@ -53,11 +53,16 @@ The engagement photographs are served from `public/assets/photos/`. Each image s
 
 ```
 public/assets/photos/
-  bride.webp            groom.webp          couple portraits (4:5)
+  bride-2.webp          groom-2.webp        couple portraits (4:5)
+  bride-3.webp          bride-4.webp        carousel cards (3:4)
+  groom-3.webp                              carousel card (3:4)
   ring.webp             moment.webp         carousel cards (3:4)
   rings.webp                                carousel card (3:4)
   details-bride.webp    details-groom.webp  wipe reveal (3:4)
 ```
+
+The couple's second set is what ships. The first set is deleted, so no slot can fall
+back to it.
 
 `.webp` first, then `.avif`, `.jpg`, `.png`. Portrait crops work best at 4:5; the carousel cards at 3:4. Keep each under ~250 KB.
 
@@ -66,37 +71,40 @@ The camera originals are kept in `/originals`, which is git-ignored and never se
 ```bash
 python3 - <<'PY'
 from PIL import Image, ImageOps
-im = ImageOps.exif_transpose(Image.open('originals/bride-1.jpg')).convert('RGB')
-im.save('public/assets/photos/bride.webp', 'WEBP', quality=82, method=6)
+im = ImageOps.exif_transpose(Image.open('originals/photos/bride-2.jpg')).convert('RGB')
+im.save('public/assets/photos/bride-2.webp', 'WEBP', quality=82, method=6)
 PY
 ```
 
-## Replacing the gate artwork
+## Replacing the artwork
 
-`public/assets/art/` holds four stacked layers that parallax against each other:
+`public/assets/art/` holds five WebP files, each already decorated — garlands, lamps,
+kolam — so CSS must not draw a second arch or frame on top of it.
 
-| File | Layer | Depth |
+| File | Where it goes | Size |
 | --- | --- | --- |
-| `sky.svg` | sunset, sun, haze | furthest |
-| `mid.svg` | courtyard floor, gopuram, kolam | mid |
-| `arch.svg` | the temple arch itself, split into two door leaves | near |
-| `fore.svg` | lamps, flower bowl, silk drape | nearest |
+| `hero-temple.webp` | the gate, full bleed | 1500 x 844 |
+| `mandapam.webp` | behind "Two hearts. Two families." | 1500 x 844 |
+| `invite-frame.webp` | the invitation card face | 1122 x 1402 |
+| `kolam-velvet.webp` | the two card covers | 1000 x 1000 |
+| `lamps.webp` | beside the card, wide screens only | 1122 x 1402 |
 
-To use the painted Codex frame instead, export it as PNG/WebP at 900 × 1948 and cut it into the same four layers (arch into two mirrored halves around the centre line). Keep the filenames and the `data-depth` values in `index.html`.
+Export from the one-time PNGs with Pillow (`method=6`) and commit only the WebP. A phone
+never downloads `lamps.webp`: a `<picture>` element gates it to `min-aspect-ratio: 3/4`.
 
 ## How it is built
 
 Plain JavaScript, no framework.
 
-- **Layers and parallax** — CSS 3D transforms. Pointer drag, device tilt (with a tap-to-enable prompt on iOS), and scroll all move the layers.
-- **Sound** — synthesised in the Web Audio API at runtime. No audio files to download, nothing to license. Starts muted; the first bell tap turns it on.
+- **The gate** — one photograph. Device tilt nudges it a few pixels, the scroll dollies it, and the copy sits on the aisle under a scrim tied to its own height.
+- **Sound** — the couple's own recording, `public/assets/audio/bgm.mp3` (446 KB), built with a crossfade at the loop seam because the master fades out. Decoded once into an `AudioBuffer`; starts muted, the first tap turns it on.
 - **Petals** — Three.js, imported only when the browser is capable and the user has not asked for reduced motion.
 - **Scroll motion** — GSAP ScrollTrigger and Lenis, dynamically imported after first paint so they never block the gate.
 - **Copy** — every string lives in one file with an English and a Telugu tree.
 
 ### Performance
 
-First view is HTML + CSS + app code only: about 23 KB gzipped, plus fonts. Three.js (130 KB gz) and the motion chunk (50 KB gz) load after first paint. Images are lazy.
+First view is HTML + CSS + app code only: about 23 KB gzipped, plus fonts and the 247 KB hero photograph, which is preloaded. Three.js (130 KB gz), the motion chunk (50 KB gz) and the 446 KB track all load after first paint. Images are lazy.
 
 ### Graceful degradation
 
@@ -106,19 +114,20 @@ First view is HTML + CSS + app code only: about 23 KB gzipped, plus fonts. Three
 
 ## Browser notes
 
-Tested in Chromium at 390 × 844 and 1440 × 900. The layout is built for WhatsApp's in-app browser first: no fixed-position tricks, no hover-only affordances, `100svh` for the gate so the address bar cannot crop it, and tap targets at 44 px or more.
+Tested in Chromium at 360 × 640, 390 × 844, 390 × 600, 844 × 390, 768 × 1024, 1024 × 768 and 1280 × 860. The layout is built for WhatsApp's in-app browser first: no fixed-position tricks, no hover-only affordances, `100svh` for the gate so the address bar cannot crop it, and tap targets at 44 px or more.
 
 ## Files
 
 ```
 index.html              seven scenes, in order
 src/css/base.css        tokens, type, gold foil, petals, toast
-src/css/gate.css        the 3D gate stage
+src/css/gate.css        the gate: copy, date, scroll cue
 src/css/scenes.css      the six scenes after the gate
 src/js/content.js       wedding facts + every string in en/te
 src/js/main.js          boot, reveals, language, tone, deferred motion
-src/js/gate.js          bell, doors, tilt, dolly
-src/js/audio.js         synthesised bells and ambience
+src/js/gate.js          the gate's scroll state
+src/js/tilt.js          device tilt on the hero photograph
+src/js/audio.js         the recorded track, fades and card noises
 src/js/petals.js        Three.js petal field
 src/js/gallery.js       carousel + wipe-to-reveal
 src/js/invite.js        card opening + countdown

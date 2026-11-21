@@ -3,10 +3,9 @@
   position: relative;
   height: 100vh;
   height: 100svh;
-  min-height: 34rem;
+  min-height: min(34rem, 100svh);
   overflow: hidden;
-  background:
-    radial-gradient(120% 78% at 50% 42%, #43101a 0%, #24080d 58%, #160406 100%);
+  background: #160406;
   color: var(--gold-100);
   isolation: isolate;
 }
@@ -14,268 +13,66 @@
 .stage {
   position: absolute;
   inset: 0;
-  margin: auto;
-  max-width: calc(100vh * 0.462);
-  max-width: calc(100svh * 0.462);
-  perspective: 1100px;
-  perspective-origin: 50% 45%;
   overflow: hidden;
-  transform: rotateX(calc(var(--py, 0) * -0.5deg)) rotateY(calc(var(--px, 0) * 0.7deg));
-  will-change: transform;
 }
 
-.layer {
-  position: absolute;
-  inset: -8%;
-  transform: translate3d(calc(var(--px, 0) * var(--d, 10) * 1px), calc(var(--py, 0) * var(--d, 10) * 1px), 0);
-  will-change: transform;
-}
-
-.layer__img {
+/* The temple entrance is the first thing anyone sees, so it gets the frame and
+   no decoration on top of it. The tilt and dolly only nudge a cover crop. */
+.stage__hero {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 44%;
+  transform: translate3d(calc(var(--px, 0) * 9px), calc(var(--py, 0) * 9px), 0) scale(var(--dolly, 1));
+  transform-origin: 50% 46%;
+  will-change: transform;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-.stage::after {
-  content: '';
+.stage__shade {
   position: absolute;
   inset: 0;
-  z-index: 4;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(20, 4, 7, 0.45) 0%, rgba(20, 4, 7, 0) 12%),
-    linear-gradient(0deg, rgba(20, 4, 7, 0.6) 0%, rgba(20, 4, 7, 0) 16%);
-}
-
-.layer--sky .layer__img {
-  transform: scale(var(--dolly, 1));
-  transform-origin: 50% 46%;
-  will-change: transform;
-}
-
-.layer--mid .layer__img {
-  transform: scale(calc(1 + (var(--dolly, 1) - 1) * 0.55));
-  transform-origin: 50% 70%;
-}
-
-.layer--fore {
-  inset: 0;
-  pointer-events: none;
-  transform: translate3d(calc(var(--px, 0) * var(--d, 10) * 1px), calc(var(--py, 0) * var(--d, 10) * 1px), 0) scale(1.06);
-}
-
-/* doors */
-.doors {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  transform: translate3d(calc(var(--px, 0) * 17px), calc(var(--py, 0) * 17px), 0);
-  will-change: transform;
-}
-
-.door {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  transition: transform 1.7s cubic-bezier(0.4, 0.05, 0.2, 1);
-}
-
-.door--left {
-  clip-path: inset(0 50% 0 0);
-  transform-origin: 0% 50%;
-}
-
-.door--right {
-  clip-path: inset(0 0 0 50%);
-  transform-origin: 100% 50%;
-}
-
-.door::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(20, 4, 6, 0) 55%, rgba(20, 4, 6, 0.85) 100%);
-  opacity: 0;
-  transition: opacity 1.1s var(--ease-out);
-  pointer-events: none;
-}
-
-.door--right::after {
-  background: linear-gradient(270deg, rgba(20, 4, 6, 0) 55%, rgba(20, 4, 6, 0.85) 100%);
-}
-
-.scene--gate.is-open .door--left {
-  transform: rotateY(-76deg);
-}
-
-.scene--gate.is-open .door--right {
-  transform: rotateY(76deg);
-}
-
-.scene--gate.is-open .door::after {
-  opacity: 0.7;
-}
-
-.stage__light {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(58% 42% at 50% 46%, rgba(255, 232, 186, 0.9) 0%, rgba(255, 209, 141, 0.35) 45%, rgba(255, 190, 110, 0) 78%);
-  opacity: 0;
-  transition: opacity 1.5s var(--ease-out);
-}
-
-.scene--gate.is-open .stage__light {
-  opacity: 0.42;
-}
-
-/* ── bells ─────────────────────────────────────────────── */
-.bells {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  transform-style: preserve-3d;
-}
-
-.bell {
-  position: absolute;
-  top: 11.6%;
-  left: 37.8%;
-  width: 9.6%;
-  transform: translateX(-50%);
-  pointer-events: auto;
-  transition: opacity 1s var(--ease-out), filter 0.4s;
-  filter: drop-shadow(0 6px 10px rgba(20, 4, 6, 0.5));
-}
-
-.bell--right {
-  left: 62.2%;
-}
-
-.bell::after {
-  content: '';
-  position: absolute;
-  inset: -18% -26%;
-}
-
-.bell__swing {
-  display: block;
-  transform-origin: 50% 0%;
-  animation: sway 7s ease-in-out infinite;
-}
-
-.bell--right .bell__swing {
-  animation-delay: -3.4s;
-}
-
-.bell:active {
-  filter: drop-shadow(0 6px 10px rgba(20, 4, 6, 0.5)) brightness(1.12);
-}
-
-.bell.ringing .bell__swing {
-  animation: ring 2.6s cubic-bezier(0.2, 0.7, 0.3, 1) 1;
-}
-
-@keyframes sway {
-  0%,
-  100% {
-    transform: rotate(-1.6deg);
-  }
-  50% {
-    transform: rotate(1.6deg);
-  }
-}
-
-@keyframes ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(19deg);
-  }
-  22% {
-    transform: rotate(-15deg);
-  }
-  34% {
-    transform: rotate(11deg);
-  }
-  46% {
-    transform: rotate(-7.5deg);
-  }
-  58% {
-    transform: rotate(5deg);
-  }
-  70% {
-    transform: rotate(-3deg);
-  }
-  82% {
-    transform: rotate(1.6deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-.scene--gate.is-open .bells {
-  opacity: 0;
-  transition: opacity 0.9s var(--ease-out) 0.5s;
+    radial-gradient(115% 85% at 50% 34%, rgba(20, 4, 7, 0) 42%, rgba(20, 4, 7, 0.5) 100%),
+    linear-gradient(
+      180deg,
+      rgba(20, 4, 7, 0.62) 0%,
+      rgba(20, 4, 7, 0.12) 16%,
+      rgba(20, 4, 7, 0) 40%,
+      rgba(20, 4, 7, 0.58) 72%,
+      rgba(16, 3, 5, 0.9) 92%,
+      #140306 100%
+    );
 }
 
 /* ── gate copy ─────────────────────────────────────────── */
 .gate__copy {
   position: absolute;
   left: 50%;
-  top: 60%;
-  width: min(76%, 21rem);
-  transform: translate(-50%, -50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 6.2rem);
+  width: min(84%, 24rem);
+  transform: translateX(-50%);
   text-align: center;
   z-index: 3;
 }
 
+/* on a wide, short screen the copy lands on the lit mandapam, so it carries its
+   own pool of shade instead of relying on the bottom scrim */
 .gate__copy::before {
   content: '';
   position: absolute;
-  inset: -26% -20% -22%;
+  inset: -22% -16% -26%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(26, 5, 8, 0.72) 0%, rgba(26, 5, 8, 0.6) 32%, rgba(26, 5, 8, 0.34) 58%, rgba(26, 5, 8, 0.1) 78%, rgba(26, 5, 8, 0) 92%);
-}
-
-/* the opened gate floods the frame with light: deepen the scrim so the type holds */
-.scene--gate.is-open .gate__copy::before {
-  background: radial-gradient(closest-side, rgba(20, 4, 7, 0.84) 0%, rgba(20, 4, 7, 0.72) 34%, rgba(20, 4, 7, 0.46) 60%, rgba(20, 4, 7, 0.15) 80%, rgba(20, 4, 7, 0) 93%);
-}
-
-.scene--gate.is-open .kicker,
-.scene--gate.is-open .names,
-.scene--gate.is-open .wordmark__sub {
-  text-shadow: 0 1px 2px rgba(30, 6, 10, 0.9), 0 2px 16px rgba(30, 6, 10, 0.8);
-}
-
-.scene--gate.is-open .cue {
-  color: var(--jasmine);
-  text-shadow: 0 1px 3px rgba(30, 6, 10, 0.95), 0 2px 14px rgba(30, 6, 10, 0.85);
-}
-
-.scene--gate.is-open .cue span {
-  padding: 0.42rem 0.85rem;
-  border-radius: 999px;
-  background: rgba(26, 5, 8, 0.5);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-}
-
-.kicker {
-  margin: 0 0 1.05rem;
-  font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(255, 246, 224, 0.86);
-  text-shadow: 0 1px 3px rgba(26, 5, 8, 0.85), 0 2px 16px rgba(26, 5, 8, 0.9);
+  background: radial-gradient(
+    closest-side,
+    rgba(18, 4, 6, 0.66) 0%,
+    rgba(18, 4, 6, 0.5) 42%,
+    rgba(18, 4, 6, 0.2) 72%,
+    rgba(18, 4, 6, 0) 94%
+  );
 }
 
 .greet {
@@ -285,10 +82,6 @@
   font-size: 1.02rem;
   color: var(--gold-200);
   text-shadow: 0 1px 10px rgba(30, 6, 10, 0.8);
-}
-
-.greet[hidden] {
-  display: none;
 }
 
 .wordmark {
@@ -342,7 +135,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  margin: 1.15rem 0 1.5rem;
+  margin: 1.15rem 0 0.7rem;
   font-family: var(--font-body);
   font-size: clamp(1.16rem, 5.6vw, 1.45rem);
   font-weight: 400;
@@ -351,215 +144,125 @@
   text-shadow: 0 1px 12px rgba(30, 6, 10, 0.95);
 }
 
+.gate__date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0 0 1.4rem;
+}
+
+.gate__date span {
+  font-family: var(--font-display);
+  font-size: clamp(0.6rem, 3vw, 0.72rem);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--gold-200);
+  text-shadow: 0 1px 10px rgba(30, 6, 10, 0.92);
+}
+
+.gate__date::before,
+.gate__date::after {
+  content: '';
+  width: clamp(1.5rem, 13vw, 3.4rem);
+  height: 1px;
+}
+
+.gate__date::before {
+  background: linear-gradient(90deg, transparent, rgba(224, 192, 132, 0.75));
+}
+
+.gate__date::after {
+  background: linear-gradient(90deg, rgba(224, 192, 132, 0.75), transparent);
+}
+
 .names em {
   font-style: italic;
   color: var(--gold-300);
 }
 
-.ring {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.62rem 1.15rem 0.62rem 0.95rem;
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-100);
-  background: rgba(43, 10, 15, 0.5);
-  border: 1px solid rgba(224, 192, 132, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 6px 22px rgba(15, 3, 5, 0.45), inset 0 0 18px rgba(201, 162, 74, 0.12);
-  transition: background 0.35s, border-color 0.35s, transform 0.35s;
-}
-
-.ring:active {
-  transform: scale(0.97);
-  background: rgba(122, 26, 36, 0.6);
-}
-
-.ring__dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--gold-300);
-  box-shadow: 0 0 0 0 rgba(224, 192, 132, 0.6);
-  animation: pulse 2.6s ease-out infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(224, 192, 132, 0.55);
-  }
-  70% {
-    box-shadow: 0 0 0 9px rgba(224, 192, 132, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(224, 192, 132, 0);
-  }
-}
-
-.scene--gate.is-open .ring {
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-  transition: opacity 0.6s, transform 0.6s;
-}
 
 /* ── scroll cue ────────────────────────────────────────── */
 .cue {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 1.1rem);
-  margin: 0;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1.35rem);
+  z-index: 4;
   display: grid;
-  justify-items: center;
-  gap: 0.45rem;
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(255, 246, 224, 0.55);
-  opacity: 0;
-  transition: opacity 1s var(--ease-out) 0.6s;
-  z-index: 3;
+  place-items: center;
+  width: 3.05rem;
+  height: 3.05rem;
+  margin-left: -1.525rem;
+  border-radius: 50%;
+  border: 1px solid rgba(224, 192, 132, 0.5);
+  color: var(--gold-200);
+  background: rgba(26, 5, 8, 0.34);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 8px 22px rgba(8, 1, 2, 0.5), inset 0 0 14px rgba(224, 192, 132, 0.14);
+  animation: cueHalo 3s ease-in-out infinite;
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
 
-.scene--gate.is-open .cue {
-  opacity: 1;
-}
-
-.cue i {
-  width: 1px;
-  height: 1.9rem;
-  background: linear-gradient(180deg, rgba(224, 192, 132, 0.8), rgba(224, 192, 132, 0));
+.cue svg {
+  width: 1.5rem;
+  height: 1.5rem;
   animation: cueDrop 2.4s ease-in-out infinite;
-  transform-origin: top;
+}
+
+@keyframes cueHalo {
+  0%,
+  100% {
+    box-shadow: 0 8px 22px rgba(8, 1, 2, 0.5), inset 0 0 14px rgba(224, 192, 132, 0.14), 0 0 0 0 rgba(224, 192, 132, 0.28);
+  }
+  55% {
+    box-shadow: 0 8px 22px rgba(8, 1, 2, 0.5), inset 0 0 14px rgba(224, 192, 132, 0.14), 0 0 0 12px rgba(224, 192, 132, 0);
+  }
 }
 
 @keyframes cueDrop {
   0%,
   100% {
-    transform: scaleY(0.4);
-    opacity: 0.4;
+    transform: translateY(-2px);
+    opacity: 0.65;
   }
   50% {
-    transform: scaleY(1);
+    transform: translateY(3px);
     opacity: 1;
   }
+}
+
+.scene--gate.is-open .cue {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 
 @media (max-height: 620px) {
   .gate__copy {
-    top: 52%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5.4rem);
   }
-  .names {
-    margin: 0.85rem 0 1rem;
-  }
-}
 
-/* ── kolam: drawn in flour as the doors open ──────────── */
-.kolam {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  transform: scale(calc(1 + (var(--dolly, 1) - 1) * 0.55));
-  transform-origin: 50% 70%;
-}
-
-.kolam__mark {
-  opacity: 0;
-  transition: opacity 0.3s linear;
-}
-
-.scene--gate.is-open .kolam__mark {
-  opacity: 1;
-}
-
-.kolam__petal {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
-.scene--gate.is-open .kolam__petal {
-  animation: kolamDraw 1.15s cubic-bezier(0.55, 0.05, 0.3, 1) both;
-  animation-delay: calc(0.5s + var(--i, 0) * 0.045s);
-}
-
-@keyframes kolamDraw {
-  to {
-    stroke-dashoffset: 0;
+  .gate__copy::before {
+    background: radial-gradient(
+      closest-side,
+      rgba(18, 4, 6, 0.86) 0%,
+      rgba(18, 4, 6, 0.7) 46%,
+      rgba(18, 4, 6, 0.34) 76%,
+      rgba(18, 4, 6, 0) 95%
+    );
   }
 }
 
-.kolam__ring,
-.kolam__hub,
-.kolam__sparks,
-.kolam__name {
-  opacity: 0;
-}
-
-.scene--gate.is-open .kolam__ring {
-  animation: kolamFade 0.7s ease-out 0.42s both;
-}
-
-.scene--gate.is-open .kolam__hub {
-  animation: kolamFade 0.5s ease-out 1.26s both;
-}
-
-.scene--gate.is-open .kolam__sparks {
-  animation: kolamFade 0.6s ease-out 1.4s both;
-}
-
-.scene--gate.is-open .kolam.is-personal .kolam__name {
-  animation: kolamFade 0.8s ease-out 1.52s both;
-}
-
-@keyframes kolamFade {
-  from {
-    opacity: 0;
+@media (min-aspect-ratio: 3/4) {
+  .stage__hero {
+    object-position: 50% 50%;
   }
-  to {
-    opacity: 1;
-  }
-}
-
-.kolam__initial {
-  font-family: var(--font-display);
-  font-size: 34px;
-  font-weight: 600;
-  fill: #4a0d12;
-  letter-spacing: 0;
-}
-
-.kolam.is-personal .kolam__hub,
-.kolam.is-personal .kolam__dot {
-  opacity: 0;
-}
-
-.kolam__dot.is-hidden {
-  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kolam__mark,
-  .kolam__ring,
-  .kolam__hub,
-  .kolam__sparks,
-  .kolam__name {
-    opacity: 1;
-    animation: none !important;
-  }
-
-  .kolam__petal {
-    stroke-dashoffset: 0;
+  .cue,
+  .cue svg {
     animation: none !important;
   }
 }
