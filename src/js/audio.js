@@ -1,5 +1,6 @@
-/* Procedural sound: a temple bell, a hand-drum pulse and a soft card swish.
-   Synthesised at runtime so the invitation ships without audio files. */
+/* Procedural sound: a temple bell for the gate, a sannai melam for the
+   ambience, and the small noises of the card itself. Synthesised at runtime so
+   the invitation ships without audio files. */
 
 const BELL_BASE = 470;
 const PARTIALS = [
@@ -22,7 +23,7 @@ let step = 0;
 let nextTime = 0;
 let soundOn = false;
 
-const STEP = 60 / 96 / 4;
+const STEP = 60 / 94 / 4;
 
 function makeReverb(context) {
   const seconds = 1.6;
@@ -223,7 +224,7 @@ function drum(time, { freq = 120, to = 55, decay = 0.22, level = 0.16, type = 's
   osc.frequency.exponentialRampToValueAtTime(to, time + decay * 0.9);
   const env = ctx.createGain();
   env.gain.setValueAtTime(0, time);
-  env.gain.linearRampToValueAtTime(level, time + 0.006);
+  env.gain.linearRampToValueAtTime(level, time + 0.005);
   env.gain.exponentialRampToValueAtTime(0.0001, time + decay);
   osc.connect(env);
   env.connect(ambience);
@@ -231,7 +232,7 @@ function drum(time, { freq = 120, to = 55, decay = 0.22, level = 0.16, type = 's
   osc.stop(time + decay + 0.02);
 }
 
-function tick(time, level = 0.035) {
+function tick(time, level = 0.03, freq = 2400) {
   const length = Math.floor(ctx.sampleRate * 0.05);
   const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -242,7 +243,8 @@ function tick(time, level = 0.035) {
   src.buffer = buffer;
   const bp = ctx.createBiquadFilter();
   bp.type = 'bandpass';
-  bp.frequency.value = 2400;
+  bp.frequency.value = freq;
+  bp.Q.value = 0.9;
   const g = ctx.createGain();
   g.gain.value = level;
   src.connect(bp);
@@ -251,28 +253,169 @@ function tick(time, level = 0.035) {
   src.start(time);
 }
 
-const LOW = [0, 3, 6, 10, 12];
-const HIGH = [2, 4, 8, 9, 14];
-const TICKS = [5, 13];
+/* ── the sannai melam ──────────────────────────────────────────────────
+   Mohanam, the bright pentatonic every wedding band opens with: S R G P D.
+   The nadaswaram is three detuned saws through a resonant low-pass and a
+   nasal peak, each note entering with a jaru slide and settling into a wide
+   vibrato. Under it a tavil in adi talam and a shruti drone on Sa and Pa. */
 
-function scheduleStep(i, time) {
-  if (LOW.includes(i)) {
-    drum(time, { freq: i === 0 ? 132 : 112, to: 52, decay: i === 0 ? 0.3 : 0.2, level: i === 0 ? 0.18 : 0.12 });
+const SA = 293.66;
+const RAGA = [0, 2, 4, 7, 9, 12];
+
+const PHRASE_A = [
+  [0, 1], [1, 1], [2, 1], [1, 1], [0, 2], [2, 2],
+  [3, 1], [4, 1], [5, 1], [4, 1], [3, 2], [2, 2],
+  [1, 1], [2, 1], [3, 1], [2, 1], [1, 2], [0, 2],
+  [4, 1], [3, 1], [2, 1], [1, 1], [0, 4],
+];
+
+const PHRASE_B = [
+  [5, 1], [4, 1], [5, 1], [2, 1], [3, 2], [4, 2],
+  [5, 1], [2, 1], [3, 1], [4, 1], [3, 2], [2, 2],
+  [1, 1], [2, 1], [3, 1], [5, 1], [4, 2], [3, 2],
+  [1, 2], [0, 2], [1, 1], [2, 1], [0, 2],
+];
+
+let melody = [];
+let cycle = 0;
+let drone = null;
+
+function nadaswaram(time, freq, dur, level = 0.15) {
+  const bus = ctx.createGain();
+  bus.gain.setValueAtTime(0, time);
+  bus.gain.linearRampToValueAtTime(level, time + 0.03);
+  bus.gain.setValueAtTime(level, time + Math.max(0.08, dur * 0.78));
+  bus.gain.exponentialRampToValueAtTime(0.0001, time + dur + 0.12);
+
+  const lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.Q.value = 4.5;
+  lp.frequency.setValueAtTime(freq * 1.9, time);
+  lp.frequency.linearRampToValueAtTime(freq * 5.4, time + 0.06);
+
+  const nasal = ctx.createBiquadFilter();
+  nasal.type = 'peaking';
+  nasal.frequency.value = 1250;
+  nasal.Q.value = 1.1;
+  nasal.gain.value = 7;
+
+  lp.connect(nasal);
+  nasal.connect(bus);
+  bus.connect(ambience);
+  bus.connect(wet);
+
+  const lfo = ctx.createOscillator();
+  lfo.frequency.value = 5.2;
+  const lfoGain = ctx.createGain();
+  lfoGain.gain.setValueAtTime(0, time);
+  lfoGain.gain.linearRampToValueAtTime(freq * 0.0075, time + 0.2);
+  lfo.connect(lfoGain);
+  lfo.start(time);
+  lfo.stop(time + dur + 0.2);
+
+  const voices = [
+    ['sawtooth', 1, 0, 0.5],
+    ['sawtooth', 1, 8, 0.34],
+    ['square', 2, -5, 0.09],
+  ];
+
+  voices.forEach(([type, mul, detune, gain]) => {
+    const osc = ctx.createOscillator();
+    osc.type = type;
+    const target = freq * mul;
+    osc.frequency.setValueAtTime(target * 0.944, time);
+    osc.frequency.exponentialRampToValueAtTime(target, time + 0.05);
+    osc.detune.value = detune;
+    lfoGain.connect(osc.frequency);
+
+    const g = ctx.createGain();
+    g.gain.value = gain;
+    osc.connect(g);
+    g.connect(lp);
+    osc.start(time);
+    osc.stop(time + dur + 0.22);
+  });
+}
+
+function startDrone() {
+  if (drone) return;
+  const bus = ctx.createGain();
+  bus.gain.value = 0;
+  bus.connect(ambience);
+  bus.gain.setTargetAtTime(1, ctx.currentTime, 1.4);
+
+  const breathe = ctx.createOscillator();
+  breathe.frequency.value = 0.12;
+  breathe.start();
+  const nodes = [breathe, bus];
+
+  [[SA / 2, 0.05, 'sine'], [SA * 0.75, 0.026, 'sine'], [SA / 4, 0.03, 'triangle']].forEach(
+    ([freq, level, type]) => {
+      const osc = ctx.createOscillator();
+      osc.type = type;
+      osc.frequency.value = freq;
+      osc.detune.value = (Math.random() - 0.5) * 5;
+
+      const g = ctx.createGain();
+      g.gain.value = level;
+
+      const depth = ctx.createGain();
+      depth.gain.value = level * 0.35;
+      breathe.connect(depth);
+      depth.connect(g.gain);
+
+      osc.connect(g);
+      g.connect(bus);
+      osc.start();
+      nodes.push(osc, g, depth);
+    },
+  );
+
+  drone = { bus, nodes };
+}
+
+function buildMelody(baseStep, index) {
+  const phrase = index % 2 === 0 ? PHRASE_A : PHRASE_B;
+  let at = baseStep;
+  return phrase.map(([deg, len]) => {
+    const note = { step: at, deg, steps: len };
+    at += len;
+    return note;
+  });
+}
+
+const TAVIL = new Map([
+  [0, { freq: 132, to: 46, decay: 0.32, level: 0.19 }],
+  [8, { freq: 188, to: 74, decay: 0.15, level: 0.12 }],
+  [16, { freq: 132, to: 46, decay: 0.3, level: 0.16 }],
+  [24, { freq: 188, to: 74, decay: 0.15, level: 0.11 }],
+]);
+
+function scheduleStep(absStep, time) {
+  const at = absStep % 32;
+
+  if (at === 0) melody = buildMelody(absStep, cycle);
+
+  const hit = TAVIL.get(at);
+  if (hit) drum(time, hit);
+
+  if (at === 4 || at === 12 || at === 20) tick(time, 0.03, 2600);
+  if (at >= 28) tick(time, 0.028, 3000);
+  if (at % 8 === 2) tick(time, 0.016, 3600);
+
+  const note = melody.find((entry) => entry.step === absStep);
+  if (note) {
+    nadaswaram(time, SA * 2 ** (RAGA[note.deg] / 12), note.steps * STEP * 0.92);
   }
-  if (HIGH.includes(i)) {
-    drum(time, { freq: 330, to: 250, decay: 0.07, level: 0.05, type: 'triangle' });
-    tick(time, 0.02);
-  }
-  if (TICKS.includes(i)) tick(time, 0.025);
-  if (i === 0 && Math.random() > 0.45) ringBell({ gain: 0.14, detune: -180 });
 }
 
 function pump() {
   if (!ctx || !soundOn) return;
-  while (nextTime < ctx.currentTime + 0.15) {
+  while (nextTime < ctx.currentTime + 0.2) {
     scheduleStep(step, nextTime);
     nextTime += STEP;
-    step = (step + 1) % 16;
+    step += 1;
+    if (step % 32 === 0) cycle += 1;
   }
 }
 
@@ -281,9 +424,12 @@ function startAmbience() {
   ambience = ctx.createGain();
   ambience.gain.value = 0;
   ambience.connect(master);
-  ambience.gain.setTargetAtTime(0.55, ctx.currentTime, 0.9);
-  nextTime = ctx.currentTime + 0.1;
+  ambience.gain.setTargetAtTime(0.5, ctx.currentTime, 1.1);
+  startDrone();
+  nextTime = ctx.currentTime + 0.12;
   step = 0;
+  cycle = 0;
+  melody = [];
   schedulerId = setInterval(pump, 40);
   pump();
 }
@@ -291,11 +437,23 @@ function startAmbience() {
 function stopAmbience() {
   if (schedulerId) clearInterval(schedulerId);
   schedulerId = null;
+  if (drone) {
+    const { bus, nodes } = drone;
+    drone = null;
+    bus.gain.setTargetAtTime(0, ctx.currentTime, 0.3);
+    setTimeout(() => {
+      nodes.forEach((node) => {
+        if (node.stop) node.stop();
+        node.disconnect();
+      });
+      bus.disconnect();
+    }, 1800);
+  }
   if (!ambience) return;
   const node = ambience;
   ambience = null;
   node.gain.setTargetAtTime(0, ctx.currentTime, 0.4);
-  setTimeout(() => node.disconnect(), 1600);
+  setTimeout(() => node.disconnect(), 1800);
 }
 
 document.addEventListener('visibilitychange', () => {

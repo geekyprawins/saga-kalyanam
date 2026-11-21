@@ -508,13 +508,43 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1.1rem;
+  padding: 1.5rem 1.45rem;
   color: var(--ink);
   background:
-    radial-gradient(120% 60% at 50% 0%, rgba(201, 162, 74, 0.18) 0%, transparent 60%),
-    linear-gradient(160deg, #fdf8ee 0%, #f4e7cd 100%);
-  border: 1px solid var(--gold-400);
-  box-shadow: inset 0 0 0 5px rgba(251, 245, 233, 0.9), inset 0 0 0 6px rgba(201, 162, 74, 0.5);
+    var(--damask) 0 0 / 38px 38px,
+    radial-gradient(120% 58% at 50% 0%, rgba(201, 162, 74, 0.22) 0%, transparent 62%),
+    radial-gradient(140% 80% at 50% 50%, rgba(255, 253, 246, 0.9) 0%, transparent 55%),
+    linear-gradient(160deg, #fdf9f0 0%, #f2e2c2 100%);
+  box-shadow: inset 0 0 22px rgba(122, 82, 32, 0.14);
+}
+
+.invite__face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 22px solid transparent;
+  border-image: var(--frame) 26 / 22px;
+  pointer-events: none;
+}
+
+.invite__crest {
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  margin-bottom: 0.8rem;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 162, 74, 0.8);
+  box-shadow:
+    0 0 0 3px rgba(253, 249, 240, 0.85),
+    0 0 0 4px rgba(201, 162, 74, 0.35),
+    0 2px 6px rgba(122, 82, 32, 0.18);
+  background: radial-gradient(circle at 40% 28%, #fdf8ea, #efdcb2);
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: #a5761f;
 }
 
 .invite__top {
@@ -619,8 +649,6 @@
 .invite__leaf {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(224, 192, 132, 0.5);
-  box-shadow: inset 0 0 0 4px rgba(29, 6, 9, 0.35), inset 0 0 0 5px rgba(224, 192, 132, 0.35);
   background-image:
     url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%20200%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23e0c084%27%20stroke-width%3D%271.2%27%20stroke-opacity%3D%27.55%27%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2786%27%2F%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2752%27%20stroke-opacity%3D%27.4%27%2F%3E%3Cg%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28180%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28225%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28270%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28315%20100%20100%29%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2718%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),
     radial-gradient(90% 55% at 50% 40%, rgba(201, 162, 74, 0.22) 0%, transparent 65%),
@@ -630,6 +658,14 @@
   background-repeat: no-repeat, no-repeat, no-repeat;
   backface-visibility: hidden;
   transition: transform 1.5s cubic-bezier(0.4, 0.05, 0.2, 1);
+}
+
+.invite__leaf-frame {
+  position: absolute;
+  inset: 0;
+  border: 22px solid transparent;
+  border-image: var(--frame) 26 / 22px;
+  pointer-events: none;
 }
 
 .invite__leaf--l {
@@ -667,23 +703,37 @@
   transform: rotateY(112deg);
 }
 
+/* The card's printed frame, paper and wax: shared by the leaves, the face and
+   the saved image so all three carry the same stationery. */
+.scene--invite {
+  --frame: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23c9a24a%22%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%22110%22%20height%3D%22110%22%20stroke-width%3D%222%22%2F%3E%3Crect%20x%3D%2211.5%22%20y%3D%2211.5%22%20width%3D%2297%22%20height%3D%2297%22%20stroke-width%3D%220.55%22%20stroke-opacity%3D%22.7%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23c9a24a%22%3E%3Cpath%20d%3D%22M11.5%206.2%20L16.8%2011.5%20L11.5%2016.8%20L6.2%2011.5%20Z%22%2F%3E%3Cpath%20d%3D%22M108.5%206.2%20L113.8%2011.5%20L108.5%2016.8%20L103.2%2011.5%20Z%22%2F%3E%3Cpath%20d%3D%22M11.5%20103.2%20L16.8%20108.5%20L11.5%20113.8%20L6.2%20108.5%20Z%22%2F%3E%3Cpath%20d%3D%22M108.5%20103.2%20L113.8%20108.5%20L108.5%20113.8%20L103.2%20108.5%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  --damask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239a7433%22%20stroke-width%3D%22.5%22%20stroke-opacity%3D%22.09%22%3E%3Cpath%20d%3D%22M22%207%20q6.5%208.5%200%2015%20q-6.5%20-6.5%200%20-15%20Z%22%2F%3E%3Cpath%20d%3D%22M22%2037%20q6.5%20-8.5%200%20-15%20q-6.5%206.5%200%2015%20Z%22%2F%3E%3Cpath%20d%3D%22M7%2022%20q8.5%206.5%2015%200%20q-6.5%20-6.5%20-15%200%20Z%22%2F%3E%3Cpath%20d%3D%22M37%2022%20q-8.5%206.5%20-15%200%20q6.5%20-6.5%2015%200%20Z%22%2F%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2222%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%220%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%220%22%20cy%3D%2244%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%2244%22%20r%3D%221%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  --wax: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22w%22%20cx%3D%22.36%22%20cy%3D%22.28%22%20r%3D%22.85%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23cf5a54%22%2F%3E%3Cstop%20offset%3D%22.3%22%20stop-color%3D%22%23b0303a%22%2F%3E%3Cstop%20offset%3D%22.6%22%20stop-color%3D%22%238e1f2a%22%2F%3E%3Cstop%20offset%3D%22.84%22%20stop-color%3D%22%236d1420%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23520d18%22%2F%3E%3C%2FradialGradient%3E%3ClinearGradient%20id%3D%22r%22%20x1%3D%22.25%22%20y1%3D%220%22%20x2%3D%22.75%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffc9b6%22%20stop-opacity%3D%22.5%22%2F%3E%3Cstop%20offset%3D%22.4%22%20stop-color%3D%22%23ffc9b6%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23240208%22%20stop-opacity%3D%22.45%22%2F%3E%3C%2FlinearGradient%3E%3Cfilter%20id%3D%22wax%22%20x%3D%22-6%25%22%20y%3D%22-6%25%22%20width%3D%22112%25%22%20height%3D%22112%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.055%22%20numOctaves%3D%223%22%20seed%3D%229%22%20result%3D%22n%22%2F%3E%3CfeDiffuseLighting%20in%3D%22n%22%20lighting-color%3D%22%23ffffff%22%20surfaceScale%3D%221%22%20result%3D%22l%22%3E%3CfeDistantLight%20azimuth%3D%22230%22%20elevation%3D%2262%22%2F%3E%3C%2FfeDiffuseLighting%3E%3CfeComponentTransfer%20in%3D%22l%22%20result%3D%22lc%22%3E%3CfeFuncR%20type%3D%22linear%22%20slope%3D%22.26%22%20intercept%3D%22.87%22%2F%3E%3CfeFuncG%20type%3D%22linear%22%20slope%3D%22.26%22%20intercept%3D%22.87%22%2F%3E%3CfeFuncB%20type%3D%22linear%22%20slope%3D%22.26%22%20intercept%3D%22.87%22%2F%3E%3C%2FfeComponentTransfer%3E%3CfeComposite%20in%3D%22lc%22%20in2%3D%22SourceAlpha%22%20operator%3D%22in%22%20result%3D%22lit%22%2F%3E%3CfeBlend%20in%3D%22SourceGraphic%22%20in2%3D%22lit%22%20mode%3D%22multiply%22%20result%3D%22b%22%2F%3E%3CfeComposite%20in%3D%22b%22%20in2%3D%22SourceAlpha%22%20operator%3D%22in%22%2F%3E%3C%2Ffilter%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-40%25%22%20y%3D%22-40%25%22%20width%3D%22180%25%22%20height%3D%22180%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%222.4%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M96.7%2050.4C96.9%2055.2%2095.3%2059.8%2093.9%2064.3C92.5%2068.8%2091.1%2073.9%2088.3%2077.5C85.5%2081.2%2081.0%2083.8%2077.0%2086.4C73.1%2089.0%2069.0%2091.6%2064.6%2093.2C60.2%2094.7%2055.0%2095.5%2050.4%2095.6C45.7%2095.7%2041.3%2095.1%2036.7%2093.7C32.2%2092.4%2027.0%2090.5%2023.2%2087.7C19.4%2084.9%2016.7%2080.9%2013.9%2077.1C11.1%2073.3%208.0%2069.4%206.3%2064.9C4.5%2060.5%203.3%2055.2%203.4%2050.3C3.4%2045.3%205.2%2039.6%206.6%2035.2C8.0%2030.7%208.9%2027.1%2011.8%2023.4C14.6%2019.6%2019.4%2015.4%2023.5%2012.5C27.6%209.7%2031.7%208.0%2036.2%206.5C40.8%204.9%2046.1%203.3%2051.0%203.2C55.8%203.0%2060.9%203.9%2065.2%205.4C69.5%206.9%2072.8%209.3%2076.7%2012.3C80.5%2015.2%2085.4%2019.0%2088.1%2023.0C90.9%2026.9%2091.6%2031.2%2093.0%2035.8C94.4%2040.3%2096.6%2045.7%2096.7%2050.4Z%22%20fill%3D%22url%28%23w%29%22%20filter%3D%22url%28%23wax%29%22%2F%3E%3Cpath%20d%3D%22M96.7%2050.4C96.9%2055.2%2095.3%2059.8%2093.9%2064.3C92.5%2068.8%2091.1%2073.9%2088.3%2077.5C85.5%2081.2%2081.0%2083.8%2077.0%2086.4C73.1%2089.0%2069.0%2091.6%2064.6%2093.2C60.2%2094.7%2055.0%2095.5%2050.4%2095.6C45.7%2095.7%2041.3%2095.1%2036.7%2093.7C32.2%2092.4%2027.0%2090.5%2023.2%2087.7C19.4%2084.9%2016.7%2080.9%2013.9%2077.1C11.1%2073.3%208.0%2069.4%206.3%2064.9C4.5%2060.5%203.3%2055.2%203.4%2050.3C3.4%2045.3%205.2%2039.6%206.6%2035.2C8.0%2030.7%208.9%2027.1%2011.8%2023.4C14.6%2019.6%2019.4%2015.4%2023.5%2012.5C27.6%209.7%2031.7%208.0%2036.2%206.5C40.8%204.9%2046.1%203.3%2051.0%203.2C55.8%203.0%2060.9%203.9%2065.2%205.4C69.5%206.9%2072.8%209.3%2076.7%2012.3C80.5%2015.2%2085.4%2019.0%2088.1%2023.0C90.9%2026.9%2091.6%2031.2%2093.0%2035.8C94.4%2040.3%2096.6%2045.7%2096.7%2050.4Z%22%20fill%3D%22none%22%20stroke%3D%22url%28%23r%29%22%20stroke-width%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2231.5%22%20fill%3D%22none%22%20stroke%3D%22%2333040c%22%20stroke-opacity%3D%22.22%22%20stroke-width%3D%221.4%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2249.4%22%20r%3D%2231.5%22%20fill%3D%22none%22%20stroke%3D%22%23ffd8c6%22%20stroke-opacity%3D%22.2%22%20stroke-width%3D%221%22%2F%3E%3Cellipse%20cx%3D%2237%22%20cy%3D%2228%22%20rx%3D%2214%22%20ry%3D%227.5%22%20fill%3D%22%23ffe2d4%22%20opacity%3D%22.17%22%20filter%3D%22url%28%23b%29%22%2F%3E%3C%2Fsvg%3E");
+}
+
 .invite__seal {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 4.4rem;
-  height: 4.4rem;
-  margin: -2.2rem 0 0 -2.2rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  margin: -2.4rem 0 0 -2.4rem;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   font-family: var(--font-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  color: #f7e2b4;
-  background: radial-gradient(circle at 35% 30%, #b3272f 0%, #7d1520 55%, #4a0d12 100%);
-  box-shadow: 0 10px 22px -8px rgba(10, 2, 3, 0.8), inset 0 0 0 2px rgba(247, 226, 180, 0.35);
+  font-size: 0.84rem;
+  letter-spacing: 0.1em;
+  color: #f0cfa4;
+  background: var(--wax) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 5px 6px rgba(8, 1, 2, 0.55));
   transition: transform 0.8s var(--ease-out), opacity 0.6s;
+}
+
+.seel__label,
+.seel__shard {
+  text-shadow:
+    0 1px 0 rgba(255, 198, 180, 0.28),
+    0 -1px 1px rgba(38, 0, 5, 0.85);
 }
 
 .invite.is-open .invite__seal {
@@ -1005,6 +1055,25 @@ html[lang='te'] .close__family {
   margin: 0;
 }
 
+.foot .foot__made {
+  margin-top: 1.15rem;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(251, 245, 233, 0.58);
+}
+
+.foot__made::before {
+  content: '';
+  display: block;
+  width: 2.4rem;
+  height: 1px;
+  margin: 0 auto 0.95rem;
+  background: linear-gradient(90deg, transparent, rgba(224, 192, 132, 0.5), transparent);
+}
+
 /* ── wide screens: the gate becomes a framed poster ────── */
 @media (min-aspect-ratio: 3/4) {
   .scene--gate {
@@ -1122,7 +1191,6 @@ html[lang='te'] .close__family {
 }
 
 .invite__seal::after {
-  border-radius: 50%;
   mix-blend-mode: screen;
   background: radial-gradient(
     ellipse 30% 26% at calc(36% + var(--px, 0) * 20%) calc(30% + var(--py, 0) * 18%),
@@ -1137,7 +1205,7 @@ html[lang='te'] .close__family {
   transform: none !important;
   opacity: 1 !important;
   background: none;
-  box-shadow: none;
+  filter: none;
   pointer-events: none;
 }
 
@@ -1154,14 +1222,12 @@ html[lang='te'] .close__family {
   inset: 0;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   clip-path: var(--clip);
   font-family: var(--font-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  color: #f7e2b4;
-  background: radial-gradient(circle at 35% 30%, #b3272f 0%, #7d1520 55%, #4a0d12 100%);
-  box-shadow: inset 0 0 0 2px rgba(247, 226, 180, 0.35);
+  font-size: 0.84rem;
+  letter-spacing: 0.1em;
+  color: #f0cfa4;
+  background: var(--wax) center / 100% 100% no-repeat;
   filter: drop-shadow(0 1px 1px rgba(10, 2, 3, 0.35));
   will-change: transform, opacity;
   animation: seelShard 900ms cubic-bezier(0.32, 0.55, 0.3, 1) both;

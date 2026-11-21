@@ -70,3 +70,22 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 - `src/js/savecard.js` paints the 1080×1350 share card on a canvas. Its `tracked()` helper
   spaces per glyph, so it skips any non-Latin line — spacing Telugu by code point tears
   the conjuncts apart.
+- The stationery is three SVG data URIs on `.scene--invite`: `--frame` (printed border),
+  `--damask` (paper tile) and `--wax` (seal). The frame is applied with `border-image`
+  so it stretches to any card size without redrawing; give the SVG explicit `width` and
+  `height` or the intrinsic 300×150 box shifts every slice.
+- `.invite__leaf` has no pseudo-elements left (foil and seam), so its frame is a real
+  `<span class="invite__leaf-frame">`. Each leaf is clipped to its half, so the two halves
+  read as one frame until the leaves turn.
+- The face's horizontal padding must clear the 22px frame band, or a long venue line runs
+  under the border.
+
+## Ambience
+
+`src/js/audio.js` synthesises everything. The gate bell is a struck-bell partial stack;
+the ambience is a sannai melam — nadaswaram (detuned saws, nasal peak, jaru slide and
+vibrato) over a tavil in adi talam and a Sa/Pa drone, in Mohanam. It is a 32-step loop that
+alternates two phrases. Headless Chromium has no audio device, so `ctx.currentTime` never
+advances there: verify changes by rendering the module through `OfflineAudioContext`
+(strip `export`, inject `ctx`/`ambience`/`wet`) and reading the WAV back, not by watching
+the live page.

@@ -92,21 +92,28 @@ function draw(ctx, lang) {
 
   rounded(ctx, pad, pad, cardW, cardH, 8);
   const paper = ctx.createLinearGradient(pad, pad, pad + cardW, pad + cardH);
-  paper.addColorStop(0, '#fdf8ee');
-  paper.addColorStop(1, '#f3e4c8');
+  paper.addColorStop(0, '#fdf9f0');
+  paper.addColorStop(1, '#f2e2c2');
   ctx.fillStyle = paper;
   ctx.fill();
 
+  damask(ctx, pad, pad, cardW, cardH, 118);
+
   ctx.strokeStyle = '#c9a24a';
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.4;
   ctx.stroke();
 
-  rounded(ctx, pad + 15, pad + 15, cardW - 30, cardH - 30, 4);
-  ctx.strokeStyle = 'rgba(201, 162, 74, 0.5)';
-  ctx.lineWidth = 1;
+  const inset = 26;
+  rounded(ctx, pad + inset, pad + inset, cardW - inset * 2, cardH - inset * 2, 4);
+  ctx.strokeStyle = 'rgba(201, 162, 74, 0.55)';
+  ctx.lineWidth = 1.2;
   ctx.stroke();
 
-  rosette(ctx, cx, 200, 0.42);
+  for (const [dx, dy] of [[0, 0], [1, 0], [1, 1], [0, 1]]) {
+    diamond(ctx, pad + inset + dx * (cardW - inset * 2), pad + inset + dy * (cardH - inset * 2), 14);
+  }
+
+  crest(ctx, cx, 196, 48);
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
@@ -201,32 +208,76 @@ function rule(ctx, cx, y, half) {
   ctx.fill();
 }
 
-function rosette(ctx, cx, cy, scale) {
-  ctx.save();
-  ctx.translate(cx, cy);
+function crest(ctx, cx, cy, r) {
+  const fill = ctx.createRadialGradient(cx - r * 0.35, cy - r * 0.4, 0, cx, cy, r);
+  fill.addColorStop(0, '#fdf8ea');
+  fill.addColorStop(1, '#efdcb2');
 
-  ctx.strokeStyle = 'rgba(201, 162, 74, 0.45)';
-  ctx.lineWidth = 1.6;
-  ctx.setLineDash([2, 8]);
   ctx.beginPath();
-  ctx.arc(0, 0, 86 * scale * 1.5, 0, Math.PI * 2);
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = fill;
+  ctx.fill();
+  ctx.strokeStyle = '#c9a24a';
+  ctx.lineWidth = 2;
   ctx.stroke();
-  ctx.setLineDash([]);
 
-  ctx.strokeStyle = 'rgba(201, 162, 74, 0.8)';
-  ctx.lineWidth = 1.8;
-  for (let i = 0; i < 8; i += 1) {
-    ctx.save();
-    ctx.rotate((i * Math.PI) / 4);
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.quadraticCurveTo(26 * scale, -44 * scale, 0, -86 * scale);
-    ctx.quadraticCurveTo(-26 * scale, -44 * scale, 0, 0);
-    ctx.stroke();
-    ctx.restore();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r + 8, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(201, 162, 74, 0.4)';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#a5761f';
+  ctx.font = `500 32px ${DISPLAY}`;
+  const previous = ctx.textBaseline;
+  ctx.textBaseline = 'middle';
+  ctx.fillText('S & G', cx, cy + 1);
+  ctx.textBaseline = previous;
+}
+
+function damask(ctx, x, y, w, h, step) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+
+  ctx.strokeStyle = 'rgba(154, 116, 51, 0.085)';
+  ctx.lineWidth = 1.2;
+
+  for (let gy = y; gy < y + h + step; gy += step) {
+    for (let gx = x; gx < x + w + step; gx += step) {
+      const mx = gx + step / 2;
+      const my = gy + step / 2;
+      const s = step * 0.32;
+      for (let i = 0; i < 4; i += 1) {
+        ctx.save();
+        ctx.translate(mx, my);
+        ctx.rotate((i * Math.PI) / 2);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(s * 0.62, -s * 0.56, 0, -s);
+        ctx.quadraticCurveTo(-s * 0.62, -s * 0.56, 0, 0);
+        ctx.stroke();
+        ctx.restore();
+      }
+      ctx.beginPath();
+      ctx.arc(mx, my, s * 0.12, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   }
 
   ctx.restore();
+}
+
+function diamond(ctx, x, y, r) {
+  ctx.beginPath();
+  ctx.moveTo(x, y - r);
+  ctx.lineTo(x + r, y);
+  ctx.lineTo(x, y + r);
+  ctx.lineTo(x - r, y);
+  ctx.closePath();
+  ctx.fillStyle = '#c9a24a';
+  ctx.fill();
 }
 
 function rounded(ctx, x, y, w, h, r) {
