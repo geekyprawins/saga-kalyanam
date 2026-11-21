@@ -461,3 +461,105 @@
     margin: 0.85rem 0 1rem;
   }
 }
+
+/* ── kolam: drawn in flour as the doors open ──────────── */
+.kolam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  transform: scale(calc(1 + (var(--dolly, 1) - 1) * 0.55));
+  transform-origin: 50% 70%;
+}
+
+.kolam__mark {
+  opacity: 0;
+  transition: opacity 0.3s linear;
+}
+
+.scene--gate.is-open .kolam__mark {
+  opacity: 1;
+}
+
+.kolam__petal {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.scene--gate.is-open .kolam__petal {
+  animation: kolamDraw 1.15s cubic-bezier(0.55, 0.05, 0.3, 1) both;
+  animation-delay: calc(0.5s + var(--i, 0) * 0.045s);
+}
+
+@keyframes kolamDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.kolam__ring,
+.kolam__hub,
+.kolam__sparks,
+.kolam__name {
+  opacity: 0;
+}
+
+.scene--gate.is-open .kolam__ring {
+  animation: kolamFade 0.7s ease-out 0.42s both;
+}
+
+.scene--gate.is-open .kolam__hub {
+  animation: kolamFade 0.5s ease-out 1.26s both;
+}
+
+.scene--gate.is-open .kolam__sparks {
+  animation: kolamFade 0.6s ease-out 1.4s both;
+}
+
+.scene--gate.is-open .kolam.is-personal .kolam__name {
+  animation: kolamFade 0.8s ease-out 1.52s both;
+}
+
+@keyframes kolamFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.kolam__initial {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  fill: #4a0d12;
+  letter-spacing: 0;
+}
+
+.kolam.is-personal .kolam__hub,
+.kolam.is-personal .kolam__dot {
+  opacity: 0;
+}
+
+.kolam__dot.is-hidden {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kolam__mark,
+  .kolam__ring,
+  .kolam__hub,
+  .kolam__sparks,
+  .kolam__name {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .kolam__petal {
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+}

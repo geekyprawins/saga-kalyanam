@@ -59,3 +59,14 @@ Without it the ornament's tile size survives and the photo repeats across the bo
   anything under ~10px is unreadable on a phone in a bright room.
 - Social preview URLs in `index.html` are absolute on purpose; crawlers drop relative ones.
   Changing hosts means editing `og:url`, `og:image` and `twitter:image` together.
+
+## The invite card
+
+- `.invite__inner` is `preserve-3d`, so its children are sorted by depth rather than DOM
+  order. `.invite__seal` deliberately sits *outside* it: put it back inside and the wax
+  shards disappear behind the leaves as the card opens.
+- `src/js/invite.js` breaks the seal into eight `clip-path` wedges (`.seel__shard`) and
+  opens the card 340ms later, so the debris falls across the opening leaves.
+- `src/js/savecard.js` paints the 1080×1350 share card on a canvas. Its `tracked()` helper
+  spaces per glyph, so it skips any non-Latin line — spacing Telugu by code point tears
+  the conjuncts apart.

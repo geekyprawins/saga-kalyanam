@@ -176,6 +176,46 @@ export function swish() {
   src.start(now);
 }
 
+export function crack() {
+  if (!ctx || !soundOn) return;
+  const now = ctx.currentTime + 0.005;
+
+  // brittle snap
+  const length = Math.floor(ctx.sampleRate * 0.14);
+  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length; i += 1) {
+    const p = i / length;
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-p * 26);
+  }
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const hp = ctx.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = 1100;
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.value = 0.11;
+  noise.connect(hp);
+  hp.connect(noiseGain);
+  noiseGain.connect(master);
+  noiseGain.connect(wet);
+  noise.start(now);
+
+  // wax body under the snap
+  const osc = ctx.createOscillator();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(190, now);
+  osc.frequency.exponentialRampToValueAtTime(58, now + 0.16);
+  const env = ctx.createGain();
+  env.gain.setValueAtTime(0, now);
+  env.gain.linearRampToValueAtTime(0.16, now + 0.006);
+  env.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+  osc.connect(env);
+  env.connect(master);
+  osc.start(now);
+  osc.stop(now + 0.22);
+}
+
 function drum(time, { freq = 120, to = 55, decay = 0.22, level = 0.16, type = 'sine' } = {}) {
   const osc = ctx.createOscillator();
   osc.type = type;
