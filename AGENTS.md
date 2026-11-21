@@ -32,6 +32,20 @@ Watch for these, which have bitten before:
   per-glyph fallback; without it every Telugu string renders as tofu. Telugu also needs
   `letter-spacing: 0` and no `text-transform`.
 
+## Photos
+
+Real photos live in `public/assets/photos/*.webp`; the slot names are listed in that
+folder's `README.txt`. The camera originals sit in `/originals`, which is git-ignored.
+Keep them out of `public/` — Vite copies that folder verbatim into `dist/`, so one 40 MB
+JPEG there ships to every visitor.
+
+`src/js/photos.js` probes `webp -> avif -> jpg -> png` per `[data-photo]` slot and writes
+`background-image` inline. That inline write replaces the element's *whole* background
+stack, so any element that started with more than one background layer needs a
+`.has-photo` reset for `background-size`, `background-position` and `background-repeat`.
+Without it the ornament's tile size survives and the photo repeats across the box —
+`.wipe__layer` carries exactly that reset.
+
 ## Conventions
 
 - Every user-visible string lives in `src/js/content.js` under both `en` and `te`. Never

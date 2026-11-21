@@ -363,10 +363,12 @@
 /* wipe-to-reveal */
 .wipes {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.75rem;
+  width: 100%;
+  max-width: 22rem;
+  margin: 2rem auto 0;
   padding: 0 var(--pad);
-  margin-top: 2rem;
 }
 
 .wipe {
@@ -409,13 +411,26 @@
   justify-items: center;
 }
 
+/* the photo loader swaps the whole background stack, so reset the
+   ornament's tile sizing once a real photo is in place */
+.wipe__layer.has-photo {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .wipe__hint {
+  margin-bottom: 0.9rem;
   font-family: var(--font-display);
   font-size: 0.52rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(251, 241, 218, 0.8);
-  padding: 0 1rem;
+  color: rgba(251, 241, 218, 0.92);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(26, 5, 8, 0.52);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   text-align: center;
 }
 
@@ -1032,7 +1047,7 @@ html[lang='te'] .close__family {
   }
 
   .wipes {
-    max-width: 46rem;
+    max-width: 26rem;
     margin-left: auto;
     margin-right: auto;
   }
