@@ -1,0 +1,394 @@
+:root {
+  --maroon-900: #1d0609;
+  --maroon-800: #2b0a0f;
+  --maroon-700: #3d0d14;
+  --maroon-600: #5b1119;
+  --maroon-500: #7a1a24;
+  --red: #a3202c;
+  --gold-900: #5d3a12;
+  --gold-700: #8a5f22;
+  --gold-500: #b98a3c;
+  --gold-400: #c9a24a;
+  --gold-300: #e0c084;
+  --gold-200: #f0d9a4;
+  --gold-100: #fbf1da;
+  --ivory: #fbf5e9;
+  --ivory-2: #f3e8d2;
+  --jasmine: #fffdf6;
+  --ink: #2a1410;
+
+  --font-display: 'Cinzel', 'Noto Serif Telugu', 'Times New Roman', serif;
+  --font-body: 'Cormorant Garamond', 'Noto Serif Telugu', 'Georgia', serif;
+  --font-te: 'Noto Serif Telugu', 'Kohinoor Telugu', 'Noto Sans Telugu', 'Gautami', serif;
+
+  --pad: clamp(1.15rem, 5vw, 2rem);
+  --ease-out: cubic-bezier(0.22, 0.8, 0.24, 1);
+
+  --foil: linear-gradient(
+    100deg,
+    #7a5220 0%,
+    #c9a24a 16%,
+    #fdf0cd 34%,
+    #e6c27e 48%,
+    #b98a3c 64%,
+    #f7e9c4 80%,
+    #8a5f22 100%
+  );
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--maroon-900);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 4.2vw, 1.125rem);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ── grain ─────────────────────────────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ── petal canvas ──────────────────────────────────────── */
+.petals {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+body.on-light .petals {
+  opacity: 0;
+}
+
+/* ── opening veil ──────────────────────────────────────── */
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(120% 90% at 50% 40%, #3d0d14 0%, #1d0609 72%);
+  transition: opacity 0.9s var(--ease-out), visibility 0.9s;
+}
+
+.veil.is-gone {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.veil__mark {
+  font-family: var(--font-te);
+  font-size: clamp(2.4rem, 12vw, 3.6rem);
+  letter-spacing: 0.1em;
+  background: var(--foil);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: veilGlow 2.4s var(--ease-out) infinite alternate;
+}
+
+@keyframes veilGlow {
+  from {
+    background-position: 0% 50%;
+    opacity: 0.55;
+  }
+  to {
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+/* ── top bar ───────────────────────────────────────────── */
+.bar {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 0.7rem);
+  right: 0.7rem;
+  z-index: 100;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.bar__btn {
+  display: grid;
+  place-items: center;
+  min-width: 2.6rem;
+  height: 2.6rem;
+  padding: 0 0.55rem;
+  border-radius: 999px;
+  color: var(--gold-200);
+  background: rgba(29, 6, 9, 0.42);
+  border: 1px solid rgba(201, 162, 74, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.bar__btn svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.bar__btn--lang {
+  font-family: var(--font-te);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.bar__btn[aria-pressed='true'] {
+  color: var(--maroon-900);
+  background: var(--gold-300);
+  border-color: var(--gold-200);
+}
+
+.bar__mute {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.bar__btn[aria-pressed='false'] .bar__wave {
+  opacity: 0.25;
+}
+
+.bar__btn[aria-pressed='false'] .bar__mute {
+  opacity: 1;
+}
+
+/* Telugu sets its own rhythm: no tracking, no caps */
+html[lang='te'] [data-i18n] {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+html[lang='te'] .kicker,
+html[lang='te'] .eyebrow,
+html[lang='te'] .line--three,
+html[lang='te'] .wordmark__sub {
+  font-size: 0.72rem;
+  line-height: 1.7;
+}
+
+/* ── shared type ───────────────────────────────────────── */
+.foil {
+  background: var(--foil);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.eyebrow {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+
+.amp {
+  font-style: italic;
+  color: var(--gold-500);
+}
+
+.scene__head {
+  text-align: center;
+  padding: 0 var(--pad);
+}
+
+.scene__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 7.6vw, 2.5rem);
+  line-height: 1.16;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+/* hairline rule with a diamond */
+.invite__rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 1.1rem auto;
+  width: min(15rem, 70%);
+  color: var(--gold-400);
+}
+
+.invite__rule::before,
+.invite__rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor);
+}
+
+.invite__rule::after {
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+
+.invite__rule span {
+  width: 6px;
+  height: 6px;
+  rotate: 45deg;
+  background: currentColor;
+  opacity: 0.85;
+}
+
+/* ── reveal ────────────────────────────────────────────── */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* low-power / no-webgl fallback: skip the heaviest effects */
+.lite .grain,
+.lite .petals {
+  display: none;
+}
+
+/* ── petal shower ──────────────────────────────────────── */
+.shower {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.shower i {
+  position: absolute;
+  top: 0;
+  display: block;
+  border-radius: 62% 38% 58% 42% / 72% 62% 38% 28%;
+  filter: drop-shadow(0 1px 2px rgba(40, 10, 10, 0.18));
+  will-change: transform, opacity;
+}
+
+/* ── toast ─────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1.4rem);
+  z-index: 110;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--maroon-900);
+  background: var(--gold-200);
+  box-shadow: 0 12px 30px -12px rgba(15, 3, 5, 0.7);
+  transform: translate(-50%, 140%);
+  opacity: 0;
+  transition: transform 0.45s var(--ease-out), opacity 0.45s var(--ease-out);
+  pointer-events: none;
+  max-width: 88vw;
+  text-align: center;
+}
+
+.toast.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+/* photo slots */
+.has-photo .monogram,
+.has-photo .card__fallback {
+  opacity: 0;
+}
+
+.card__fallback,
+.monogram {
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.card__media.has-photo {
+  background-color: #e2cda6;
+}

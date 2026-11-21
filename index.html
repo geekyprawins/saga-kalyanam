@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SaGa Kalyanam · Sanjana &amp; Gagan</title>
+  <meta name="description" content="Sanjana and Gagan invite you to their wedding on 10 December 2026 at K Convention Function Hall, Jangareddygudem." />
+  <meta name="theme-color" content="#2b0a0f" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SaGa Kalyanam · Sanjana &amp; Gagan" />
+  <meta property="og:description" content="10 December 2026 · Sumuhurtham 8:34 PM · K Convention Function Hall, Jangareddygudem." />
+  <!-- Point og:image at an absolute URL once the domain is known, e.g.
+       https://sagakalyanam.com/assets/og.png — most crawlers ignore relative paths. -->
+  <meta property="og:image" content="./assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="SaGa Kalyanam — Sanjana and Gagan, 10 December 2026" />
+  <meta property="og:site_name" content="SaGa Kalyanam" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="./assets/og.png" />
+
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="./assets/art/sky.svg" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+Telugu:wght@400;500&display=swap" />
+
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="./src/css/main.css" />
+</head>
+<body>
+
+  <svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <linearGradient id="brassGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#6b4310"/><stop offset="0.18" stop-color="#b98a35"/>
+        <stop offset="0.36" stop-color="#f2dda4"/><stop offset="0.5" stop-color="#ffeec4"/>
+        <stop offset="0.68" stop-color="#d3a44e"/><stop offset="0.86" stop-color="#8e6220"/>
+        <stop offset="1" stop-color="#5b3a0e"/>
+      </linearGradient>
+      <linearGradient id="brassGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffeec4"/><stop offset="0.5" stop-color="#c79a4c"/>
+        <stop offset="1" stop-color="#6b4310"/>
+      </linearGradient>
+      <linearGradient id="goldText" x1="0" y1="0" x2="1" y2="0.6">
+        <stop offset="0" stop-color="#8a5f22"/><stop offset="0.22" stop-color="#d9b26a"/>
+        <stop offset="0.44" stop-color="#fdf0cd"/><stop offset="0.6" stop-color="#e6c27e"/>
+        <stop offset="0.8" stop-color="#b98a3c"/><stop offset="1" stop-color="#7a5220"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="grain" aria-hidden="true"></div>
+  <canvas id="petals" class="petals" aria-hidden="true"></canvas>
+
+  <div class="veil" id="veil" aria-hidden="true">
+    <span class="veil__mark">శ్రీ</span>
+  </div>
+
+  <nav class="bar" aria-label="Preferences">
+    <button class="bar__btn" id="soundBtn" type="button" aria-pressed="false" aria-label="Turn sound on">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+        <path d="M4 9.5h3.2L12 5.6v12.8L7.2 14.5H4z"/>
+        <path class="bar__wave" d="M16 8.6a5 5 0 0 1 0 6.8M18.8 6a9 9 0 0 1 0 12"/>
+        <path class="bar__mute" d="M16.4 9.2l4.4 5.6M20.8 9.2l-4.4 5.6"/>
+      </svg>
+    </button>
+    <button class="bar__btn bar__btn--lang" id="langBtn" type="button" aria-label="Read in Telugu" lang="te">తెలుగు</button>
+  </nav>
+
+  <main id="main">
+
+    <!-- 1 · GATE -->
+    <section class="scene scene--gate" id="gate" aria-label="Welcome">
+      <div class="stage" id="stage">
+        <div class="layer layer--sky" data-depth="5">
+          <img class="layer__img" src="./assets/art/sky.svg" alt="" width="900" height="1948" decoding="async" />
+        </div>
+        <div class="layer layer--mid" data-depth="12">
+          <img class="layer__img" src="./assets/art/mid.svg" alt="" width="900" height="1948" decoding="async" />
+        </div>
+
+        <div class="doors" id="doors">
+          <div class="door door--left"><img class="layer__img" src="./assets/art/arch.svg" alt="" width="900" height="1948" decoding="async" /></div>
+          <div class="door door--right"><img class="layer__img" src="./assets/art/arch.svg" alt="" width="900" height="1948" decoding="async" /></div>
+        </div>
+
+        <div class="layer layer--fore" data-depth="30">
+          <img class="layer__img" src="./assets/art/fore.svg" alt="" width="900" height="1948" decoding="async" />
+        </div>
+
+      <div class="bells" id="bells">
+        <button class="bell" type="button" data-bell aria-label="Ring the temple bell">
+          <span class="bell__swing">
+            <svg viewBox="-44 -14 88 150" aria-hidden="true">
+              <path d="M0 -14v22" stroke="url(#brassGrad)" stroke-width="4"/>
+              <path d="M-30 100q0-64 30-80 30 16 30 80z" fill="url(#brassGrad)" stroke="#5d3a12" stroke-width="1.6"/>
+              <path d="M-34 100h68q2 10-5 12h-58q-7-2-5-12z" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1.2"/>
+              <circle cx="0" cy="122" r="8" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1"/>
+              <path d="M-14 38q13 8 13 30" stroke="#fff6dd" stroke-opacity=".55" stroke-width="3" fill="none"/>
+            </svg>
+          </span>
+        </button>
+        <button class="bell bell--right" type="button" data-bell aria-label="Ring the temple bell">
+          <span class="bell__swing">
+            <svg viewBox="-44 -14 88 150" aria-hidden="true">
+              <path d="M0 -14v22" stroke="url(#brassGrad)" stroke-width="4"/>
+              <path d="M-30 100q0-64 30-80 30 16 30 80z" fill="url(#brassGrad)" stroke="#5d3a12" stroke-width="1.6"/>
+              <path d="M-34 100h68q2 10-5 12h-58q-7-2-5-12z" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1.2"/>
+              <circle cx="0" cy="122" r="8" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1"/>
+              <path d="M-14 38q13 8 13 30" stroke="#fff6dd" stroke-opacity=".55" stroke-width="3" fill="none"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+        <div class="stage__light" id="stageLight" aria-hidden="true"></div>
+      </div>
+
+
+      <div class="gate__copy">
+        <p class="kicker" data-i18n="hosted">The Swamiraju Family invites you</p>
+        <p class="greet" id="greet" hidden></p>
+        <h1 class="wordmark">
+          <span class="wordmark__main">SaGa</span>
+          <span class="wordmark__sub" data-i18n="kalyanam">Kalyanam</span>
+        </h1>
+        <p class="names"><span>Sanjana</span><em>&amp;</em><span>Gagan</span></p>
+        <button class="ring" id="ringBtn" type="button">
+          <span class="ring__dot" aria-hidden="true"></span>
+          <span data-i18n="ringBell">Ring the bell</span>
+        </button>
+      </div>
+
+      <p class="cue" id="cue">
+        <span data-i18n="dragHint">Drag to look around</span>
+        <i aria-hidden="true"></i>
+      </p>
+    </section>
+
+    <!-- 2 · BLESSINGS -->
+    <section class="scene scene--blessings" id="blessings" aria-label="Blessings">
+      <div class="jasmine" aria-hidden="true">
+        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
+        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
+        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
+        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
+        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
+        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
+        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
+        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
+        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
+        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
+        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
+        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
+        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
+        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
+        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
+        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
+        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
+        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
+        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
+        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
+        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
+        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
+        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
+        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
+        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
+        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
+        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
+        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
+        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
+        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
+        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
+        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
+        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
+        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
+        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
+        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
+      </div>
+
+      <img class="mandapam" src="./assets/art/mandapam.svg" alt="" aria-hidden="true" width="620" height="560" />
+
+      <div class="blessings__copy" data-reveal>
+        <p class="line line--one" data-i18n="twoHearts">Two hearts.</p>
+        <p class="line line--two" data-i18n="twoFamilies">Two families.</p>
+        <p class="line line--three" data-i18n="oneCelebration">One celebration.</p>
+      </div>
+    </section>
+
+    <!-- 3 · THE COUPLE -->
+    <section class="scene scene--couple" id="couple" data-tone="light" aria-label="The couple">
+      <header class="scene__head" data-reveal>
+        <p class="eyebrow" data-i18n="theCouple">The couple</p>
+        <h2 class="scene__title"><span data-i18n="brideFirst">Bride</span> <span class="amp">&amp;</span> <span data-i18n="groomFirst">Groom</span></h2>
+      </header>
+
+      <div class="portraits">
+        <article class="portrait" data-tilt data-reveal>
+          <div class="portrait__frame">
+            <div class="portrait__photo" data-photo="bride">
+              <span class="monogram">S</span>
+            </div>
+            <span class="portrait__shine" aria-hidden="true"></span>
+          </div>
+          <p class="portrait__role" data-i18n="bride">The Bride</p>
+          <h3 class="portrait__name">Sanjana</h3>
+        </article>
+
+        <article class="portrait portrait--right" data-tilt data-reveal>
+          <div class="portrait__frame">
+            <div class="portrait__photo" data-photo="groom">
+              <span class="monogram">G</span>
+            </div>
+            <span class="portrait__shine" aria-hidden="true"></span>
+          </div>
+          <p class="portrait__role" data-i18n="groom">The Groom</p>
+          <h3 class="portrait__name">Gagan</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4 · MOMENTS -->
+    <section class="scene scene--moments" id="moments" data-tone="light" aria-label="Moments">
+      <header class="scene__head" data-reveal>
+        <p class="eyebrow" data-i18n="moments">Moments</p>
+        <h2 class="scene__title" data-i18n="momentsLead">A few frames from the days before</h2>
+      </header>
+
+      <div class="carousel" id="carousel">
+        <div class="carousel__track" id="carouselTrack">
+          <figure class="card" data-caption="Mehendi"><div class="card__media" data-photo="mehendi-1"><span class="card__fallback" aria-hidden="true"></span></div><figcaption data-i18n="mehendi">Mehendi</figcaption></figure>
+          <figure class="card" data-caption="The Ring"><div class="card__media" data-photo="ring"><span class="card__fallback" aria-hidden="true"></span></div><figcaption data-i18n="ring">The Ring</figcaption></figure>
+          <figure class="card" data-caption="Blessings"><div class="card__media" data-photo="blessings"><span class="card__fallback" aria-hidden="true"></span></div><figcaption data-i18n="blessingsCap">Blessings</figcaption></figure>
+          <figure class="card" data-caption="Family"><div class="card__media" data-photo="family"><span class="card__fallback" aria-hidden="true"></span></div><figcaption data-i18n="familyCap">Family</figcaption></figure>
+          <figure class="card" data-caption="The Mandapam"><div class="card__media" data-photo="mandapam"><span class="card__fallback" aria-hidden="true"></span></div><figcaption data-i18n="mandapamCap">The Mandapam</figcaption></figure>
+        </div>
+        <div class="carousel__dots" id="carouselDots" role="tablist" aria-label="Gallery"></div>
+      </div>
+
+      <div class="wipes">
+        <div class="wipe" data-wipe>
+          <div class="wipe__layer wipe__layer--top" data-photo="mehendi-2">
+            <span class="wipe__hint" data-i18n="wipeHint">Wipe to reveal</span>
+          </div>
+          <div class="wipe__layer wipe__layer--bottom" data-photo="mehendi-detail">
+            <span class="wipe__label" data-i18n="mehendiDetail">Mehendi detail</span>
+          </div>
+        </div>
+        <div class="wipe" data-wipe>
+          <div class="wipe__layer wipe__layer--top" data-photo="ring-2">
+            <span class="wipe__hint" data-i18n="wipeHint">Wipe to reveal</span>
+          </div>
+          <div class="wipe__layer wipe__layer--bottom" data-photo="ring-detail">
+            <span class="wipe__label" data-i18n="ringDetail">The ring</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · THE INVITATION -->
+    <section class="scene scene--invite" id="invite" aria-label="The invitation">
+      <header class="scene__head" data-reveal>
+        <p class="eyebrow" data-i18n="invitation">The Invitation</p>
+      </header>
+
+      <div class="invite" id="inviteCard" data-reveal>
+        <div class="invite__inner">
+          <div class="invite__face">
+            <p class="invite__top" data-i18n="hostedShort">With the blessings of our families</p>
+            <p class="invite__names">Sanjana<br /><em>&amp;</em><br />Gagan</p>
+            <div class="invite__rule" aria-hidden="true"><span></span></div>
+            <p class="invite__date"><span data-i18n="weekday">Thursday</span> · <span data-i18n="dateShort">10 December 2026</span></p>
+            <p class="invite__muhurtham">
+              <span data-i18n="sumuhurtham">Sumuhurtham</span>
+              <strong>8:34 PM</strong>
+            </p>
+            <p class="invite__venue">
+              K Convention Function Hall<br />
+              <span data-i18n="venueLine">Jangareddygudem, Eluru District, Andhra Pradesh</span>
+            </p>
+            <p class="invite__tap" data-i18n="tapCard">Tap the card</p>
+          </div>
+          <div class="invite__leaf invite__leaf--l" aria-hidden="true"></div>
+          <div class="invite__leaf invite__leaf--r" aria-hidden="true"></div>
+          <span class="invite__seal" aria-hidden="true">S &amp; G</span>
+        </div>
+      </div>
+
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div class="countdown__cell"><span id="cdDays">--</span><small data-i18n="days">days</small></div>
+        <div class="countdown__cell"><span id="cdHours">--</span><small data-i18n="hours">hours</small></div>
+        <div class="countdown__cell"><span id="cdMins">--</span><small data-i18n="minutes">min</small></div>
+        <div class="countdown__cell"><span id="cdSecs">--</span><small data-i18n="seconds">sec</small></div>
+      </div>
+    </section>
+
+    <!-- 6 · PLAN IT -->
+    <section class="scene scene--plan" id="plan" data-tone="light" aria-label="Plan your visit">
+      <header class="scene__head" data-reveal>
+        <p class="eyebrow" data-i18n="planIt">Plan your visit</p>
+        <h2 class="scene__title" data-i18n="planLead">Everything you need for the day</h2>
+      </header>
+
+      <div class="actions" data-reveal>
+        <button class="action" id="calBtn" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4M12 13v5M9.5 15.5h5"/></svg>
+          <span data-i18n="addCalendar">Add to calendar</span>
+        </button>
+        <a class="action" id="dirBtn" href="https://www.google.com/maps/dir/?api=1&amp;destination=K%20Convention%20Function%20Hall%2C%20Jangareddygudem%2C%20Eluru%20District%2C%20Andhra%20Pradesh" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          <span data-i18n="directions">Directions</span>
+        </a>
+        <button class="action" id="rsvpOpen" type="button" aria-expanded="false" aria-controls="rsvpForm">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 6.5h16v11H4z"/><path d="M4 7l8 6 8-6"/></svg>
+          <span data-i18n="rsvp">RSVP</span>
+        </button>
+        <button class="action" id="shareBtn" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="17.5" cy="6" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18" r="2.5"/><path d="M8.7 10.8l6.6-3.6M8.7 13.2l6.6 3.6"/></svg>
+          <span data-i18n="share">Share</span>
+        </button>
+      </div>
+
+      <form class="rsvp" id="rsvpForm" hidden>
+        <p class="rsvp__title" data-i18n="rsvpTitle">Will you join us?</p>
+        <label class="field">
+          <span data-i18n="yourName">Your name</span>
+          <input type="text" name="name" id="rsvpName" autocomplete="name" required />
+        </label>
+        <label class="field">
+          <span data-i18n="guests">Guests</span>
+          <select name="guests" id="rsvpGuests">
+            <option value="1">1</option><option value="2">2</option>
+            <option value="3">3</option><option value="4">4</option>
+            <option value="5+">5+</option>
+          </select>
+        </label>
+        <fieldset class="field field--choice">
+          <legend data-i18n="attending">Attending</legend>
+          <label><input type="radio" name="attending" value="yes" checked /><span data-i18n="yes">Yes, joyfully</span></label>
+          <label><input type="radio" name="attending" value="no" /><span data-i18n="no">Sadly, no</span></label>
+        </fieldset>
+        <label class="field">
+          <span data-i18n="note">A note (optional)</span>
+          <input type="text" name="note" id="rsvpNote" />
+        </label>
+        <button class="btn-solid" type="submit" data-i18n="sendRsvp">Send by WhatsApp</button>
+        <p class="rsvp__foot" data-i18n="rsvpFoot">Opens WhatsApp with your reply ready to send.</p>
+      </form>
+    </section>
+
+    <!-- 7 · CLOSE -->
+    <section class="scene scene--close" id="close" aria-label="Blessings">
+      <div class="close__copy" data-reveal>
+        <p class="shubham" lang="te">శుభమస్తు!</p>
+        <p class="shubham__roman" data-i18n="shubhamastu">Shubhamastu</p>
+        <div class="invite__rule" aria-hidden="true"><span></span></div>
+        <p class="close__line" data-i18n="withLove">With love,</p>
+        <p class="close__family" data-i18n="familyName">The Swamiraju Family</p>
+        <button class="petalbtn" id="petalBtn" type="button" data-i18n="showerPetals">Shower petals</button>
+      </div>
+      <footer class="foot">
+        <p>SaGa Kalyanam · <span data-i18n="dateShort">10 December 2026</span></p>
+      </footer>
+    </section>
+  </main>
+
+  <script type="module" src="./src/js/main.js"></script>
+</body>
+</html>

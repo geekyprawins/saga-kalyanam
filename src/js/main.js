@@ -1,0 +1,226 @@
+import '../css/main.css';
+import { initGate } from './gate.js';
+import { initCarousel, initWipes } from './gallery.js';
+import { initInvite } from './invite.js';
+import { initActions } from './actions.js';
+import { loadPhotos } from './photos.js';
+import { initTilt } from './tilt.js';
+import { isSoundOn, setSound, unlockAudio } from './audio.js';
+import { getLang, greetingFor, guestName, setLang, t } from './content.js';
+
+const root = document.documentElement;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const guest = guestName();
+
+/* ── capability check ─────────────────────────────────── */
+function isLite() {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return true;
+  } catch {
+    return true;
+  }
+  if (navigator.connection && navigator.connection.saveData) return true;
+  if (navigator.deviceMemory && navigator.deviceMemory < 2) return true;
+  return false;
+}
+
+const lite = isLite() || reducedMotion;
+if (lite) root.classList.add('lite');
+
+/* ── language ─────────────────────────────────────────── */
+const langBtn = document.getElementById('langBtn');
+let teluguLoaded = false;
+
+function loadTeluguFont() {
+  if (teluguLoaded) return;
+  teluguLoaded = true;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+Telugu:wght@300;400;500&display=swap';
+  document.head.appendChild(link);
+}
+
+function paintGreeting() {
+  const el = document.getElementById('greet');
+  if (!el || !guest) return;
+  el.textContent = greetingFor(guest);
+  el.hidden = false;
+}
+
+function paintLangButton(lang) {
+  if (!langBtn) return;
+  langBtn.textContent = lang === 'en' ? 'తెలుగు' : 'English';
+  langBtn.setAttribute('lang', lang === 'en' ? 'te' : 'en');
+  langBtn.setAttribute('aria-label', lang === 'en' ? 'Read in Telugu' : 'Read in English');
+}
+
+setLang(getLang());
+paintLangButton(getLang());
+paintGreeting();
+
+langBtn?.addEventListener('click', () => {
+  const next = getLang() === 'en' ? 'te' : 'en';
+  if (next === 'te') loadTeluguFont();
+  setLang(next);
+  paintLangButton(next);
+  paintGreeting();
+  const cueLabel = document.querySelector('#cue span');
+  if (cueLabel && document.getElementById('gate')?.classList.contains('is-open')) {
+    cueLabel.textContent = t('enter');
+  }
+});
+
+/* ── sound ────────────────────────────────────────────── */
+const soundBtn = document.getElementById('soundBtn');
+
+function paintSound(on) {
+  soundBtn?.setAttribute('aria-pressed', String(on));
+  soundBtn?.setAttribute('aria-label', on ? 'Turn sound off' : 'Turn sound on');
+}
+
+soundBtn?.addEventListener('click', () => {
+  const next = !isSoundOn();
+  setSound(next);
+  paintSound(next);
+});
+
+// The bell is the natural first gesture, so let it switch the sound on.
+document.addEventListener(
+  'click',
+  (event) => {
+    if (event.target.closest('[data-bell], #ringBtn') && !isSoundOn()) {
+      unlockAudio();
+      setSound(true);
+      paintSound(true);
+    }
+  },
+  true,
+);
+
+/* ── scenes ───────────────────────────────────────────── */
+loadPhotos();
+initGate();
+initCarousel();
+initWipes();
+initInvite();
+initActions();
+
+let petalModule = null;
+function petals() {
+  if (!petalModule) petalModule = import('./petals.js');
+  return petalModule;
+}
+
+if (!lite) {
+  initTilt(document.getElementById('gate'));
+  window.setTimeout(() => {
+    petals().then((m) => m.createPetalField(document.getElementById('petals')));
+  }, 700);
+}
+
+document.getElementById('petalBtn')?.addEventListener('click', () => {
+  petals().then((m) => m.showerPetals(44));
+});
+
+/* ── reveals ──────────────────────────────────────────── */
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      revealObserver.unobserve(entry.target);
+    });
+  },
+  { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+);
+
+document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+
+/* ── petal field follows the page tone ────────────────── */
+const tonedSections = Array.from(document.querySelectorAll('[data-tone]'));
+let toneQueued = false;
+
+function updateTone() {
+  toneQueued = false;
+  const mid = window.innerHeight * 0.5;
+  const onLight = tonedSections.some((el) => {
+    const rect = el.getBoundingClientRect();
+    return rect.top < mid && rect.bottom > mid;
+  });
+  document.body.classList.toggle('on-light', onLight);
+}
+
+function queueTone() {
+  if (toneQueued) return;
+  toneQueued = true;
+  requestAnimationFrame(updateTone);
+}
+
+window.addEventListener('scroll', queueTone, { passive: true });
+window.addEventListener('resize', queueTone, { passive: true });
+updateTone();
+
+/* ── scroll-linked motion (loaded after first paint) ──── */
+async function initScrollMotion() {
+  if (reducedMotion) return;
+  const [{ default: gsap }, { ScrollTrigger }, { default: Lenis }] = await Promise.all([
+    import('gsap'),
+    import('gsap/ScrollTrigger'),
+    import('lenis'),
+  ]);
+  gsap.registerPlugin(ScrollTrigger);
+
+  const stage = document.getElementById('stage');
+  if (stage) {
+    ScrollTrigger.create({
+      trigger: '#gate',
+      start: 'top top',
+      end: 'bottom top',
+      onUpdate: (self) => {
+        stage.style.setProperty('--dolly', (1 + self.progress * 0.55).toFixed(3));
+      },
+    });
+
+    gsap.to('.gate__copy', {
+      yPercent: -22,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: { trigger: '#gate', start: '12% top', end: 'bottom top', scrub: true },
+    });
+
+    gsap.fromTo(
+      '.jasmine',
+      { scale: 1.24, opacity: 0.3 },
+      {
+        scale: 1,
+        opacity: 0.9,
+        ease: 'none',
+        scrollTrigger: { trigger: '#blessings', start: 'top bottom', end: 'center center', scrub: true },
+      },
+    );
+  }
+
+  const lenis = new Lenis({ duration: 1.05, smoothWheel: true, syncTouch: false, touchMultiplier: 1.4 });
+  lenis.on('scroll', ScrollTrigger.update);
+  lenis.on('scroll', queueTone);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+  ScrollTrigger.refresh();
+}
+
+if ('requestIdleCallback' in window) requestIdleCallback(initScrollMotion, { timeout: 1200 });
+else window.setTimeout(initScrollMotion, 400);
+
+/* ── curtain ──────────────────────────────────────────── */
+const veil = document.getElementById('veil');
+
+function liftVeil() {
+  veil?.classList.add('is-gone');
+  root.classList.add('is-ready');
+}
+
+if (document.readyState === 'complete') window.setTimeout(liftVeil, 260);
+else window.addEventListener('load', () => window.setTimeout(liftVeil, 260));
+window.setTimeout(liftVeil, 2200);
