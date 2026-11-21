@@ -25,6 +25,10 @@ Upload `dist/` to any static host — Netlify, Vercel, Cloudflare Pages, GitHub 
 npm run build && npx vercel deploy dist --prod   # or drag dist/ into Netlify
 ```
 
+### Share preview
+
+`public/assets/og.jpg` (1200×630) is the card WhatsApp shows when the link is pasted. The `og:image`, `og:url` and `twitter:image` tags in `index.html` are **absolute** URLs, because crawlers ignore relative ones. They currently point at the hosted preview; swap that host for the final domain in all three tags before sending the link out.
+
 ## What to edit
 
 | What | Where |

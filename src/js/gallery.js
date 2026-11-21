@@ -100,12 +100,28 @@ export function initWipes() {
     window.addEventListener('pointerup', stop);
     window.addEventListener('pointercancel', stop);
 
+    const toggle = () => {
+      const done = wipe.classList.contains('is-done');
+      set(done ? 0 : 100);
+      wipe.setAttribute('aria-pressed', String(!done));
+    };
+
     wipe.addEventListener('click', () => {
       if (moved) {
         moved = false;
         return;
       }
-      set(wipe.classList.contains('is-done') ? 0 : 100);
+      toggle();
+    });
+
+    wipe.setAttribute('role', 'button');
+    wipe.setAttribute('tabindex', '0');
+    wipe.setAttribute('aria-pressed', 'false');
+    wipe.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
     });
   });
 }

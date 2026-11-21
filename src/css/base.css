@@ -214,6 +214,32 @@ body.on-light .petals {
   opacity: 1;
 }
 
+/* Small-caps labels keep their quiet size but never drop below legible */
+:root { --label: 0.62rem; }
+html[lang='te'] { --label: 0.74rem; }
+
+.kicker,
+.cue,
+.line--three,
+.portrait__role,
+.card figcaption,
+.wipe__hint,
+.wipe__label,
+.invite__top,
+.invite__date,
+.invite__muhurtham span,
+.invite__tap,
+.countdown__cell small,
+.action span,
+.field > span,
+.fieldset legend,
+.btn-solid,
+.shubham__roman,
+.petalbtn,
+.foot {
+  font-size: var(--label);
+}
+
 /* Telugu sets its own rhythm: no tracking, no caps */
 html[lang='te'] [data-i18n] {
   letter-spacing: 0.02em;

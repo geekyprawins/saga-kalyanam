@@ -25,6 +25,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="image" href="./assets/art/sky.svg" />
+  <link rel="preload" as="image" href="./assets/art/arch.svg" />
+  <link rel="preload" as="image" href="./assets/art/mid.svg" />
+  <link rel="preload" as="image" href="./assets/art/fore.svg" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+Telugu:wght@400;500&display=swap" />
 
   <script>document.documentElement.classList.add('js');</script>
@@ -287,8 +290,9 @@
           <span class="invite__seal" aria-hidden="true">S &amp; G</span>
         </div>
       </div>
+      <p class="invite__hint" data-i18n="openCard">Tap the card to open</p>
 
-      <div class="countdown" id="countdown" aria-live="polite">
+      <div class="countdown" id="countdown" role="group" aria-label="Time until the wedding">
         <div class="countdown__cell"><span id="cdDays">--</span><small data-i18n="days">days</small></div>
         <div class="countdown__cell"><span id="cdHours">--</span><small data-i18n="hours">hours</small></div>
         <div class="countdown__cell"><span id="cdMins">--</span><small data-i18n="minutes">min</small></div>
@@ -331,9 +335,11 @@
         <label class="field">
           <span data-i18n="guests">Guests</span>
           <select name="guests" id="rsvpGuests">
-            <option value="1">1</option><option value="2">2</option>
-            <option value="3">3</option><option value="4">4</option>
-            <option value="5+">5+</option>
+            <option value="1" data-i18n="guest1">1 guest</option>
+            <option value="2" data-i18n="guest2">2 guests</option>
+            <option value="3" data-i18n="guest3">3 guests</option>
+            <option value="4" data-i18n="guest4">4 guests</option>
+            <option value="5+" data-i18n="guest5">5 or more</option>
           </select>
         </label>
         <fieldset class="field field--choice">
