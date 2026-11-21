@@ -49,19 +49,27 @@ npm run build && npx vercel deploy dist --prod   # or drag dist/ into Netlify
 
 ## Photos
 
-The site ships with drawn artwork, not stock photography. Every image slot is a named probe: drop a file into `public/assets/photos/` with a matching name and it replaces the ornament automatically, no code change.
+The engagement photographs are served from `public/assets/photos/`. Each image slot is a named probe: drop a file in with a matching name and it replaces the drawn ornament automatically, no code change.
 
 ```
 public/assets/photos/
-  bride.webp            groom.webp
-  mehendi-1.webp        ring.webp
-  blessings.webp        family.webp
-  mandapam.webp
-  mehendi-2.webp        mehendi-detail.webp
-  ring-2.webp           ring-detail.webp
+  bride.webp            groom.webp          couple portraits (4:5)
+  ring.webp             moment.webp         carousel cards (3:4)
+  rings.webp                                carousel card (3:4)
+  details-bride.webp    details-groom.webp  wipe reveal (3:4)
 ```
 
-`.webp` first, then `.avif`, `.jpg`, `.png`. Portrait crops work best at 4:5; the carousel cards at 3:4. Keep each under ~200 KB.
+`.webp` first, then `.avif`, `.jpg`, `.png`. Portrait crops work best at 4:5; the carousel cards at 3:4. Keep each under ~250 KB.
+
+The camera originals are kept in `/originals`, which is git-ignored and never served. To regenerate the web images after replacing one, run:
+
+```bash
+python3 - <<'PY'
+from PIL import Image, ImageOps
+im = ImageOps.exif_transpose(Image.open('originals/bride-1.jpg')).convert('RGB')
+im.save('public/assets/photos/bride.webp', 'WEBP', quality=82, method=6)
+PY
+```
 
 ## Replacing the gate artwork
 
