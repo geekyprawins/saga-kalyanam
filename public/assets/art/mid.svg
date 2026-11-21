@@ -52,35 +52,7 @@
   </g>
 
   <!-- kolam -->
-  <g transform="translate(450 1420) scale(0.92)" opacity="0.62">
-    <circle r="196" fill="none" stroke="#fffaf0" stroke-width="3" stroke-opacity="0.55" stroke-dasharray="2 10" stroke-linecap="round"/>
-    <g>
-      <use href="#petalRing" transform="rotate(0)"/>
-      <use href="#petalRing" transform="rotate(45)"/>
-      <use href="#petalRing" transform="rotate(90)"/>
-      <use href="#petalRing" transform="rotate(135)"/>
-      <use href="#petalRing" transform="rotate(180)"/>
-      <use href="#petalRing" transform="rotate(225)"/>
-      <use href="#petalRing" transform="rotate(270)"/>
-      <use href="#petalRing" transform="rotate(315)"/>
-    </g>
-    <g transform="scale(0.55)">
-      <use href="#petalRing" transform="rotate(22.5)"/>
-      <use href="#petalRing" transform="rotate(67.5)"/>
-      <use href="#petalRing" transform="rotate(112.5)"/>
-      <use href="#petalRing" transform="rotate(157.5)"/>
-      <use href="#petalRing" transform="rotate(202.5)"/>
-      <use href="#petalRing" transform="rotate(247.5)"/>
-      <use href="#petalRing" transform="rotate(292.5)"/>
-      <use href="#petalRing" transform="rotate(337.5)"/>
-    </g>
-    <circle r="26" fill="none" stroke="#fffaf0" stroke-width="4" stroke-opacity="0.85"/>
-    <circle r="9" fill="#fffaf0" fill-opacity="0.75"/>
-    <g fill="#d9701c" opacity="0.85">
-      <circle cx="0" cy="-150" r="6"/><circle cx="150" cy="0" r="6"/>
-      <circle cx="0" cy="150" r="6"/><circle cx="-150" cy="0" r="6"/>
-    </g>
-  </g>
+  
 
   <!-- row of small lamps along the courtyard -->
   <g opacity="0.95">

@@ -2,6 +2,8 @@ import '../css/main.css';
 import { initGate } from './gate.js';
 import { initCarousel, initWipes } from './gallery.js';
 import { initInvite } from './invite.js';
+import { initKolam } from './kolam.js';
+import { initSaveCard } from './savecard.js';
 import { initActions } from './actions.js';
 import { loadPhotos } from './photos.js';
 import { initTilt } from './tilt.js';
@@ -101,10 +103,12 @@ document.addEventListener(
 
 /* ── scenes ───────────────────────────────────────────── */
 loadPhotos();
+initKolam();
 initGate();
 initCarousel();
 initWipes();
 initInvite();
+initSaveCard();
 initActions();
 
 let petalModule = null;

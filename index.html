@@ -84,6 +84,49 @@
         </div>
         <div class="layer layer--mid" data-depth="12">
           <img class="layer__img" src="./assets/art/mid.svg" alt="" width="900" height="1948" decoding="async" />
+          <svg class="kolam" id="kolam" viewBox="0 0 900 1948" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <defs>
+              <path id="kolamPetal" d="M0 0 q26 -44 0 -86 q-26 42 0 86 z" pathLength="1" fill="none" stroke="#fffaf0" stroke-width="5" stroke-opacity="0.92" />
+              <radialGradient id="kolamGold" cx="0.34" cy="0.28" r="0.8">
+                <stop offset="0" stop-color="#fff3d4" /><stop offset="0.45" stop-color="#e3bb75" />
+                <stop offset="0.78" stop-color="#b98a3c" /><stop offset="1" stop-color="#8a5f22" />
+              </radialGradient>
+            </defs>
+            <g class="kolam__mark" transform="translate(450 1550) scale(0.98)">
+              <circle class="kolam__ring" r="196" fill="none" stroke="#fffaf0" stroke-width="3" stroke-opacity="0.55" stroke-dasharray="2 10" stroke-linecap="round" />
+              <g class="kolam__petals">
+                <use href="#kolamPetal" class="kolam__petal" style="--i:0" transform="rotate(0)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:1" transform="rotate(45)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:2" transform="rotate(90)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:3" transform="rotate(135)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:4" transform="rotate(180)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:5" transform="rotate(225)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:6" transform="rotate(270)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:7" transform="rotate(315)" />
+              </g>
+              <g class="kolam__petals kolam__petals--inner" transform="scale(0.55)">
+                <use href="#kolamPetal" class="kolam__petal" style="--i:8" transform="rotate(22.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:9" transform="rotate(67.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:10" transform="rotate(112.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:11" transform="rotate(157.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:12" transform="rotate(202.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:13" transform="rotate(247.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:14" transform="rotate(292.5)" />
+                <use href="#kolamPetal" class="kolam__petal" style="--i:15" transform="rotate(337.5)" />
+              </g>
+              <circle class="kolam__hub" r="26" fill="none" stroke="#fffaf0" stroke-width="4" stroke-opacity="0.85" />
+              <circle class="kolam__dot" id="kolamDot" r="9" fill="#fffaf0" fill-opacity="0.75" />
+              <g class="kolam__name" id="kolamName">
+                <circle r="33" fill="url(#kolamGold)" stroke="#5d3a12" stroke-width="1.6" />
+                <circle r="27.5" fill="none" stroke="#7a5220" stroke-width="1" stroke-opacity="0.5" />
+                <text class="kolam__initial" id="kolamInitial" x="0" y="1" text-anchor="middle" dominant-baseline="central"></text>
+              </g>
+              <g class="kolam__sparks" fill="#d9701c" opacity="0.85">
+                <circle cx="0" cy="-150" r="6" /><circle cx="150" cy="0" r="6" />
+                <circle cx="0" cy="150" r="6" /><circle cx="-150" cy="0" r="6" />
+              </g>
+            </g>
+          </svg>
         </div>
 
         <div class="doors" id="doors">
@@ -280,8 +323,8 @@
           </div>
           <div class="invite__leaf invite__leaf--l" aria-hidden="true"></div>
           <div class="invite__leaf invite__leaf--r" aria-hidden="true"></div>
-          <span class="invite__seal" aria-hidden="true">S &amp; G</span>
         </div>
+        <span class="invite__seal" aria-hidden="true"><span class="seel__label">S &amp; G</span></span>
       </div>
       <p class="invite__hint" data-i18n="openCard">Tap the card to open</p>
 
@@ -291,6 +334,14 @@
         <div class="countdown__cell"><span id="cdMins">--</span><small data-i18n="minutes">min</small></div>
         <div class="countdown__cell"><span id="cdSecs">--</span><small data-i18n="seconds">sec</small></div>
       </div>
+
+      <button class="invite__save" id="saveInvite" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v10m0 0-4-4m4 4 4-4" />
+          <path d="M5 17v1.6A1.4 1.4 0 0 0 6.4 20h11.2A1.4 1.4 0 0 0 19 18.6V17" />
+        </svg>
+        <span data-i18n="saveInvite">Save the invite</span>
+      </button>
     </section>
 
     <!-- 6 · PLAN IT -->
