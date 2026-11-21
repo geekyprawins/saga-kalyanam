@@ -15,8 +15,8 @@ export const wedding = {
 
 export const i18n = {
   en: {
-    hosted: 'The Swamiraju Family invites you',
     kalyanam: 'Kalyanam',
+    weddingDate: '10.12.2026',
     scrollHint: 'Scroll to enter',
     twoHearts: 'Two hearts.',
     twoFamilies: 'Two families.',
@@ -70,7 +70,7 @@ export const i18n = {
     savedImage: 'Saved to your photos',
     saveFailed: 'Could not save the image',
     signOff: 'With love, The Swamiraju Family',
-    madeBy: "Made with love by Sanjana's brother, Bobby",
+    madeBy: "Lovingly created by Praveen, for Sanjana & Gagan's forever.",
     guest1: '1 guest',
     guest2: '2 guests',
     guest3: '3 guests',
@@ -80,8 +80,8 @@ export const i18n = {
     calendarReady: 'Calendar file ready',
   },
   te: {
-    hosted: 'స్వామిరాజు కుటుంబం ఆహ్వానం',
     kalyanam: 'కళ్యాణం',
+    weddingDate: '10.12.2026',
     scrollHint: 'లోపలికి స్క్రోల్ చేయండి',
     twoHearts: 'రెండు హృదయాలు.',
     twoFamilies: 'రెండు కుటుంబాలు.',
@@ -135,7 +135,7 @@ export const i18n = {
     savedImage: 'మీ ఫోటోల్లో సేవ్ అయింది',
     saveFailed: 'చిత్రాన్ని సేవ్ చేయలేకపోయాం',
     signOff: 'ప్రేమతో, స్వామిరాజు కుటుంబం',
-    madeBy: 'ప్రేమతో తయారు చేసింది — సంజన తమ్ముడు బాబీ',
+    madeBy: 'ప్రేమతో ప్రవీణ్, సంజన & గగన్ శాశ్వతం కోసం.',
     guest1: '1 మంది',
     guest2: '2 మంది',
     guest3: '3 మంది',

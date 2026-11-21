@@ -218,7 +218,6 @@ body.on-light .petals {
 :root { --label: 0.62rem; }
 html[lang='te'] { --label: 0.74rem; }
 
-.kicker,
 .cue,
 .line--three,
 .portrait__role,
@@ -246,7 +245,6 @@ html[lang='te'] [data-i18n] {
   text-transform: none;
 }
 
-html[lang='te'] .kicker,
 html[lang='te'] .eyebrow,
 html[lang='te'] .line--three,
 html[lang='te'] .wordmark__sub {
