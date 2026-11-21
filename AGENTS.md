@@ -49,7 +49,10 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 ## Conventions
 
 - Every user-visible string lives in `src/js/content.js` under both `en` and `te`. Never
-  hardcode copy in `index.html`; add `data-i18n` and a key in both trees.
+  hardcode copy in `index.html`; add `data-i18n` and a key in both trees. The text inside
+  a `data-i18n` element is the no-JS fallback, so it has to be rewritten whenever the `en`
+  value changes — a stale one survives in view-source and to crawlers while the page looks
+  right in a browser.
 - Scene artwork is raster in `public/assets/art/`, already decorated (garlands, lamps,
   kolam), so CSS must not draw a second arch, frame or seal on top of it. The one-time
   originals arrive as multi-megabyte PNGs; convert them to WebP (Pillow, `method=6`) and
