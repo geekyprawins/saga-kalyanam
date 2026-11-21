@@ -15,6 +15,7 @@
   position: absolute;
   inset: 0;
   margin: auto;
+  max-width: calc(100vh * 0.462);
   max-width: calc(100svh * 0.462);
   perspective: 1100px;
   perspective-origin: 50% 45%;

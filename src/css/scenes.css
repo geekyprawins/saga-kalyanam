@@ -195,11 +195,26 @@
   background-position: center;
 }
 
+.portrait__photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%238a5f22' stroke-width='1.1'%3E%3Ccircle cx='100' cy='100' r='88' stroke-opacity='.30' stroke-dasharray='1 6' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='100' r='66' stroke-opacity='.22'/%3E%3Cg stroke-opacity='.28'%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(0 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(45 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(90 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(135 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(180 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(225 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(270 100 100)'/%3E%3Cellipse cx='100' cy='100' rx='13' ry='34' transform='rotate(315 100 100)'/%3E%3C/g%3E%3C/g%3E%3Cg fill='%238a5f22' fill-opacity='.20'%3E%3Ccircle cx='178.0' cy='100.0' r='1.8'/%3E%3Ccircle cx='167.5' cy='139.0' r='1.8'/%3E%3Ccircle cx='139.0' cy='167.5' r='1.8'/%3E%3Ccircle cx='100.0' cy='178.0' r='1.8'/%3E%3Ccircle cx='61.0' cy='167.5' r='1.8'/%3E%3Ccircle cx='32.5' cy='139.0' r='1.8'/%3E%3Ccircle cx='22.0' cy='100.0' r='1.8'/%3E%3Ccircle cx='32.5' cy='61.0' r='1.8'/%3E%3Ccircle cx='61.0' cy='32.5' r='1.8'/%3E%3Ccircle cx='100.0' cy='22.0' r='1.8'/%3E%3Ccircle cx='139.0' cy='32.5' r='1.8'/%3E%3Ccircle cx='167.5' cy='61.0' r='1.8'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 82% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.portrait__photo.has-photo::before {
+  display: none;
+}
+
 .monogram {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 16vw, 4rem);
-  color: var(--gold-400);
-  opacity: 0.55;
+  font-size: clamp(3.6rem, 19vw, 4.8rem);
+  color: var(--gold-500);
+  opacity: 0.72;
   letter-spacing: 0.05em;
 }
 
