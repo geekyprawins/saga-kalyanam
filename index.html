@@ -15,20 +15,21 @@
        for the final domain (e.g. https://sagakalyanam.com) when one is attached. -->
   <meta property="og:url" content="https://work-2-qumsgmlpdytbwisc.prod-runtime.all-hands.dev/" />
   <meta property="og:image" content="https://work-2-qumsgmlpdytbwisc.prod-runtime.all-hands.dev/assets/og.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_IN" />
   <meta property="og:image:alt" content="SaGa Kalyanam — Sanjana and Gagan, 10 December 2026" />
   <meta property="og:site_name" content="SaGa Kalyanam" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SaGa Kalyanam · Sanjana &amp; Gagan" />
+  <meta name="twitter:description" content="10 December 2026 · Sumuhurtham 8:34 PM · K Convention Function Hall, Jangareddygudem." />
   <meta name="twitter:image" content="https://work-2-qumsgmlpdytbwisc.prod-runtime.all-hands.dev/assets/og.jpg" />
 
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="image" href="./assets/art/sky.svg" />
-  <link rel="preload" as="image" href="./assets/art/arch.svg" />
-  <link rel="preload" as="image" href="./assets/art/mid.svg" />
-  <link rel="preload" as="image" href="./assets/art/fore.svg" />
+  <link rel="preload" as="image" href="./assets/art/hero-temple.webp" fetchpriority="high" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+Telugu:wght@400;500&display=swap" />
 
   <script>document.documentElement.classList.add('js');</script>
@@ -79,83 +80,17 @@
     <!-- 1 · GATE -->
     <section class="scene scene--gate" id="gate" aria-label="Welcome">
       <div class="stage" id="stage">
-        <div class="layer layer--sky" data-depth="5">
-          <img class="layer__img" src="./assets/art/sky.svg" alt="" width="900" height="1948" decoding="async" />
-        </div>
-        <div class="layer layer--mid" data-depth="12">
-          <img class="layer__img" src="./assets/art/mid.svg" alt="" width="900" height="1948" decoding="async" />
-          <svg class="kolam" id="kolam" viewBox="0 0 900 1948" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-            <defs>
-              <path id="kolamPetal" d="M0 0 q26 -44 0 -86 q-26 42 0 86 z" pathLength="1" fill="none" stroke="#fffaf0" stroke-width="5" stroke-opacity="0.92" />
-            </defs>
-            <g class="kolam__mark" transform="translate(450 1550) scale(0.98)">
-              <circle class="kolam__ring" r="196" fill="none" stroke="#fffaf0" stroke-width="3" stroke-opacity="0.55" stroke-dasharray="2 10" stroke-linecap="round" />
-              <g class="kolam__petals">
-                <use href="#kolamPetal" class="kolam__petal" style="--i:0" transform="rotate(0)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:1" transform="rotate(45)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:2" transform="rotate(90)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:3" transform="rotate(135)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:4" transform="rotate(180)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:5" transform="rotate(225)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:6" transform="rotate(270)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:7" transform="rotate(315)" />
-              </g>
-              <g class="kolam__petals kolam__petals--inner" transform="scale(0.55)">
-                <use href="#kolamPetal" class="kolam__petal" style="--i:8" transform="rotate(22.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:9" transform="rotate(67.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:10" transform="rotate(112.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:11" transform="rotate(157.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:12" transform="rotate(202.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:13" transform="rotate(247.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:14" transform="rotate(292.5)" />
-                <use href="#kolamPetal" class="kolam__petal" style="--i:15" transform="rotate(337.5)" />
-              </g>
-              <circle class="kolam__hub" r="26" fill="none" stroke="#fffaf0" stroke-width="4" stroke-opacity="0.85" />
-              <circle class="kolam__dot" id="kolamDot" r="9" fill="#fffaf0" fill-opacity="0.75" />
-              <g class="kolam__sparks" fill="#d9701c" opacity="0.85">
-                <circle cx="0" cy="-150" r="6" /><circle cx="150" cy="0" r="6" />
-                <circle cx="0" cy="150" r="6" /><circle cx="-150" cy="0" r="6" />
-              </g>
-            </g>
-          </svg>
-        </div>
-
-        <div class="doors" id="doors">
-          <div class="door door--left"><img class="layer__img" src="./assets/art/arch.svg" alt="" width="900" height="1948" decoding="async" /></div>
-          <div class="door door--right"><img class="layer__img" src="./assets/art/arch.svg" alt="" width="900" height="1948" decoding="async" /></div>
-        </div>
-
-        <div class="layer layer--fore" data-depth="30">
-          <img class="layer__img" src="./assets/art/fore.svg" alt="" width="900" height="1948" decoding="async" />
-        </div>
-
-      <div class="bells" id="bells">
-        <button class="bell" type="button" data-bell aria-label="Ring the temple bell">
-          <span class="bell__swing">
-            <svg viewBox="-44 -14 88 150" aria-hidden="true">
-              <path d="M0 -14v22" stroke="url(#brassGrad)" stroke-width="4"/>
-              <path d="M-30 100q0-64 30-80 30 16 30 80z" fill="url(#brassGrad)" stroke="#5d3a12" stroke-width="1.6"/>
-              <path d="M-34 100h68q2 10-5 12h-58q-7-2-5-12z" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1.2"/>
-              <circle cx="0" cy="122" r="8" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1"/>
-              <path d="M-14 38q13 8 13 30" stroke="#fff6dd" stroke-opacity=".55" stroke-width="3" fill="none"/>
-            </svg>
-          </span>
-        </button>
-        <button class="bell bell--right" type="button" data-bell aria-label="Ring the temple bell">
-          <span class="bell__swing">
-            <svg viewBox="-44 -14 88 150" aria-hidden="true">
-              <path d="M0 -14v22" stroke="url(#brassGrad)" stroke-width="4"/>
-              <path d="M-30 100q0-64 30-80 30 16 30 80z" fill="url(#brassGrad)" stroke="#5d3a12" stroke-width="1.6"/>
-              <path d="M-34 100h68q2 10-5 12h-58q-7-2-5-12z" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1.2"/>
-              <circle cx="0" cy="122" r="8" fill="url(#brassGrad2)" stroke="#5d3a12" stroke-width="1"/>
-              <path d="M-14 38q13 8 13 30" stroke="#fff6dd" stroke-opacity=".55" stroke-width="3" fill="none"/>
-            </svg>
-          </span>
-        </button>
+        <img
+          class="stage__hero"
+          src="./assets/art/hero-temple.webp"
+          alt=""
+          width="1500"
+          height="844"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <span class="stage__shade" aria-hidden="true"></span>
       </div>
-        <div class="stage__light" id="stageLight" aria-hidden="true"></div>
-      </div>
-
 
       <div class="gate__copy">
         <p class="kicker" data-i18n="hosted">The Swamiraju Family invites you</p>
@@ -165,60 +100,23 @@
           <span class="wordmark__sub" data-i18n="kalyanam">Kalyanam</span>
         </h1>
         <p class="names"><span>Sanjana</span><em>&amp;</em><span>Gagan</span></p>
-        <button class="ring" id="ringBtn" type="button">
-          <span class="ring__dot" aria-hidden="true"></span>
-          <span data-i18n="ringBell">Ring the bell</span>
-        </button>
       </div>
 
-      <p class="cue" id="cue">
-        <span data-i18n="dragHint">Drag to look around</span>
-        <i aria-hidden="true"></i>
-      </p>
+      <a class="cue" id="cue" href="#blessings">
+        <span class="cue__icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 6v13" />
+            <path d="M10.2 14 16 20 21.8 14" />
+          </svg>
+        </span>
+        <span class="sr-only" data-i18n="scrollHint">Scroll to enter</span>
+      </a>
     </section>
 
     <!-- 2 · BLESSINGS -->
     <section class="scene scene--blessings" id="blessings" aria-label="Blessings">
-      <div class="jasmine" aria-hidden="true">
-        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
-        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
-        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
-        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
-        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
-        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
-        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
-        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
-        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
-        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
-        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
-        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
-        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
-        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
-        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
-        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
-        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
-        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
-        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
-        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
-        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
-        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
-        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
-        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
-        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
-        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
-        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
-        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
-        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
-        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
-        <span class="strand" style="--x: 3%; --w: 9px; --top: -4%; --len: 108%; --b: 0.2px; --o: 1; --d: 0s"></span>
-        <span class="strand" style="--x: 11%; --w: 7px; --top: -8%; --len: 78%; --b: 1.2px; --o: 0.7; --d: -1.6s"></span>
-        <span class="strand" style="--x: 27%; --w: 11px; --top: -14%; --len: 62%; --b: 7px; --o: 0.12; --d: -3.1s"></span>
-        <span class="strand" style="--x: 71%; --w: 12px; --top: -16%; --len: 66%; --b: 8px; --o: 0.1; --d: -2.2s"></span>
-        <span class="strand" style="--x: 88%; --w: 7px; --top: -8%; --len: 82%; --b: 1.2px; --o: 0.7; --d: -0.7s"></span>
-        <span class="strand" style="--x: 95%; --w: 9px; --top: -4%; --len: 112%; --b: 0.2px; --o: 1; --d: -3.8s"></span>
-      </div>
-
-      <img class="mandapam" src="./assets/art/mandapam.svg" alt="" aria-hidden="true" width="620" height="560" />
+      <img class="bless__bg" src="./assets/art/mandapam.webp" alt="" width="1500" height="844" decoding="async" />
+      <span class="bless__shade" aria-hidden="true"></span>
 
       <div class="blessings__copy" data-reveal>
         <p class="line line--one" data-i18n="twoHearts">Two hearts.</p>
@@ -291,6 +189,10 @@
 
     <!-- 5 · THE INVITATION -->
     <section class="scene scene--invite" id="invite" aria-label="The invitation">
+      <picture class="invite__lamps" aria-hidden="true">
+        <source media="(min-aspect-ratio: 3/4)" srcset="./assets/art/lamps.webp" />
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="" />
+      </picture>
       <header class="scene__head" data-reveal>
         <p class="eyebrow" data-i18n="invitation">The Invitation</p>
       </header>
@@ -298,7 +200,7 @@
       <div class="invite" id="inviteCard" data-reveal>
         <div class="invite__inner">
           <div class="invite__face">
-            <span class="invite__crest" aria-hidden="true">S &amp; G</span>
+            <img class="invite__art" src="./assets/art/invite-frame.webp" alt="" width="1122" height="1402" decoding="async" />
             <p class="invite__top" data-i18n="hostedShort">With the blessings of our families</p>
             <p class="invite__names">Sanjana<br /><em>&amp;</em><br />Gagan</p>
             <div class="invite__rule" aria-hidden="true"><span></span></div>
@@ -313,8 +215,12 @@
             </p>
             <p class="invite__tap" data-i18n="tapCard">Tap the card</p>
           </div>
-          <div class="invite__leaf invite__leaf--l" aria-hidden="true"><span class="invite__leaf-frame"></span></div>
-          <div class="invite__leaf invite__leaf--r" aria-hidden="true"><span class="invite__leaf-frame"></span></div>
+          <div class="invite__leaf invite__leaf--l" aria-hidden="true">
+            <img class="invite__cover" src="./assets/art/kolam-velvet.webp" alt="" width="1000" height="1000" decoding="async" />
+          </div>
+          <div class="invite__leaf invite__leaf--r" aria-hidden="true">
+            <img class="invite__cover" src="./assets/art/kolam-velvet.webp" alt="" width="1000" height="1000" decoding="async" />
+          </div>
         </div>
         <span class="invite__seal" aria-hidden="true"><span class="seel__label">S &amp; G</span></span>
       </div>

@@ -6,7 +6,7 @@ import { initSaveCard } from './savecard.js';
 import { initActions } from './actions.js';
 import { loadPhotos } from './photos.js';
 import { initTilt } from './tilt.js';
-import { isSoundOn, setSound, unlockAudio } from './audio.js';
+import { isSoundOn, setSound } from './audio.js';
 import { getLang, greetingFor, guestName, setLang, t } from './content.js';
 
 const root = document.documentElement;
@@ -86,19 +86,6 @@ soundBtn?.addEventListener('click', () => {
   setSound(next);
   paintSound(next);
 });
-
-// The bell is the natural first gesture, so let it switch the sound on.
-document.addEventListener(
-  'click',
-  (event) => {
-    if (event.target.closest('[data-bell], #ringBtn') && !isSoundOn()) {
-      unlockAudio();
-      setSound(true);
-      paintSound(true);
-    }
-  },
-  true,
-);
 
 /* ── scenes ───────────────────────────────────────────── */
 loadPhotos();
@@ -193,8 +180,8 @@ async function initScrollMotion() {
     });
 
     gsap.fromTo(
-      '.jasmine',
-      { scale: 1.24, opacity: 0.3 },
+      '.bless__bg',
+      { scale: 1.22, opacity: 0.45 },
       {
         scale: 1,
         opacity: 0.9,

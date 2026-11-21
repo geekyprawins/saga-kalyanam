@@ -1,17 +1,6 @@
-/* Procedural sound: a temple bell for the gate, a sannai melam for the
-   ambience, and the small noises of the card itself. Synthesised at runtime so
-   the invitation ships without audio files. */
-
-const BELL_BASE = 470;
-const PARTIALS = [
-  [1.0, 0.34, 7.0],
-  [2.0, 0.17, 5.2],
-  [2.39, 0.13, 4.4],
-  [3.0, 0.1, 3.6],
-  [4.16, 0.065, 2.8],
-  [5.43, 0.045, 2.2],
-  [6.79, 0.028, 1.8],
-];
+/* Procedural sound: a sannai melam for the ambience and the small noises of the
+   card itself. Synthesised at runtime so the invitation ships without audio
+   files. */
 
 let ctx = null;
 let master = null;
@@ -93,62 +82,6 @@ export function setSound(on) {
     stopAmbience();
   }
   return soundOn;
-}
-
-export function ringBell({ gain = 1, detune = 0 } = {}) {
-  if (!ctx || !soundOn) return;
-  const now = ctx.currentTime + 0.01;
-  const bus = ctx.createGain();
-  bus.gain.value = gain;
-  bus.connect(master);
-  bus.connect(wet);
-
-  PARTIALS.forEach(([ratio, level, decay], i) => {
-    const osc = ctx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = BELL_BASE * ratio + detune + (Math.random() - 0.5) * 1.6;
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(level, now + 0.005);
-    env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
-    osc.connect(env);
-    env.connect(bus);
-    osc.start(now);
-    osc.stop(now + decay + 0.05);
-    if (i === 0) {
-      const partial = ctx.createOscillator();
-      partial.type = 'sine';
-      partial.frequency.value = BELL_BASE * 0.5;
-      const env2 = ctx.createGain();
-      env2.gain.setValueAtTime(0, now);
-      env2.gain.linearRampToValueAtTime(level * 0.5, now + 0.008);
-      env2.gain.exponentialRampToValueAtTime(0.0001, now + decay * 0.8);
-      partial.connect(env2);
-      env2.connect(bus);
-      partial.start(now);
-      partial.stop(now + decay);
-    }
-  });
-
-  // metal strike
-  const noise = ctx.createBufferSource();
-  const length = Math.floor(ctx.sampleRate * 0.05);
-  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < length; i += 1) {
-    data[i] = (Math.random() * 2 - 1) * (1 - i / length) ** 3;
-  }
-  noise.buffer = buffer;
-  const bp = ctx.createBiquadFilter();
-  bp.type = 'bandpass';
-  bp.frequency.value = 3200;
-  bp.Q.value = 0.9;
-  const noiseGain = ctx.createGain();
-  noiseGain.gain.value = 0.09;
-  noise.connect(bp);
-  bp.connect(noiseGain);
-  noiseGain.connect(bus);
-  noise.start(now);
 }
 
 export function swish() {

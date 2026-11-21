@@ -50,8 +50,14 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 
 - Every user-visible string lives in `src/js/content.js` under both `en` and `te`. Never
   hardcode copy in `index.html`; add `data-i18n` and a key in both trees.
-- Artwork is hand-written SVG in `public/assets/art/`, layered by `data-depth` for
-  parallax. Replace it with real imagery rather than adding new decoration.
+- Scene artwork is raster in `public/assets/art/`, already decorated (garlands, lamps,
+  kolam), so CSS must not draw a second arch, frame or seal on top of it. The one-time
+  originals arrive as multi-megabyte PNGs; convert them to WebP (Pillow, `method=6`) and
+  commit only the WebP. `hero-temple`, `mandapam`, `invite-frame`, `lamps` and
+  `kolam-velvet` are the current set.
+- Anything referenced from CSS or HTML uses `./assets/art/...`: `public/` is the only
+  folder whose paths survive `base: './'`. Prefer an `<img>` over a CSS `url()` anyway —
+  it carries `width`/`height` and can be gated per breakpoint with `<picture>`.
 - Deferred work (Three.js, GSAP, Lenis) is dynamically imported so it never blocks first
   paint. Keep the first view at HTML + CSS + `src/js` only.
 - Small-caps labels take their size from `--label` (0.62rem, 0.74rem in Telugu). Adding a
@@ -70,20 +76,19 @@ Without it the ornament's tile size survives and the photo repeats across the bo
 - `src/js/savecard.js` paints the 1080×1350 share card on a canvas. Its `tracked()` helper
   spaces per glyph, so it skips any non-Latin line — spacing Telugu by code point tears
   the conjuncts apart.
-- The stationery is three SVG data URIs on `.scene--invite`: `--frame` (printed border),
-  `--damask` (paper tile) and `--wax` (seal). The frame is applied with `border-image`
-  so it stretches to any card size without redrawing; give the SVG explicit `width` and
-  `height` or the intrinsic 300×150 box shifts every slice.
-- `.invite__leaf` has no pseudo-elements left (foil and seam), so its frame is a real
-  `<span class="invite__leaf-frame">`. Each leaf is clipped to its half, so the two halves
-  read as one frame until the leaves turn.
-- The face's horizontal padding must clear the 22px frame band, or a long venue line runs
-  under the border.
+- The face is `invite-frame.webp`, printed at 4:5, so the card's `aspect-ratio` must stay
+  `0.8` or the arch and lamps crop. The type lives in the cream panel: `padding: 17% 16%
+  21%` is the measured safe area, and the venue is the line that overflows it first.
+- `--wax` (the seal) is the only stationery still drawn in CSS.
+- Each `.invite__leaf` holds an `<img class="invite__cover">` of `kolam-velvet.webp`. Both
+  leaves show the same square, so the closed card reads as one continuous panel until the
+  leaves turn.
+- `.invite__face` needs `isolation: isolate` and the art at `z-index: -1`. Without it the
+  face's type escapes the preserve-3d sort and floats above the closed cover.
 
 ## Ambience
 
-`src/js/audio.js` synthesises everything. The gate bell is a struck-bell partial stack;
-the ambience is a sannai melam — nadaswaram (detuned saws, nasal peak, jaru slide and
+`src/js/audio.js` synthesises everything. The ambience is a sannai melam — nadaswaram (detuned saws, nasal peak, jaru slide and
 vibrato) over a tavil in adi talam and a Sa/Pa drone, in Mohanam. It is a 32-step loop that
 alternates two phrases. Headless Chromium has no audio device, so `ctx.currentTime` never
 advances there: verify changes by rendering the module through `OfflineAudioContext`

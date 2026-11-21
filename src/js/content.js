@@ -17,8 +17,7 @@ export const i18n = {
   en: {
     hosted: 'The Swamiraju Family invites you',
     kalyanam: 'Kalyanam',
-    ringBell: 'Ring the bell',
-    dragHint: 'Drag to look around',
+    scrollHint: 'Scroll to enter',
     twoHearts: 'Two hearts.',
     twoFamilies: 'Two families.',
     oneCelebration: 'One celebration.',
@@ -79,13 +78,11 @@ export const i18n = {
     guest5: '5 or more',
     rsvpThanks: 'Opening WhatsApp with your reply.',
     calendarReady: 'Calendar file ready',
-    enter: 'Scroll to enter',
   },
   te: {
     hosted: 'స్వామిరాజు కుటుంబం ఆహ్వానం',
     kalyanam: 'కళ్యాణం',
-    ringBell: 'గంటను తట్టండి',
-    dragHint: 'తిప్పి చూడండి',
+    scrollHint: 'లోపలికి స్క్రోల్ చేయండి',
     twoHearts: 'రెండు హృదయాలు.',
     twoFamilies: 'రెండు కుటుంబాలు.',
     oneCelebration: 'ఒకే వేడుక.',
@@ -146,7 +143,6 @@ export const i18n = {
     guest5: '5 లేదా ఎక్కువ',
     rsvpThanks: 'మీ జవాబుతో వాట్సప్ తెరుస్తున్నాము.',
     calendarReady: 'క్యాలెండర్ ఫైల్ సిద్ధం',
-    enter: 'లోపలికి వెళ్లండి',
   },
 };
 

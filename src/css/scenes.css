@@ -3,100 +3,52 @@
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
+  display: grid;
+  align-content: end;
   overflow: hidden;
-  background: radial-gradient(110% 70% at 50% 30%, #3d0d14 0%, #25080d 55%, #1a0508 100%);
+  background: #1a0508;
   color: var(--ivory);
 }
 
-.jasmine {
+.bless__bg {
   position: absolute;
-  inset: -6%;
-  opacity: 0.9;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 64% 50%;
   will-change: transform;
 }
 
-.jasmine .strand {
+/* The mandapam is bright, so the type needs its own darkness at the foot. */
+.bless__shade {
   position: absolute;
-  top: var(--top, -4%);
-  height: var(--len, 100%);
-  left: var(--x);
-  width: var(--w);
-  opacity: var(--o, 1);
-  background-image: radial-gradient(circle at 50% 45%, #ffffff 0 46%, #fffaf0 62%, #f6ead2 76%, rgba(246, 234, 210, 0) 84%);
-  background-size: 100% 15px;
-  background-repeat: repeat-y;
-  filter: blur(var(--b, 0px));
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.08) 100%);
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.08) 100%);
-  animation: strandSway 9s ease-in-out infinite;
-  animation-delay: var(--d, 0s);
-}
-
-.jasmine .strand::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: calc(var(--w) * 0.8);
-  height: calc(var(--w) * 0.8);
-  margin-left: calc(var(--w) * -0.4);
-  border-radius: 50%;
-  background: #fffdf6;
-  box-shadow: 0 0 6px rgba(255, 250, 235, 0.5);
-}
-
-@keyframes strandSway {
-  0%,
-  100% {
-    transform: translateX(-3px) skewX(0.8deg);
-  }
-  50% {
-    transform: translateX(3px) skewX(-0.8deg);
-  }
-}
-
-.scene--blessings::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -12%;
-  width: 120%;
-  height: 62%;
-  transform: translateX(-50%);
+  inset: 0;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(224, 160, 84, 0.28) 0%, rgba(140, 60, 40, 0.12) 48%, rgba(30, 6, 10, 0) 78%);
-}
-
-.mandapam {
-  position: absolute;
-  left: 50%;
-  bottom: -4%;
-  width: min(128%, 34rem);
-  height: auto;
-  transform: translateX(-50%);
-  opacity: 0.85;
-  -webkit-mask-image: linear-gradient(180deg, #000 62%, rgba(0, 0, 0, 0.35) 100%);
-  mask-image: linear-gradient(180deg, #000 62%, rgba(0, 0, 0, 0.35) 100%);
-  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(20, 4, 7, 0.5) 0%, rgba(20, 4, 7, 0) 24%),
+    linear-gradient(0deg, rgba(18, 4, 6, 0.94) 0%, rgba(18, 4, 6, 0.62) 24%, rgba(18, 4, 6, 0.08) 54%, rgba(18, 4, 6, 0) 70%);
 }
 
 .blessings__copy {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 29%;
+  position: relative;
   z-index: 2;
-  padding: 0 var(--pad);
-  text-align: center;
+  padding: 0 var(--pad) clamp(4.5rem, 15vh, 7rem);
 }
 
-.blessings__copy::before {
-  content: '';
-  position: absolute;
-  inset: -80% -20%;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(closest-side, rgba(201, 130, 60, 0.22) 0%, rgba(140, 60, 40, 0.1) 45%, rgba(30, 6, 10, 0) 75%);
+@media (min-aspect-ratio: 3/4) {
+  .scene--blessings {
+    align-content: center;
+  }
+
+  .bless__bg {
+    object-position: 50% 50%;
+  }
+
+  .blessings__copy {
+    padding: 0 var(--pad) 0 clamp(2rem, 7vw, 6rem);
+    max-width: 34rem;
+  }
 }
 
 .line {
@@ -120,10 +72,10 @@
 .line--three {
   margin-top: 1.5rem;
   font-family: var(--font-display);
-  font-size: 0.56rem;
+  font-size: 0.62rem;
   letter-spacing: 0.36em;
   text-transform: uppercase;
-  color: rgba(251, 245, 233, 0.55);
+  color: rgba(251, 245, 233, 0.78);
 }
 
 /* ── 3 · the couple ────────────────────────────────────── */
@@ -479,6 +431,38 @@
   text-align: center;
   background: radial-gradient(110% 60% at 50% 20%, #3d0d14 0%, #24080d 60%, #180407 100%);
   color: var(--gold-100);
+  overflow: hidden;
+}
+
+/* the brass lamps sit behind the card, burnt down so the type keeps its contrast */
+.invite__lamps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.invite__lamps img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  opacity: 0.7;
+  filter: saturate(0.9) brightness(0.5);
+}
+
+.scene--invite::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 42% at 50% 46%, rgba(18, 3, 6, 0.35) 0%, rgba(18, 3, 6, 0.72) 70%, rgba(18, 3, 6, 0.92) 100%),
+    linear-gradient(180deg, rgba(20, 4, 7, 0.9) 0%, rgba(20, 4, 7, 0.25) 22%, rgba(20, 4, 7, 0.25) 78%, rgba(20, 4, 7, 0.92) 100%);
+}
+
+.scene--invite > *:not(.invite__lamps) {
+  position: relative;
+  z-index: 1;
 }
 
 .scene--invite .eyebrow {
@@ -488,8 +472,8 @@
 .invite {
   position: relative;
   z-index: 82;
-  width: min(100%, 20.5rem);
-  aspect-ratio: 0.66;
+  width: min(100%, 21.5rem);
+  aspect-ratio: 0.8;
   margin: 1.6rem auto 0;
   perspective: 1400px;
   cursor: pointer;
@@ -508,63 +492,51 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1.45rem;
+  /* the arch, garlands and temple etching are already in the artwork, so the
+     type only has to stay inside the cream panel */
+  padding: 17% 16% 21%;
   color: var(--ink);
-  background:
-    var(--damask) 0 0 / 38px 38px,
-    radial-gradient(120% 58% at 50% 0%, rgba(201, 162, 74, 0.22) 0%, transparent 62%),
-    radial-gradient(140% 80% at 50% 50%, rgba(255, 253, 246, 0.9) 0%, transparent 55%),
-    linear-gradient(160deg, #fdf9f0 0%, #f2e2c2 100%);
-  box-shadow: inset 0 0 22px rgba(122, 82, 32, 0.14);
+  background: #f7ecd6;
+  overflow: hidden;
+  /* the leaves are siblings in a preserve-3d box, so the face has to be its own
+     stacking context or its type floats above the closed cover */
+  isolation: isolate;
 }
 
-.invite__face::before {
-  content: '';
+.invite__art {
   position: absolute;
   inset: 0;
-  z-index: 2;
-  border: 22px solid transparent;
-  border-image: var(--frame) 26 / 22px;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
-}
-
-.invite__crest {
-  display: grid;
-  place-items: center;
-  width: 2.9rem;
-  height: 2.9rem;
-  margin-bottom: 0.8rem;
-  border-radius: 50%;
-  border: 1px solid rgba(201, 162, 74, 0.8);
-  box-shadow:
-    0 0 0 3px rgba(253, 249, 240, 0.85),
-    0 0 0 4px rgba(201, 162, 74, 0.35),
-    0 2px 6px rgba(122, 82, 32, 0.18);
-  background: radial-gradient(circle at 40% 28%, #fdf8ea, #efdcb2);
-  font-family: var(--font-display);
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  color: #a5761f;
 }
 
 .invite__top {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 0.5rem;
-  letter-spacing: 0.24em;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-700);
+  color: #8a5c1d;
+  text-shadow: 0 1px 0 rgba(255, 252, 244, 0.6);
   max-width: 15rem;
-  line-height: 1.7;
+  line-height: 1.6;
+}
+
+.invite__face .invite__rule {
+  margin: 0.7rem auto;
+  width: min(12rem, 66%);
 }
 
 .invite__names {
-  margin: 0.9rem 0 0;
+  margin: 0.4rem 0 0;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 7vw, 1.85rem);
+  font-size: clamp(1.22rem, 5.6vw, 1.5rem);
   font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: 0.14em;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
   color: var(--maroon-700);
 }
 
@@ -579,7 +551,7 @@
 .invite__date {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--maroon-600);
@@ -587,8 +559,8 @@
 
 .invite__muhurtham {
   display: grid;
-  gap: 0.1rem;
-  margin: 0.85rem 0;
+  gap: 0.05rem;
+  margin: 0.45rem 0;
 }
 
 .invite__muhurtham span {
@@ -602,32 +574,38 @@
 .invite__muhurtham strong {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.32rem;
   letter-spacing: 0.08em;
   color: var(--maroon-700);
 }
 
 .invite__venue {
   margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.5;
+  font-size: 0.86rem;
+  line-height: 1.45;
   color: #4a2a22;
 }
 
 .invite__venue span {
-  font-size: 0.84rem;
-  opacity: 0.8;
+  font-size: 0.66rem;
+  letter-spacing: 0.01em;
+  opacity: 0.82;
 }
 
 .invite__tap {
   position: absolute;
-  bottom: 0.85rem;
+  bottom: 0.7rem;
   margin: 0;
+  padding: 0.28rem 0.7rem;
   font-family: var(--font-display);
-  font-size: 0.46rem;
-  letter-spacing: 0.26em;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold-700);
+  color: #6b1a1f;
+  background: rgba(255, 250, 238, 0.72);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(201, 162, 74, 0.5);
   animation: tapPulse 2.8s ease-in-out infinite;
 }
 
@@ -650,8 +628,7 @@
   position: absolute;
   inset: 0;
   background-image:
-    url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%20200%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23e0c084%27%20stroke-width%3D%271.2%27%20stroke-opacity%3D%27.55%27%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2786%27%2F%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2752%27%20stroke-opacity%3D%27.4%27%2F%3E%3Cg%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28180%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28225%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28270%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%228%22%20ry%3D%2222%22%20transform%3D%22rotate%28315%20100%20100%29%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2718%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),
-    radial-gradient(90% 55% at 50% 40%, rgba(201, 162, 74, 0.22) 0%, transparent 65%),
+    radial-gradient(90% 55% at 50% 40%, rgba(201, 162, 74, 0.18) 0%, transparent 65%),
     linear-gradient(135deg, #6d1219 0%, #3a0b11 55%, #4a0d12 100%);
   background-size: 58% auto, cover, cover;
   background-position: center 42%, center, center;
@@ -660,11 +637,12 @@
   transition: transform 1.5s cubic-bezier(0.4, 0.05, 0.2, 1);
 }
 
-.invite__leaf-frame {
+.invite__cover {
   position: absolute;
   inset: 0;
-  border: 22px solid transparent;
-  border-image: var(--frame) 26 / 22px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
 }
 
@@ -715,9 +693,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 4.8rem;
-  height: 4.8rem;
-  margin: -2.4rem 0 0 -2.4rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
   display: grid;
   place-items: center;
   font-family: var(--font-display);
@@ -987,10 +965,11 @@
   margin: 1.15rem 0 0;
   text-align: center;
   font-family: var(--font-display);
-  font-size: var(--label);
-  letter-spacing: 0.26em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(224, 192, 132, 0.72);
+  color: var(--gold-200);
   animation: tapPulse 2.8s ease-in-out infinite;
 }
 
@@ -1093,6 +1072,10 @@ html[lang='te'] .close__family {
 
 /* ── tablet / desktop layout ───────────────────────────── */
 @media (min-width: 46rem) {
+  .invite {
+    width: min(100%, 25rem);
+  }
+
   .portraits {
     grid-template-columns: 1fr 1fr;
     gap: 2.2rem;
