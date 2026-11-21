@@ -40,3 +40,8 @@ Watch for these, which have bitten before:
   parallax. Replace it with real imagery rather than adding new decoration.
 - Deferred work (Three.js, GSAP, Lenis) is dynamically imported so it never blocks first
   paint. Keep the first view at HTML + CSS + `src/js` only.
+- Small-caps labels take their size from `--label` (0.62rem, 0.74rem in Telugu). Adding a
+  new uppercase label class means adding it to that list, not inventing a new font-size —
+  anything under ~10px is unreadable on a phone in a bright room.
+- Social preview URLs in `index.html` are absolute on purpose; crawlers drop relative ones.
+  Changing hosts means editing `og:url`, `og:image` and `twitter:image` together.
