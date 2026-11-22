@@ -204,17 +204,17 @@
   color: var(--maroon-700);
 }
 
-/* A gold thread ties the two together: a diagonal spiral with hearts and a
-   ring through the gap when the portraits stack, and a horizontal line
-   between the names on wide screens. */
+/* A gold thread ties the two frames together: a diagonal spiral with hearts
+   and a ring when the portraits stack, and a horizontal line between the
+   names on wide screens. */
 .couple-link {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 66%;
+  top: calc(50% - 2.2rem);
   display: grid;
   place-items: center;
-  width: 14rem;
-  height: 3.4rem;
+  width: 7rem;
+  height: 7.5rem;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -1237,6 +1237,7 @@ html[lang='te'] .close__family {
 
   .couple-link {
     top: calc(100% - 1rem);
+    left: 50%;
     display: flex;
     flex-direction: row;
     align-items: center;
