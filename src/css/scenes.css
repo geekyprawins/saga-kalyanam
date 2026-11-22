@@ -204,24 +204,23 @@
   color: var(--maroon-700);
 }
 
-/* A single gold thread ties the two together: it runs vertically through the
-   gap when the portraits stack, and horizontally between the names on wide
-   screens. The line draws in once the groom's portrait reveals. */
+/* A gold thread ties the two together: a diagonal spiral with hearts and a
+   ring through the gap when the portraits stack, and a horizontal line
+   between the names on wide screens. */
 .couple-link {
   position: absolute;
   left: 50%;
   top: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.22rem;
-  height: 2.8rem;
+  display: grid;
+  place-items: center;
+  width: 14rem;
+  height: 3.4rem;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
 .couple-link__line {
+  display: none;
   flex: 1;
   width: 1px;
   background: linear-gradient(180deg, transparent, var(--gold-500));
@@ -234,12 +233,72 @@
 }
 
 .couple-link__ornament {
+  display: none;
   flex: none;
   width: 1.6rem;
   height: auto;
   color: var(--gold-500);
   opacity: 0.85;
   filter: drop-shadow(0 0 3px rgba(201, 162, 74, 0.25));
+}
+
+.couple-link__spiral {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  color: var(--gold-500);
+  opacity: 0.85;
+}
+
+.couple-link__spiral-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.couple-link__spiral-heart path {
+  fill: #b95f63;
+  stroke: none;
+}
+
+.couple-link__spiral-ring circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
+}
+
+.couple-link__spiral-ring path {
+  fill: currentColor;
+  stroke: none;
+}
+
+.js .couple-link__spiral-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.4s var(--ease-out);
+}
+
+.js .couple-link__spiral-heart,
+.js .couple-link__spiral-ring {
+  opacity: 0;
+  transform: scale(0.6);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.7s var(--ease-out);
+}
+
+.js .portrait--right.is-in ~ .couple-link .couple-link__spiral-line {
+  stroke-dashoffset: 0;
+}
+
+.js .portrait--right.is-in ~ .couple-link .couple-link__spiral-heart,
+.js .portrait--right.is-in ~ .couple-link .couple-link__spiral-ring {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 0.6s;
 }
 
 .couple-link__ornament path {
@@ -1178,13 +1237,17 @@ html[lang='te'] .close__family {
 
   .couple-link {
     top: calc(100% - 1rem);
+    display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
     width: 14rem;
     height: auto;
     gap: 0.45rem;
   }
 
   .couple-link__line {
+    display: block;
     width: auto;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold-500));
@@ -1195,7 +1258,12 @@ html[lang='te'] .close__family {
   }
 
   .couple-link__ornament {
+    display: block;
     width: 1.8rem;
+  }
+
+  .couple-link__spiral {
+    display: none;
   }
 
   .js .couple-link__line {
