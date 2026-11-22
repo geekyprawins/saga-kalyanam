@@ -72,7 +72,7 @@ function primeAudio() {
   if (!ctx || primed) return;
   primed = true;
   try {
-    const buffer = ctx.createBuffer(1, 1, 22050);
+    const buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(ctx.destination);
