@@ -257,9 +257,22 @@ export function armSound() {
   // works while the context is suspended, so the gesture can start without an await.
   const context = unlockAudio();
   if (context) loadBgm();
-  if (context && context.state === 'running') {
+
+  const beginIfAllowed = () => {
+    if (!context || context.state !== 'running') return;
     events.forEach((name) => window.removeEventListener(name, start, true));
     setSound(true);
+  };
+
+  if (!context || context.state === 'running') {
+    beginIfAllowed();
+  } else {
+    // Best effort: browsers that allow autoplay for this site (prior engagement,
+    // permissive policy) resolve this and start on open; strict ones stay suspended
+    // until the gesture listeners above resume the context.
+    const resumed = context.resume();
+    if (resumed && typeof resumed.then === 'function') resumed.then(beginIfAllowed).catch(() => {});
+    else beginIfAllowed();
   }
 }
 
