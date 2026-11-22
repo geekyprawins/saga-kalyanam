@@ -60,7 +60,7 @@ function bindCard(card) {
     crack();
     shards(seal);
 
-    window.setTimeout(open, 340);
+    window.setTimeout(open, 650);
     window.setTimeout(() => {
       clearShards(seal);
       card.classList.remove('is-hit');
