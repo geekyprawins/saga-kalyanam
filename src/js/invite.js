@@ -3,10 +3,7 @@ import { wedding } from './content.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* Cracks radiate from a point off the seal's centre, so the break reads as wax
-   rather than a pie. Each wedge is widened past its neighbours so the shards
-   overlap and leave no seam while they are still in place. */
-const CRACK_ANGLES = [-96, -47, -3, 45, 93, 141, 190, 239, 288];
+const FRAGMENTS = 6;
 
 export function initInvite() {
   const card = document.getElementById('inviteCard');
@@ -30,8 +27,12 @@ export function initInvite() {
 
 function bindCard(card) {
   const seal = card.querySelector('.invite__seal');
-  const label = seal?.querySelector('.seel__label');
   let busy = false;
+
+  if (seal) {
+    const broken = new URL('./assets/art/wax-seal-broken.png', document.baseURI).href;
+    seal.style.setProperty('--seal-broken', `url("${broken}")`);
+  }
 
   const open = () => {
     card.classList.add('is-open');
@@ -43,7 +44,7 @@ function bindCard(card) {
     card.classList.remove('is-open', 'is-hit');
     card.setAttribute('aria-expanded', 'false');
     seal?.classList.remove('is-cracking');
-    clearDebris(seal);
+    clearShards(seal);
     swish();
   };
 
@@ -57,15 +58,11 @@ function bindCard(card) {
     card.classList.add('is-hit');
     seal.classList.add('is-cracking');
     crack();
-
-    const text = label?.textContent?.trim() || 'S & G';
-    shards(seal, text);
-    dust(seal);
-    flash(seal);
+    shards(seal);
 
     window.setTimeout(open, 340);
     window.setTimeout(() => {
-      clearDebris(seal);
+      clearShards(seal);
       card.classList.remove('is-hit');
       busy = false;
     }, 1000);
@@ -78,20 +75,20 @@ function bindCard(card) {
   });
 }
 
-function clearDebris(seal) {
-  seal?.querySelectorAll('.seel__shard, .seel__dust, .seel__flash').forEach((n) => n.remove());
+function clearShards(seal) {
+  seal?.querySelectorAll('.seel__shard').forEach((n) => n.remove());
 }
 
-function shards(seal, text) {
+function shards(seal) {
   const frag = document.createDocumentFragment();
   for (const piece of buildShards()) {
     const el = document.createElement('span');
     el.className = 'seel__shard';
     el.setAttribute('aria-hidden', 'true');
-    el.textContent = text;
     el.style.setProperty('--clip', piece.clip);
     el.style.setProperty('--dx', `${piece.dx.toFixed(1)}px`);
     el.style.setProperty('--dy', `${piece.dy.toFixed(1)}px`);
+    el.style.setProperty('--dz', `${piece.dz.toFixed(1)}px`);
     el.style.setProperty('--rot', `${piece.rot.toFixed(1)}deg`);
     el.style.setProperty('--delay', `${piece.delay}ms`);
     frag.appendChild(el);
@@ -100,62 +97,42 @@ function shards(seal, text) {
 }
 
 function buildShards() {
-  const rand = seeded(11);
-  const cx = 47;
-  const cy = 43;
+  const rand = seeded(17);
+  const cx = 50;
+  const cy = 50;
+  const reach = 150;
   const out = [];
 
-  for (let i = 0; i < CRACK_ANGLES.length - 1; i += 1) {
-    const from = CRACK_ANGLES[i] - 4;
-    const to = CRACK_ANGLES[i + 1] + 4;
-    const points = [[cx, cy]];
+  const angles = [-90 + rand() * 20];
+  for (let i = 1; i <= FRAGMENTS; i += 1) {
+    angles.push(angles[i - 1] + 360 / FRAGMENTS + (rand() - 0.5) * 24);
+  }
+  angles[FRAGMENTS] = angles[0] + 360;
 
-    for (const t of [0, 0.34, 0.68, 1]) {
-      const angle = ((from + (to - from) * t) * Math.PI) / 180;
-      const radius = 76 + rand() * 14;
-      points.push([cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius]);
-    }
+  const edges = angles.map((angle) => {
+    const rad = (angle * Math.PI) / 180;
+    return [0.52, 0.68, 0.84, 1].map((t) => {
+      const r = reach * t * (1 + (rand() - 0.5) * 0.05);
+      return [cx + Math.cos(rad) * r, cy + Math.sin(rad) * r];
+    });
+  });
 
-    const mid = (((from + to) / 2) * Math.PI) / 180;
-    const travel = 9 + rand() * 13;
+  for (let i = 0; i < FRAGMENTS; i += 1) {
+    const points = [[cx, cy], ...edges[i], ...edges[i + 1].slice().reverse()];
+    const mid = (((angles[i] + angles[i + 1]) / 2) * Math.PI) / 180;
+    const travel = 36 + rand() * 44;
 
     out.push({
       clip: `polygon(${points.map(([x, y]) => `${x.toFixed(1)}% ${y.toFixed(1)}%`).join(', ')})`,
       dx: Math.cos(mid) * travel,
       dy: Math.sin(mid) * travel,
-      rot: (rand() - 0.5) * 50,
-      delay: Math.round(rand() * 55),
+      dz: 16 + rand() * 48,
+      rot: (rand() - 0.5) * 80,
+      delay: Math.round(rand() * 60),
     });
   }
 
   return out;
-}
-
-function dust(seal) {
-  const rand = seeded(23);
-  const frag = document.createDocumentFragment();
-
-  for (let i = 0; i < 14; i += 1) {
-    const angle = rand() * Math.PI * 2;
-    const travel = 26 + rand() * 48;
-    const el = document.createElement('span');
-    el.className = 'seel__dust';
-    el.setAttribute('aria-hidden', 'true');
-    el.style.setProperty('--dx', `${(Math.cos(angle) * travel).toFixed(1)}px`);
-    el.style.setProperty('--dy', `${(Math.sin(angle) * travel).toFixed(1)}px`);
-    el.style.setProperty('--size', `${(1.6 + rand() * 2.6).toFixed(1)}px`);
-    el.style.setProperty('--delay', `${Math.round(rand() * 90)}ms`);
-    frag.appendChild(el);
-  }
-
-  seal.appendChild(frag);
-}
-
-function flash(seal) {
-  const el = document.createElement('span');
-  el.className = 'seel__flash';
-  el.setAttribute('aria-hidden', 'true');
-  seal.appendChild(el);
 }
 
 function seeded(seed) {
