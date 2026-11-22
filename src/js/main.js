@@ -6,8 +6,8 @@ import { initSaveCard } from './savecard.js';
 import { initActions } from './actions.js';
 import { loadPhotos } from './photos.js';
 import { initTilt } from './tilt.js';
-import { isSoundOn, prefetchBgm, setSound } from './audio.js';
-import { getLang, greetingFor, guestName, setLang } from './content.js';
+import { armSound, isSoundOn, prefetchBgm, setSound } from './audio.js';
+import { addressFor, getLang, guestName, setLang } from './content.js';
 
 const root = document.documentElement;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -45,8 +45,22 @@ function loadTeluguFont() {
 
 function paintGreeting() {
   const el = document.getElementById('greet');
-  if (!el || !guest) return;
-  el.textContent = greetingFor(guest);
+  const parts = addressFor(guest);
+  if (!el || !parts) return;
+  const name = document.createElement('span');
+  name.className = 'greet__name';
+  name.textContent = parts.name;
+
+  const bits = [];
+  if (parts.lead) bits.push(`${parts.lead} `);
+  bits.push(name);
+  if (parts.tail) {
+    const tail = document.createElement('span');
+    tail.className = 'greet__tail';
+    tail.textContent = ` ${parts.tail}`;
+    bits.push(tail);
+  }
+  el.replaceChildren(...bits);
   el.hidden = false;
 }
 
@@ -83,18 +97,11 @@ soundBtn?.addEventListener('click', () => {
   paintSound(next);
 });
 
-/* the gate is the one tap every guest makes, so it starts the track; the icon
-   flips to "on" so the button keeps telling the truth */
-const gate = document.getElementById('gate');
-gate?.addEventListener(
-  'pointerdown',
-  () => {
-    if (isSoundOn()) return;
-    setSound(true);
-    paintSound(true);
-  },
-  { once: true },
-);
+/* Sound is on from the start. Browsers will not play before a gesture, so the
+   track is armed here and begins at the first tap anywhere on the page; the icon
+   already reads "on" so nobody has to go looking for a button. */
+armSound();
+paintSound(isSoundOn());
 
 /* ── scenes ───────────────────────────────────────────── */
 loadPhotos();

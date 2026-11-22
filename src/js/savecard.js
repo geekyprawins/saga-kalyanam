@@ -157,9 +157,15 @@ function draw(ctx, lang) {
   ctx.fillText(t('venueLine'), cx, 1052);
 
   if (name) {
+    const line = greetingFor(name);
     ctx.fillStyle = '#8a5f22';
-    ctx.font = `italic 34px ${BODY}`;
-    ctx.fillText(greetingFor(name), cx, 1156);
+    let size = 34;
+    ctx.font = `italic ${size}px ${BODY}`;
+    while (size > 20 && ctx.measureText(line).width > W - 180) {
+      size -= 2;
+      ctx.font = `italic ${size}px ${BODY}`;
+    }
+    ctx.fillText(line, cx, 1156);
   }
 
   ctx.fillStyle = 'rgba(61, 13, 20, 0.72)';

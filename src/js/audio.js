@@ -9,7 +9,8 @@ const BGM_FADE_OUT = 0.5;
 let ctx = null;
 let master = null;
 let wet = null;
-let soundOn = false;
+let soundOn = true;
+let mutedByUser = false;
 
 let bgmBytes = null;
 let bgmBuffer = null;
@@ -167,8 +168,12 @@ function stopBgm() {
 }
 
 export function setSound(on) {
+  mutedByUser = !on;
   if (on) unlockAudio();
-  if (!ctx) return false;
+  if (!ctx) {
+    soundOn = false;
+    return false;
+  }
   soundOn = on;
 
   master.gain.cancelScheduledValues(ctx.currentTime);
@@ -184,8 +189,27 @@ export function setSound(on) {
   return soundOn;
 }
 
+/* Browsers refuse to start audio before a gesture, so nothing is created at load:
+   the track starts at the first tap, touch or keypress anywhere on the page, which
+   keeps the console free of the autoplay warning. The icon already reads "on", so
+   nobody has to go looking for the button. */
+export function armSound() {
+  const events = ['pointerdown', 'touchstart', 'keydown'];
+  const start = () => {
+    events.forEach((name) => window.removeEventListener(name, start, true));
+    if (mutedByUser) return;
+    const context = unlockAudio();
+    const go = () => {
+      if (!mutedByUser) setSound(true);
+    };
+    if (context && context.state !== 'running') context.resume().then(go).catch(() => {});
+    else go();
+  };
+  events.forEach((name) => window.addEventListener(name, start, { capture: true, passive: true }));
+}
+
 export function swish() {
-  if (!ctx || !soundOn) return;
+  if (!ctx || !soundOn || ctx.state !== 'running') return;
   const now = ctx.currentTime;
   const length = Math.floor(ctx.sampleRate * 0.5);
   const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
@@ -211,7 +235,7 @@ export function swish() {
 }
 
 export function crack() {
-  if (!ctx || !soundOn) return;
+  if (!ctx || !soundOn || ctx.state !== 'running') return;
   const now = ctx.currentTime + 0.005;
 
   // brittle snap

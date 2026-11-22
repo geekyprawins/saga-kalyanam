@@ -53,6 +53,9 @@ Without it the ornament's tile size survives and the photo repeats across the bo
   a `data-i18n` element is the no-JS fallback, so it has to be rewritten whenever the `en`
   value changes — a stale one survives in view-source and to crawlers while the page looks
   right in a browser.
+- The guest line (`?to=Name`) sits under the date, built by `addressFor()` into three
+  pieces so `.greet__name` can carry the gold. English reads "To Name & family", Telugu
+  "Name గారు & కుటుంబానికి"; `greetingFor()` flattens the same pieces for the saved card.
 - Scene artwork is raster in `public/assets/art/`, already decorated (garlands, lamps,
   kolam), so CSS must not draw a second arch, frame or seal on top of it. The one-time
   originals arrive as multi-megabyte PNGs; convert them to WebP (Pillow, `method=6`) and
@@ -101,7 +104,10 @@ over its last four seconds, so a plain `loop` would jump. MP3 encoders also pad 
 ends with silence, which `trimEncoderPad()` strips after `decodeAudioData`, otherwise
 the loop plays ~20 ms of nothing every lap.
 
-Audio cannot start before a gesture. The first `pointerdown` on the gate calls
-`setSound(true)` and repaints the toggle; `prefetchBgm()` pulls the bytes on idle without
-touching the AudioContext, so no autoplay warning is logged. The track is decoded once
-and cached, so toggling off and on restarts it without another fetch.
+Sound is on by default: the toggle is painted "on" at boot and `armSound()` starts the
+track at the first `pointerdown`, `touchstart` or `keydown` anywhere on the page — not
+only on the gate, and not only on the button. The AudioContext is created *inside* that
+gesture, never at load, so no autoplay warning is logged; `prefetchBgm()` pulls the bytes
+on idle without touching the context. Once the user mutes, `mutedByUser` stops the
+gesture from bringing it back. The track is decoded once and cached, so toggling off and
+on restarts it without another fetch.
