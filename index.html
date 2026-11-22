@@ -77,18 +77,23 @@
           <source media="(orientation: portrait)" srcset="./assets/art/temple-gate-mobile.webp" />
           <img class="arch__gate" src="./assets/art/temple-gate-desktop.webp" alt="" width="1672" height="941" fetchpriority="high" decoding="async" />
         </picture>
+        <span class="arch__vignette" aria-hidden="true"></span>
         <span class="arch__bloom" aria-hidden="true"></span>
         <button class="arch__bell" id="archBell" type="button" aria-label="Ring the bell to open the invitation">
           <span class="arch__bell-glow" aria-hidden="true"></span>
           <span class="arch__bell-ripple" aria-hidden="true"></span>
           <img class="arch__bell-img" src="./assets/art/temple-bell.webp" alt="" width="900" height="955" draggable="false" />
         </button>
+        <div class="arch__wordmark">
+          <h1 class="wordmark">
+            <span class="wordmark__main">SaGa</span>
+            <span class="wordmark__sub" data-i18n="kalyanam">Kalyanam</span>
+          </h1>
+        </div>
       </div>
 
       <div class="arch__prompt">
-        <p class="arch__kicker">SaGa Kalyanam</p>
         <p class="arch__hint" id="archHint" data-i18n="ringBell">Ring the bell to enter</p>
-        <p class="arch__names"><span>Sanjana</span><em>&amp;</em><span>Gagan</span></p>
       </div>
     </div>
   </section>
