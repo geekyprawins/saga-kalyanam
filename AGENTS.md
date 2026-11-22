@@ -132,18 +132,27 @@ and on restarts without another fetch.
 
 `#arch` (markup at the top of `index.html`, styles in `src/css/arch.css`, behaviour in
 `src/js/arch.js`) is a full-screen wrapper shown on every load, above the veil and nav
-(`z-index: 200`). It reuses `public/assets/art/hero-temple.webp` — the same photo as the
-gate scene, same `object-position` — so when the doors part and the overlay fades, the
-hand-off to the real invitation is seamless. No external art is needed: the doors and
-the brass bell are CSS gradients plus inline SVG.
+(`z-index: 200`). It is the photographic gateway in
+`public/assets/art/temple-gate-desktop.webp` (16:9) or `temple-gate-mobile.webp` (9:16),
+switched by `<picture>` on orientation. That artwork already contains a bell; the
+transparent `temple-bell.webp` is laid over it, sized and placed by the `--bell-*`
+properties so it covers the painted bell. `.arch__frame` keeps the artwork's aspect ratio
+while covering the viewport, so those percentages stay locked to the bell at every size;
+where the viewport is wider than the artwork it pins to the top so the bell is not cropped.
+
+The gate in the artwork is already open, so the reveal is a walk-through: the bell rings,
+the frame zooms slightly, and the arch fades to the invitation.
 
 The bell is the page's first real gesture, so its click is the iOS audio unlock: it calls
-`setSound(true)` and `ringChime()` directly, then swings the doors (`.is-open` →
-`rotateY`), and after ~1.2 s JS adds `.is-gone`. This is the point of the wrapper — a
-guaranteed tap before any music, instead of hoping a scroll counts as activation.
+`setSound(true)` and `ringChime()` directly, then starts the reveal. This is the point of
+the wrapper — a guaranteed tap before any music, instead of hoping a scroll counts as
+activation.
 
 While it is up, `html.arch-locked` locks scroll and `#main`/`.bar` are `inert`. The
 head script sets `history.scrollRestoration = 'manual'` so a reload always starts at the
 arch. `initArch()` adds `arch-ready`; the inline 6 s timeout hides the arch if the app
 never boots, and `<noscript>` hides it without JS. Keep both fallbacks, and never start
 the track from the bell handler while the context is still suspended (see Sound).
+
+The generated PNGs live in git history; the shipped WebPs are resized and compressed
+(`temple-gate-*.webp`, `temple-bell.webp`).

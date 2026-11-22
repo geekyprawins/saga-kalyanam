@@ -3,7 +3,7 @@ import { t } from './content.js';
 
 /* The opening arch: a temple doorway with a hanging bell. The bell tap is the
    page's first real user gesture, so it is what unlocks audio on iOS; only then
-   do the doors part and reveal the invitation. */
+   does the gate open into the invitation. */
 export function initArch() {
   const arch = document.getElementById('arch');
   const bell = document.getElementById('archBell');
@@ -37,7 +37,7 @@ export function initArch() {
 
     /* This click is the gesture that unlocks playback, so start the music and
        peal the bell here rather than waiting for a scroll. Audio failing must
-       never stop the doors from opening. */
+       never stop the gate from opening. */
     try {
       setSound(true);
       ringChime();
@@ -45,7 +45,7 @@ export function initArch() {
       /* the invitation still opens without sound */
     }
 
-    window.setTimeout(reveal, reduced ? 140 : 1180);
+    window.setTimeout(reveal, reduced ? 140 : 1300);
   };
 
   bell.addEventListener('click', open);
