@@ -111,11 +111,16 @@ events — a guest who scrolls in must not be left in silence while the icon rea
 The AudioContext is created at boot and the track is decoded ahead of time (decoding
 works while the context is suspended); `armSound()` also attempts an immediate `resume()`
 so browsers that permit autoplay for the site start on open. Otherwise the first real
-gesture starts a buffer source *synchronously*, inside the gesture. That matters on iOS,
-which only unlocks audio that begins during the gesture rather than after a fetch/decode
-await. A wheel alone is not a user activation in Chrome, so if only a scroll has happened
-the context stays suspended and the already-started source begins the moment any
-click/tap/keypress resumes it.
+gesture unlocks audio with `primeAudio()`, which starts a one-sample silent buffer
+*synchronously inside the gesture* — the iOS unlock — and then resumes the context.
+
+Do **not** start the real track while the context is still suspended: iOS silently drops
+such a source, so it never plays even after `resume()`, which is exactly why the first
+gesture used to be silent and cycling mute→unmute (a fresh source on a running context)
+"fixed" it. `setSound(true)` therefore waits for `state === 'running'` before calling
+`startBgm()`. A wheel alone is not a user activation in Chrome, so `armSound()` only
+removes its listeners once the context is actually running; a scroll that did not unlock
+leaves them armed for the next click/tap/keypress.
 
 `isAudioRunning()` reports whether the context is actually running, and the sound button
 uses it: the first tap on a still-silent page starts playback instead of muting. Once the

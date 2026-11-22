@@ -63,6 +63,26 @@ export function unlockAudio() {
   return ctx;
 }
 
+/* iOS only unlocks Web Audio from a source started inside the gesture. Play one
+   silent sample so later, real playback is allowed even when the track is not
+   decoded yet or is started from a promise callback. Harmless elsewhere. */
+let primed = false;
+
+function primeAudio() {
+  if (!ctx || primed) return;
+  primed = true;
+  try {
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+  } catch {
+    /* context not ready; the gesture's resume() will still try */
+    primed = false;
+  }
+}
+
 export function isSoundOn() {
   return soundOn;
 }
@@ -176,7 +196,10 @@ function stopBgm() {
 
 export function setSound(on) {
   mutedByUser = !on;
-  if (on) unlockAudio();
+  if (on) {
+    unlockAudio();
+    if (ctx && ctx.state !== 'running') primeAudio();
+  }
   if (!ctx) {
     soundOn = false;
     return false;
@@ -186,18 +209,26 @@ export function setSound(on) {
   master.gain.cancelScheduledValues(ctx.currentTime);
   master.gain.setTargetAtTime(on ? 0.6 : 0, ctx.currentTime, on ? 0.08 : 0.3);
 
-  if (on) {
-    // Starting from a decoded buffer keeps playback inside the gesture that called
-    // us; iOS only unlocks audio that begins during the gesture, not after an await.
-    if (bgmBuffer) {
-      startBgm();
-    } else {
-      loadBgm().then(() => {
-        if (soundOn) startBgm();
-      });
-    }
-  } else {
+  if (!on) {
     stopBgm();
+    return soundOn;
+  }
+
+  // iOS silently drops a buffer source that was started while the context was
+  // suspended, so wait until it is running before starting the track.
+  const start = () => {
+    if (!soundOn || ctx.state !== 'running') return;
+    if (bgmBuffer) startBgm();
+    else loadBgm().then(() => {
+      if (soundOn && ctx.state === 'running') startBgm();
+    });
+  };
+
+  if (ctx.state === 'running') start();
+  else {
+    const resumed = ctx.resume();
+    if (resumed && typeof resumed.then === 'function') resumed.then(start).catch(() => {});
+    else start();
   }
   return soundOn;
 }
@@ -222,32 +253,44 @@ export function armSound() {
     'scroll',
   ];
 
+  // Only these count as a user activation; wheel/scroll/touchmove may start the
+  // gate but cannot unlock audio on their own.
+  const activation = new Set([
+    'pointerdown',
+    'pointerup',
+    'mousedown',
+    'mouseup',
+    'click',
+    'touchstart',
+    'touchend',
+    'keydown',
+  ]);
+
   const start = (event) => {
     if (event?.target?.closest?.('#soundBtn')) return; // the button owns that tap
-    events.forEach((name) => window.removeEventListener(name, start, true));
-    if (mutedByUser) return;
+    if (mutedByUser) {
+      events.forEach((name) => window.removeEventListener(name, start, true));
+      return;
+    }
     const context = unlockAudio();
     if (!context) return;
 
-    const go = () => {
+    // Unlock iOS synchronously. A wheel or scroll is not a user activation in
+    // Chrome, so only drop the listeners once the context is actually running;
+    // otherwise a later click/tap must still be able to start the track.
+    if (activation.has(event.type)) primeAudio();
+    const unlock = () => {
+      if (context.state !== 'running') return;
+      events.forEach((name) => window.removeEventListener(name, start, true));
       if (!mutedByUser) setSound(true);
     };
 
-    // Start from the pre-decoded buffer synchronously, inside the gesture, so the
-    // unlock happens now rather than after a fetch/decode resolves.
-    if (bgmBuffer && !bgmSource) {
-      soundOn = true;
-      master.gain.cancelScheduledValues(context.currentTime);
-      master.gain.setTargetAtTime(0.6, context.currentTime, 0.08);
-      startBgm();
-    }
-
-    if (context.state !== 'running') {
-      const resumed = context.resume();
-      if (resumed && typeof resumed.then === 'function') resumed.then(go).catch(go);
-      else go();
+    if (context.state === 'running') {
+      unlock();
     } else {
-      go();
+      const resumed = context.resume();
+      if (resumed && typeof resumed.then === 'function') resumed.then(unlock).catch(() => {});
+      else unlock();
     }
   };
 
