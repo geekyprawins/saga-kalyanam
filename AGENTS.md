@@ -70,7 +70,10 @@ Without it the ornament's tile size survives and the photo repeats across the bo
   new uppercase label class means adding it to that list, not inventing a new font-size —
   anything under ~10px is unreadable on a phone in a bright room.
 - Social preview URLs in `index.html` are absolute on purpose; crawlers drop relative ones.
-  Changing hosts means editing `og:url`, `og:image` and `twitter:image` together.
+  They point at the custom domain (`https://sagakalyanam.in/`); the default `github.io`
+  URL redirects there. Changing hosts means editing the canonical link, `og:url`,
+  `og:image`, `og:image:secure_url` and `twitter:image` together, and keeping
+  `public/CNAME` in sync.
 
 ## The invite card
 
