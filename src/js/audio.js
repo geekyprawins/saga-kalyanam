@@ -385,6 +385,46 @@ export function crack() {
   osc.stop(now + 0.22);
 }
 
+/* A brass bell peal for the opening arch. It shares the AudioContext, so ringing
+   it is also the gesture that unlocks playback on iOS. */
+export function ringChime() {
+  const context = unlockAudio();
+  if (!context) return;
+
+  const play = () => {
+    if (context.state !== 'running') return;
+    const now = context.currentTime;
+    const out = context.createGain();
+    out.gain.value = 0.42;
+    out.connect(master || context.destination);
+
+    // Inharmonic partials give a struck-metal timbre rather than a plain tone.
+    const partials = [
+      [523.25, 0.5, 2.8],
+      [784.0, 0.28, 2.2],
+      [1046.5, 0.22, 1.9],
+      [1568.0, 0.12, 1.3],
+      [2093.0, 0.07, 0.9],
+    ];
+    partials.forEach(([freq, level, decay]) => {
+      const osc = context.createOscillator();
+      const env = context.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      env.gain.setValueAtTime(0.0001, now);
+      env.gain.exponentialRampToValueAtTime(level, now + 0.008);
+      env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+      osc.connect(env);
+      env.connect(out);
+      osc.start(now);
+      osc.stop(now + decay + 0.05);
+    });
+  };
+
+  if (context.state === 'running') play();
+  else context.resume().then(play).catch(() => {});
+}
+
 document.addEventListener('visibilitychange', () => {
   if (!ctx) return;
   if (document.hidden) ctx.suspend();

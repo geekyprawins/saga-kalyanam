@@ -1,4 +1,5 @@
 import '../css/main.css';
+import { initArch } from './arch.js';
 import { initGate } from './gate.js';
 import { initCarousel, initWipes } from './gallery.js';
 import { initInvite } from './invite.js';
@@ -111,6 +112,7 @@ armSound();
 paintSound(isSoundOn());
 
 /* ── scenes ───────────────────────────────────────────── */
+initArch();
 loadPhotos();
 initGate();
 initCarousel();

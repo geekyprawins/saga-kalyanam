@@ -32,7 +32,17 @@
   <link rel="preload" as="image" href="./assets/art/hero-temple.webp" fetchpriority="high" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+Telugu:wght@400;500&display=swap" />
 
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    /* if the app never boots, never trap the guest behind the arch */
+    window.setTimeout(function () {
+      if (!document.documentElement.classList.contains('arch-ready')) {
+        var arch = document.getElementById('arch');
+        if (arch) arch.style.display = 'none';
+      }
+    }, 6000);
+  </script>
   <link rel="stylesheet" href="./src/css/main.css" />
 </head>
 <body>
@@ -56,6 +66,77 @@
       </linearGradient>
     </defs>
   </svg>
+
+  <!-- 0 · OPENING ARCH -->
+  <section class="arch" id="arch" role="dialog" aria-modal="true" aria-labelledby="archHint">
+    <div class="arch__scene">
+      <img class="arch__back" src="./assets/art/hero-temple.webp" alt="" width="1500" height="844" fetchpriority="high" decoding="async" />
+      <span class="arch__vignette" aria-hidden="true"></span>
+      <span class="arch__bloom" aria-hidden="true"></span>
+
+      <div class="arch__doors" aria-hidden="true">
+        <div class="arch__door arch__door--l">
+          <span class="arch__grain"></span>
+          <span class="arch__panels"></span>
+          <span class="arch__studs"></span>
+          <span class="arch__motif" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" stroke="#c9a24a" stroke-width="1.3">
+              <circle cx="50" cy="50" r="27" /><circle cx="50" cy="50" r="18" />
+              <path d="M50 20c9 11 9 22 0 30-9-8-9-19 0-30z" /><path d="M50 80c-9-11-9-22 0-30 9 8 9 19 0 30z" />
+              <path d="M20 50c11-9 22-9 30 0-8 9-19 9-30 0z" /><path d="M80 50c-11 9-22 9-30 0 8-9 19-9 30 0z" />
+              <path d="M29 29c13 2 21 10 21 21-13-2-21-10-21-21z" /><path d="M71 71c-13-2-21-10-21-21 13 2 21 10 21 21z" />
+              <path d="M71 29c-2 13-10 21-21 21 2-13 10-21 21-21z" /><path d="M29 71c2-13 10-21 21-21-2 13-10 21-21 21z" />
+              <circle cx="50" cy="50" r="4" fill="#c9a24a" stroke="none" />
+            </svg>
+          </span>
+          <span class="arch__ring"></span>
+        </div>
+        <div class="arch__door arch__door--r">
+          <span class="arch__grain"></span>
+          <span class="arch__panels"></span>
+          <span class="arch__studs"></span>
+          <span class="arch__motif" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" stroke="#c9a24a" stroke-width="1.3">
+              <circle cx="50" cy="50" r="27" /><circle cx="50" cy="50" r="18" />
+              <path d="M50 20c9 11 9 22 0 30-9-8-9-19 0-30z" /><path d="M50 80c-9-11-9-22 0-30 9 8 9 19 0 30z" />
+              <path d="M20 50c11-9 22-9 30 0-8 9-19 9-30 0z" /><path d="M80 50c-11 9-22 9-30 0 8-9 19-9 30 0z" />
+              <path d="M29 29c13 2 21 10 21 21-13-2-21-10-21-21z" /><path d="M71 71c-13-2-21-10-21-21 13 2 21 10 21 21z" />
+              <path d="M71 29c-2 13-10 21-21 21 2-13 10-21 21-21z" /><path d="M29 71c2-13 10-21 21-21-2 13-10 21-21 21z" />
+              <circle cx="50" cy="50" r="4" fill="#c9a24a" stroke="none" />
+            </svg>
+          </span>
+          <span class="arch__ring"></span>
+        </div>
+        <span class="arch__lintel"></span>
+      </div>
+
+      <span class="arch__chain" aria-hidden="true"></span>
+
+      <button class="arch__bell" id="archBell" type="button" aria-label="Ring the bell to open the invitation">
+        <span class="arch__bell-glow" aria-hidden="true"></span>
+        <span class="arch__bell-ripple" aria-hidden="true"></span>
+        <svg class="arch__bell-svg" viewBox="0 0 160 240" aria-hidden="true">
+          <circle cx="80" cy="18" r="10" fill="none" stroke="url(#brassGrad)" stroke-width="6" />
+          <path d="M62 34 Q80 20 98 34 L102 46 Q80 38 58 46 Z" fill="url(#brassGrad2)" stroke="#5b3a0e" stroke-width="2" />
+          <path d="M58 46 C40 58 34 84 34 116 C34 150 24 164 16 174 L144 174 C136 164 126 150 126 116 C126 84 120 58 102 46 Q80 40 58 46 Z" fill="url(#brassGrad2)" stroke="#4a2c08" stroke-width="2.5" />
+          <path d="M58 46 C40 58 34 84 34 116 C34 150 24 164 16 174 L62 174 C54 148 58 88 76 50 Z" fill="#fff" opacity="0.1" />
+          <path d="M37 104 Q80 116 123 104" fill="none" stroke="#6b4310" stroke-width="3" opacity="0.55" />
+          <path d="M34 120 Q80 132 126 120" fill="none" stroke="#6b4310" stroke-width="2" opacity="0.4" />
+          <path d="M80 52 q-9 11 0 22 q9 -11 0 -22" fill="#ffeec4" opacity="0.45" />
+          <ellipse cx="80" cy="174" rx="64" ry="12" fill="url(#brassGrad)" stroke="#4a2c08" stroke-width="2" />
+          <ellipse cx="80" cy="174" rx="52" ry="7" fill="#2a1705" opacity="0.45" />
+          <circle cx="80" cy="192" r="9" fill="url(#brassGrad)" stroke="#4a2c08" stroke-width="2" />
+        </svg>
+      </button>
+
+      <div class="arch__prompt">
+        <p class="arch__kicker">SaGa Kalyanam</p>
+        <p class="arch__hint" id="archHint" data-i18n="ringBell">Ring the bell to enter</p>
+        <p class="arch__names"><span>Sanjana</span><em>&amp;</em><span>Gagan</span></p>
+      </div>
+    </div>
+  </section>
+  <noscript><style>#arch{display:none!important}</style></noscript>
 
   <div class="grain" aria-hidden="true"></div>
   <canvas id="petals" class="petals" aria-hidden="true"></canvas>

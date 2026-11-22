@@ -127,3 +127,23 @@ uses it: the first tap on a still-silent page starts playback instead of muting.
 user mutes, `mutedByUser` stops later gestures from bringing it back. `prefetchBgm()`
 still warms the bytes on idle as a fallback; the decoded buffer is cached, so toggling off
 and on restarts without another fetch.
+
+## Opening arch
+
+`#arch` (markup at the top of `index.html`, styles in `src/css/arch.css`, behaviour in
+`src/js/arch.js`) is a full-screen wrapper shown on every load, above the veil and nav
+(`z-index: 200`). It reuses `public/assets/art/hero-temple.webp` — the same photo as the
+gate scene, same `object-position` — so when the doors part and the overlay fades, the
+hand-off to the real invitation is seamless. No external art is needed: the doors and
+the brass bell are CSS gradients plus inline SVG.
+
+The bell is the page's first real gesture, so its click is the iOS audio unlock: it calls
+`setSound(true)` and `ringChime()` directly, then swings the doors (`.is-open` →
+`rotateY`), and after ~1.2 s JS adds `.is-gone`. This is the point of the wrapper — a
+guaranteed tap before any music, instead of hoping a scroll counts as activation.
+
+While it is up, `html.arch-locked` locks scroll and `#main`/`.bar` are `inert`. The
+head script sets `history.scrollRestoration = 'manual'` so a reload always starts at the
+arch. `initArch()` adds `arch-ready`; the inline 6 s timeout hides the arch if the app
+never boots, and `<noscript>` hides it without JS. Keep both fallbacks, and never start
+the track from the bell handler while the context is still suspended (see Sound).
