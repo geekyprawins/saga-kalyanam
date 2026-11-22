@@ -67,6 +67,13 @@ export function isSoundOn() {
   return soundOn;
 }
 
+/* True once the graph can actually make noise. `soundOn` is the intended state
+   (it starts "on"), so this is what tells the button whether a tap should start
+   playback or toggle it. */
+export function isAudioRunning() {
+  return Boolean(ctx) && ctx.state === 'running';
+}
+
 /* Fetching the bytes does not touch the AudioContext, so this can run before the
    first gesture without tripping the autoplay warning. */
 export function prefetchBgm() {
@@ -180,32 +187,80 @@ export function setSound(on) {
   master.gain.setTargetAtTime(on ? 0.6 : 0, ctx.currentTime, on ? 0.08 : 0.3);
 
   if (on) {
-    loadBgm().then(() => {
-      if (soundOn) startBgm();
-    });
+    // Starting from a decoded buffer keeps playback inside the gesture that called
+    // us; iOS only unlocks audio that begins during the gesture, not after an await.
+    if (bgmBuffer) {
+      startBgm();
+    } else {
+      loadBgm().then(() => {
+        if (soundOn) startBgm();
+      });
+    }
   } else {
     stopBgm();
   }
   return soundOn;
 }
 
-/* Browsers refuse to start audio before a gesture, so nothing is created at load:
-   the track starts at the first tap, touch or keypress anywhere on the page, which
-   keeps the console free of the autoplay warning. The icon already reads "on", so
-   nobody has to go looking for the button. */
+/* Browsers refuse to start audio before a gesture, so the track waits for the
+   first interaction. Scrolling opens the gate, so wheel/scroll/touchmove count
+   too — otherwise a guest who scrolls in (rather than taps) never hears music
+   while the icon still reads "on". Where the browser allows audio at load
+   (prior engagement, permissive policy) it starts immediately. */
 export function armSound() {
-  const events = ['pointerdown', 'touchstart', 'keydown'];
-  const start = () => {
+  const events = [
+    'pointerdown',
+    'pointerup',
+    'mousedown',
+    'mouseup',
+    'click',
+    'touchstart',
+    'touchend',
+    'touchmove',
+    'keydown',
+    'wheel',
+    'scroll',
+  ];
+
+  const start = (event) => {
+    if (event?.target?.closest?.('#soundBtn')) return; // the button owns that tap
     events.forEach((name) => window.removeEventListener(name, start, true));
     if (mutedByUser) return;
     const context = unlockAudio();
+    if (!context) return;
+
     const go = () => {
       if (!mutedByUser) setSound(true);
     };
-    if (context && context.state !== 'running') context.resume().then(go).catch(() => {});
-    else go();
+
+    // Start from the pre-decoded buffer synchronously, inside the gesture, so the
+    // unlock happens now rather than after a fetch/decode resolves.
+    if (bgmBuffer && !bgmSource) {
+      soundOn = true;
+      master.gain.cancelScheduledValues(context.currentTime);
+      master.gain.setTargetAtTime(0.6, context.currentTime, 0.08);
+      startBgm();
+    }
+
+    if (context.state !== 'running') {
+      const resumed = context.resume();
+      if (resumed && typeof resumed.then === 'function') resumed.then(go).catch(go);
+      else go();
+    } else {
+      go();
+    }
   };
+
   events.forEach((name) => window.addEventListener(name, start, { capture: true, passive: true }));
+
+  // Create the context now and decode the track ahead of the first gesture. Decoding
+  // works while the context is suspended, so the gesture can start without an await.
+  const context = unlockAudio();
+  if (context) loadBgm();
+  if (context && context.state === 'running') {
+    events.forEach((name) => window.removeEventListener(name, start, true));
+    setSound(true);
+  }
 }
 
 export function swish() {

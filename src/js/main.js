@@ -6,7 +6,7 @@ import { initSaveCard } from './savecard.js';
 import { initActions } from './actions.js';
 import { loadPhotos } from './photos.js';
 import { initTilt } from './tilt.js';
-import { armSound, isSoundOn, prefetchBgm, setSound } from './audio.js';
+import { armSound, isAudioRunning, isSoundOn, prefetchBgm, setSound } from './audio.js';
 import { addressFor, getLang, guestName, setLang } from './content.js';
 
 const root = document.documentElement;
@@ -92,6 +92,13 @@ function paintSound(on) {
 }
 
 soundBtn?.addEventListener('click', () => {
+  /* The icon reads "on" from first paint, before any sound can play. If audio has
+     not actually started yet, a tap should start it — not mute a silent track. */
+  if (!isAudioRunning()) {
+    setSound(true);
+    paintSound(true);
+    return;
+  }
   const next = !isSoundOn();
   setSound(next);
   paintSound(next);

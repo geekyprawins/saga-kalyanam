@@ -105,9 +105,18 @@ ends with silence, which `trimEncoderPad()` strips after `decodeAudioData`, othe
 the loop plays ~20 ms of nothing every lap.
 
 Sound is on by default: the toggle is painted "on" at boot and `armSound()` starts the
-track at the first `pointerdown`, `touchstart` or `keydown` anywhere on the page — not
-only on the gate, and not only on the button. The AudioContext is created *inside* that
-gesture, never at load, so no autoplay warning is logged; `prefetchBgm()` pulls the bytes
-on idle without touching the context. Once the user mutes, `mutedByUser` stops the
-gesture from bringing it back. The track is decoded once and cached, so toggling off and
-on restarts it without another fetch.
+track at the first interaction anywhere on the page. Scrolling opens the gate, so the
+gesture list includes `wheel`, `scroll` and `touchmove` alongside the pointer/touch/key
+events — a guest who scrolls in must not be left in silence while the icon reads "on".
+The AudioContext is created at boot and the track is decoded ahead of time (decoding
+works while the context is suspended), so the first real gesture starts a buffer source
+*synchronously*, inside the gesture. That matters on iOS, which only unlocks audio that
+begins during the gesture rather than after a fetch/decode await. A wheel alone is not a
+user activation in Chrome, so if only a scroll has happened the context stays suspended
+and the already-started source begins the moment any click/tap/keypress resumes it.
+
+`isAudioRunning()` reports whether the context is actually running, and the sound button
+uses it: the first tap on a still-silent page starts playback instead of muting. Once the
+user mutes, `mutedByUser` stops later gestures from bringing it back. `prefetchBgm()`
+still warms the bytes on idle as a fallback; the decoded buffer is cached, so toggling off
+and on restarts without another fetch.
