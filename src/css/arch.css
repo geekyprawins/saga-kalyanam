@@ -1,0 +1,313 @@
+/* ── 0 · the opening arch ───────────────────────────────────
+   A photographic temple gateway with a hanging brass bell. The bell is the
+   first gesture on the page, so its tap is what unlocks the music; the frame
+   then zooms through the gate and hands off to the invitation.
+
+   The artwork carries a bell of its own. `--bell-*` positions the transparent
+   bell PNG exactly over it, sized so the overlay covers the painted bell. The
+   frame keeps the image's aspect ratio while covering the viewport, so those
+   percentages stay locked to the artwork at every screen size. */
+
+html.arch-locked,
+html.arch-locked body {
+  overflow: hidden;
+}
+
+.arch {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #140306;
+  transition: opacity 1.2s var(--ease-out), visibility 1.2s;
+}
+
+.arch.is-open {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.arch.is-gone {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.arch__scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.arch__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(95% 75% at 50% 42%, transparent 52%, rgba(10, 2, 3, 0.4) 100%);
+}
+
+/* cover the viewport while preserving the gate artwork's aspect ratio */
+.arch__frame {
+  --gate-aspect: 1.7768;
+  --bell-w: 23.9%;
+  --bell-top: -10.9%;
+  --bell-x: 50.05%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, calc(100vh * var(--gate-aspect)));
+  aspect-ratio: var(--gate-aspect);
+  transform: translate(-50%, -50%);
+  transition: transform 1.6s var(--ease-out);
+  will-change: transform;
+}
+
+.arch.is-open .arch__frame {
+  transform: translate(-50%, -50%) scale(1.16);
+}
+
+.arch__frame picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.arch__gate {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* warm bloom behind the bell */
+.arch__bloom {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  width: 46%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(0.55);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 150, 0.4), rgba(255, 190, 110, 0.13) 44%, transparent 68%);
+  opacity: 0.5;
+  filter: blur(5px);
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 1s ease, transform 1.4s var(--ease-out);
+}
+
+.arch.is-open .arch__bloom {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.22);
+}
+
+/* ── the bell ─────────────────────────────────────────── */
+.arch__bell {
+  position: absolute;
+  top: var(--bell-top);
+  left: var(--bell-x);
+  width: var(--bell-w);
+  transform: translateX(-50%);
+  transform-origin: 50% 0;
+  z-index: 3;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: archBellSway 5.2s ease-in-out infinite;
+}
+
+.arch__bell:focus {
+  outline: none;
+}
+
+.arch__bell:focus-visible {
+  outline: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(251, 241, 218, 0.45), 0 0 30px rgba(255, 214, 140, 0.55);
+}
+
+.arch__bell-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.42));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.arch__bell-glow {
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  width: 96%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 140, 0.36), transparent 62%);
+  filter: blur(9px);
+  pointer-events: none;
+}
+
+.arch__bell-ripple {
+  position: absolute;
+  left: 50%;
+  top: 65%;
+  width: 68%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 224, 166, 0.28);
+  box-shadow: 0 0 22px rgba(255, 214, 140, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  animation: archBellPulse 2.8s ease-out infinite;
+}
+
+.arch__bell.is-ringing,
+.arch.is-open .arch__bell {
+  animation: archBellRing 1s cubic-bezier(0.3, 0.1, 0.3, 1);
+}
+
+@keyframes archBellSway {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(-1.4deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(1.4deg);
+  }
+}
+
+@keyframes archBellRing {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  14% {
+    transform: translateX(-50%) rotate(-9deg);
+  }
+  34% {
+    transform: translateX(-50%) rotate(7deg);
+  }
+  54% {
+    transform: translateX(-50%) rotate(-5deg);
+  }
+  74% {
+    transform: translateX(-50%) rotate(3deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+}
+
+@keyframes archBellPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.72);
+    opacity: 0;
+  }
+  28% {
+    opacity: 0.38;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.26);
+    opacity: 0;
+  }
+}
+
+/* the wordmark sits in the clear space under the bell, using the entry
+   page's own .wordmark treatment */
+.arch__wordmark {
+  position: absolute;
+  left: 50%;
+  top: 31.5%;
+  width: min(72%, 22rem);
+  transform: translateX(-50%);
+  z-index: 4;
+  text-align: center;
+  pointer-events: none;
+}
+
+.arch__wordmark .wordmark__main {
+  font-size: clamp(2.4rem, 8.5vw, 3.2rem);
+  filter: drop-shadow(0 1px 1px rgba(30, 6, 10, 0.9)) drop-shadow(0 4px 16px rgba(30, 6, 10, 0.55));
+}
+
+/* the entry page turns this pale gold; on the bright artwork that vanishes,
+   so use a deep bronze with a light halo instead */
+.arch__wordmark .wordmark__sub {
+  margin-top: 0.2rem;
+  color: #6b4310;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.75), 0 1px 4px rgba(40, 12, 8, 0.3);
+}
+
+/* caption under the wordmark, kept bold and small so it reads on the bright
+   artwork without becoming a second headline */
+.arch__hint {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.56rem, 1.8vw, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-indent: 0.18em;
+  text-transform: uppercase;
+  color: #4a1216;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.65), 0 1px 4px rgba(40, 12, 8, 0.3);
+}
+
+/* ── portrait artwork ──────────────────────────────────── */
+@media (orientation: portrait) {
+  .arch__frame {
+    --gate-aspect: 0.5628;
+    --bell-w: 40.4%;
+    --bell-top: 9.9%;
+    --bell-x: 49.1%;
+  }
+
+  .arch__wordmark {
+    top: 33%;
+  }
+}
+
+/* When the viewport is wider than the artwork, cover-cropping would eat the top
+   of the gate - and the bell with it. Pin the frame to the top there and let the
+   floor crop instead, so the bell always stays whole. */
+@media (min-aspect-ratio: 16 / 9) {
+  .arch__frame {
+    top: 0;
+    transform: translateX(-50%);
+    transform-origin: 50% 0;
+  }
+
+  .arch.is-open .arch__frame {
+    transform: translateX(-50%) scale(1.16);
+  }
+}
+
+@media (orientation: portrait) and (min-aspect-ratio: 9 / 16) {
+  .arch__frame {
+    top: 0;
+    transform: translateX(-50%);
+    transform-origin: 50% 0;
+  }
+
+  .arch.is-open .arch__frame {
+    transform: translateX(-50%) scale(1.16);
+  }
+}
+
+/* ── reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .arch,
+  .arch__frame,
+  .arch__bell,
+  .arch__bloom,
+  .arch__bell-ripple {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .arch__bell-ripple {
+    display: none;
+  }
+}

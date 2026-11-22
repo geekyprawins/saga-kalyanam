@@ -17,6 +17,7 @@ export const i18n = {
   en: {
     kalyanam: 'Kalyanam',
     weddingDate: '10.12.2026',
+    ringBell: 'Ring the bell to enter',
     scrollHint: 'Scroll to enter',
     twoHearts: 'Two hearts.',
     twoFamilies: 'Two families.',
@@ -83,6 +84,7 @@ export const i18n = {
   te: {
     kalyanam: 'కళ్యాణం',
     weddingDate: '10.12.2026',
+    ringBell: 'గంటను మోగించి లోపలికి రండి',
     scrollHint: 'లోపలికి స్క్రోల్ చేయండి',
     twoHearts: 'రెండు హృదయాలు.',
     twoFamilies: 'రెండు కుటుంబాలు.',

@@ -29,10 +29,22 @@
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="image" href="./assets/art/hero-temple.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="./assets/art/temple-gate-desktop.webp" media="(orientation: landscape)" fetchpriority="high" />
+  <link rel="preload" as="image" href="./assets/art/temple-gate-mobile.webp" media="(orientation: portrait)" fetchpriority="high" />
+  <link rel="preload" as="image" href="./assets/art/hero-temple.webp" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+Telugu:wght@400;500&display=swap" />
 
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    /* if the app never boots, never trap the guest behind the arch */
+    window.setTimeout(function () {
+      if (!document.documentElement.classList.contains('arch-ready')) {
+        var arch = document.getElementById('arch');
+        if (arch) arch.style.display = 'none';
+      }
+    }, 6000);
+  </script>
   <link rel="stylesheet" href="./src/css/main.css" />
 </head>
 <body>
@@ -56,6 +68,33 @@
       </linearGradient>
     </defs>
   </svg>
+
+  <!-- 0 · OPENING ARCH -->
+  <section class="arch" id="arch" role="dialog" aria-modal="true" aria-labelledby="archHint">
+    <div class="arch__scene">
+      <div class="arch__frame">
+        <picture>
+          <source media="(orientation: portrait)" srcset="./assets/art/temple-gate-mobile.webp" />
+          <img class="arch__gate" src="./assets/art/temple-gate-desktop.webp" alt="" width="1672" height="941" fetchpriority="high" decoding="async" />
+        </picture>
+        <span class="arch__vignette" aria-hidden="true"></span>
+        <span class="arch__bloom" aria-hidden="true"></span>
+        <button class="arch__bell" id="archBell" type="button" aria-label="Ring the bell to open the invitation">
+          <span class="arch__bell-glow" aria-hidden="true"></span>
+          <span class="arch__bell-ripple" aria-hidden="true"></span>
+          <img class="arch__bell-img" src="./assets/art/temple-bell.webp" alt="" width="900" height="955" draggable="false" />
+        </button>
+        <div class="arch__wordmark">
+          <h1 class="wordmark">
+            <span class="wordmark__main">SaGa</span>
+            <span class="wordmark__sub" data-i18n="kalyanam">Kalyanam</span>
+          </h1>
+          <p class="arch__hint" id="archHint" data-i18n="ringBell">Ring the bell to enter</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <noscript><style>#arch{display:none!important}</style></noscript>
 
   <div class="grain" aria-hidden="true"></div>
   <canvas id="petals" class="petals" aria-hidden="true"></canvas>
