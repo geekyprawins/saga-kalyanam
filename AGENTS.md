@@ -53,6 +53,9 @@ Without it the ornament's tile size survives and the photo repeats across the bo
   a `data-i18n` element is the no-JS fallback, so it has to be rewritten whenever the `en`
   value changes — a stale one survives in view-source and to crawlers while the page looks
   right in a browser.
+- The guest line (`?to=Name`) sits under the date, built by `addressFor()` into three
+  pieces so `.greet__name` can carry the gold. English reads "To Name & family", Telugu
+  "Name గారు & కుటుంబానికి"; `greetingFor()` flattens the same pieces for the saved card.
 - Scene artwork is raster in `public/assets/art/`, already decorated (garlands, lamps,
   kolam), so CSS must not draw a second arch, frame or seal on top of it. The one-time
   originals arrive as multi-megabyte PNGs; convert them to WebP (Pillow, `method=6`) and
@@ -101,7 +104,21 @@ over its last four seconds, so a plain `loop` would jump. MP3 encoders also pad 
 ends with silence, which `trimEncoderPad()` strips after `decodeAudioData`, otherwise
 the loop plays ~20 ms of nothing every lap.
 
-Audio cannot start before a gesture. The first `pointerdown` on the gate calls
-`setSound(true)` and repaints the toggle; `prefetchBgm()` pulls the bytes on idle without
-touching the AudioContext, so no autoplay warning is logged. The track is decoded once
-and cached, so toggling off and on restarts it without another fetch.
+Sound is on by default: the toggle is painted "on" at boot and `armSound()` starts the
+track at the first interaction anywhere on the page. Scrolling opens the gate, so the
+gesture list includes `wheel`, `scroll` and `touchmove` alongside the pointer/touch/key
+events — a guest who scrolls in must not be left in silence while the icon reads "on".
+The AudioContext is created at boot and the track is decoded ahead of time (decoding
+works while the context is suspended); `armSound()` also attempts an immediate `resume()`
+so browsers that permit autoplay for the site start on open. Otherwise the first real
+gesture starts a buffer source *synchronously*, inside the gesture. That matters on iOS,
+which only unlocks audio that begins during the gesture rather than after a fetch/decode
+await. A wheel alone is not a user activation in Chrome, so if only a scroll has happened
+the context stays suspended and the already-started source begins the moment any
+click/tap/keypress resumes it.
+
+`isAudioRunning()` reports whether the context is actually running, and the sound button
+uses it: the first tap on a still-silent page starts playback instead of muting. Once the
+user mutes, `mutedByUser` stops later gestures from bringing it back. `prefetchBgm()`
+still warms the bytes on idle as a fallback; the decoded buffer is cached, so toggling off
+and on restarts without another fetch.

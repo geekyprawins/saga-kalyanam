@@ -63,7 +63,8 @@ export const i18n = {
     withLove: 'With love,',
     familyName: 'The Swamiraju Family',
     showerPetals: 'Shower petals',
-    greeting: 'Dear',
+    greeting: 'To',
+    family: '& family',
     linkCopied: 'Invitation link copied',
     openCard: 'Tap the card to open',
     saveInvite: 'Save the invite',
@@ -128,7 +129,8 @@ export const i18n = {
     withLove: 'ప్రేమతో,',
     familyName: 'స్వామిరాజు కుటుంబం',
     showerPetals: 'పూలవాన కురిపించండి',
-    greeting: 'ప్రియమైన',
+    greeting: '',
+    family: '& కుటుంబానికి',
     linkCopied: 'ఆహ్వాన లింక్ కాపీ అయింది',
     openCard: 'తెరవడానికి కార్డును తట్టండి',
     saveInvite: 'ఆహ్వానాన్ని సేవ్ చేయండి',
@@ -178,11 +180,18 @@ export function guestName() {
     .slice(0, 48);
 }
 
-export function greetingFor(name) {
-  if (!name) return '';
+/** The guest line in pieces, so the name can carry its own colour. */
+export function addressFor(name) {
+  if (!name) return null;
   if (current === 'te') {
     const bare = name.replace(/\s*garu$/i, '');
-    return `${i18n.te.greeting} ${bare} గారికి`;
+    return { lead: '', name: `${bare} గారు`, tail: t('family') };
   }
-  return /garu$/i.test(name) ? `${t('greeting')} ${name}` : `${t('greeting')} ${name} Garu`;
+  return { lead: t('greeting'), name, tail: t('family') };
+}
+
+export function greetingFor(name) {
+  const parts = addressFor(name);
+  if (!parts) return '';
+  return [parts.lead, parts.name, parts.tail].filter(Boolean).join(' ');
 }

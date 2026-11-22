@@ -9,7 +9,8 @@ const BGM_FADE_OUT = 0.5;
 let ctx = null;
 let master = null;
 let wet = null;
-let soundOn = false;
+let soundOn = true;
+let mutedByUser = false;
 
 let bgmBytes = null;
 let bgmBuffer = null;
@@ -64,6 +65,13 @@ export function unlockAudio() {
 
 export function isSoundOn() {
   return soundOn;
+}
+
+/* True once the graph can actually make noise. `soundOn` is the intended state
+   (it starts "on"), so this is what tells the button whether a tap should start
+   playback or toggle it. */
+export function isAudioRunning() {
+  return Boolean(ctx) && ctx.state === 'running';
 }
 
 /* Fetching the bytes does not touch the AudioContext, so this can run before the
@@ -167,25 +175,109 @@ function stopBgm() {
 }
 
 export function setSound(on) {
+  mutedByUser = !on;
   if (on) unlockAudio();
-  if (!ctx) return false;
+  if (!ctx) {
+    soundOn = false;
+    return false;
+  }
   soundOn = on;
 
   master.gain.cancelScheduledValues(ctx.currentTime);
   master.gain.setTargetAtTime(on ? 0.6 : 0, ctx.currentTime, on ? 0.08 : 0.3);
 
   if (on) {
-    loadBgm().then(() => {
-      if (soundOn) startBgm();
-    });
+    // Starting from a decoded buffer keeps playback inside the gesture that called
+    // us; iOS only unlocks audio that begins during the gesture, not after an await.
+    if (bgmBuffer) {
+      startBgm();
+    } else {
+      loadBgm().then(() => {
+        if (soundOn) startBgm();
+      });
+    }
   } else {
     stopBgm();
   }
   return soundOn;
 }
 
+/* Browsers refuse to start audio before a gesture, so the track waits for the
+   first interaction. Scrolling opens the gate, so wheel/scroll/touchmove count
+   too — otherwise a guest who scrolls in (rather than taps) never hears music
+   while the icon still reads "on". Where the browser allows audio at load
+   (prior engagement, permissive policy) it starts immediately. */
+export function armSound() {
+  const events = [
+    'pointerdown',
+    'pointerup',
+    'mousedown',
+    'mouseup',
+    'click',
+    'touchstart',
+    'touchend',
+    'touchmove',
+    'keydown',
+    'wheel',
+    'scroll',
+  ];
+
+  const start = (event) => {
+    if (event?.target?.closest?.('#soundBtn')) return; // the button owns that tap
+    events.forEach((name) => window.removeEventListener(name, start, true));
+    if (mutedByUser) return;
+    const context = unlockAudio();
+    if (!context) return;
+
+    const go = () => {
+      if (!mutedByUser) setSound(true);
+    };
+
+    // Start from the pre-decoded buffer synchronously, inside the gesture, so the
+    // unlock happens now rather than after a fetch/decode resolves.
+    if (bgmBuffer && !bgmSource) {
+      soundOn = true;
+      master.gain.cancelScheduledValues(context.currentTime);
+      master.gain.setTargetAtTime(0.6, context.currentTime, 0.08);
+      startBgm();
+    }
+
+    if (context.state !== 'running') {
+      const resumed = context.resume();
+      if (resumed && typeof resumed.then === 'function') resumed.then(go).catch(go);
+      else go();
+    } else {
+      go();
+    }
+  };
+
+  events.forEach((name) => window.addEventListener(name, start, { capture: true, passive: true }));
+
+  // Create the context now and decode the track ahead of the first gesture. Decoding
+  // works while the context is suspended, so the gesture can start without an await.
+  const context = unlockAudio();
+  if (context) loadBgm();
+
+  const beginIfAllowed = () => {
+    if (!context || context.state !== 'running') return;
+    events.forEach((name) => window.removeEventListener(name, start, true));
+    setSound(true);
+  };
+
+  if (!context || context.state === 'running') {
+    beginIfAllowed();
+  } else {
+    // Best effort: browsers that allow autoplay for this site (prior engagement,
+    // permissive policy) resolve this and start on open; strict ones stay suspended
+    // until the gesture listeners above resume the context.
+    const resumed = context.resume();
+    if (resumed && typeof resumed.then === 'function') resumed.then(beginIfAllowed).catch(() => {});
+    else beginIfAllowed();
+  }
+}
+
 export function swish() {
-  if (!ctx || !soundOn) return;
+  if (!ctx || !soundOn || ctx.state !== 'running') return;
   const now = ctx.currentTime;
   const length = Math.floor(ctx.sampleRate * 0.5);
   const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
@@ -211,7 +303,7 @@ export function swish() {
 }
 
 export function crack() {
-  if (!ctx || !soundOn) return;
+  if (!ctx || !soundOn || ctx.state !== 'running') return;
   const now = ctx.currentTime + 0.005;
 
   // brittle snap
